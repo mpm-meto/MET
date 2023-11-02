@@ -446,7 +446,11 @@ if [ $COMPILE_PROJ -eq 1 ]; then
   echo "cd `pwd`"
   export PATH=${LIB_DIR}/bin:${PATH}
   run_cmd "mkdir build; cd build"
-  run_cmd "cmake -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DSQLITE3_INCLUDE_DIR=${SQLITE_INCLUDE_DIR} -DSQLITE3_LIBRARY=${SQLITE_LIB_DIR}/libsqlite3.so .."
+  if [[ -z "$LIB_TIFF" ]]; then
+      run_cmd "cmake -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DSQLITE3_INCLUDE_DIR=${SQLITE_INCLUDE_DIR} -DSQLITE3_LIBRARY=${SQLITE_LIB_DIR}/libsqlite3.so .."
+  else
+      run_cmd "cmake -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DSQLITE3_INCLUDE_DIR=${SQLITE_INCLUDE_DIR} -DSQLITE3_LIBRARY=${SQLITE_LIB_DIR}/libsqlite3.so -DTIFF_LIBRARY_RELEASE=${LIB_TIFF} .."
+  fi
   run_cmd "cmake --build ."
   run_cmd "cmake --build . --target install"
 
@@ -494,7 +498,41 @@ if [ $COMPILE_BUFRLIB -eq 1 ]; then
   run_cmd "ctest > bufr.ctest.log 2>&1"
   run_cmd "make install > bufr.make_install.log 2>&1"
 
+  #vrs="v11.3.0";
+
+  #echo
+  #echo "Compiling BUFRLIB_${vrs} at `date`"
+  #mkdir -p ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}
+  #rm -rf ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}/*
+  #cd ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}
+  #echo "cd `pwd`"
+
+  #tar -xf ${TAR_DIR}/BUFRLIB_`echo $vrs | sed 's/\./-/g'`.tar -C ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}
+
+  #if [[ ${COMPILER_FAMILY} == "intel-oneapi" ]]; then
+  #  icc -c -DUNDERSCORE `./getdefflags_C.sh` *.c >> make.log 2>&1
+  #else
+  #  ${CC} -c -DUNDERSCORE `./getdefflags_C.sh` *.c >> make.log 2>&1
+  #fi
+
+  # For GNU and Intel follow bufr11 instructions
+  #if [[ ${COMPILER_FAMILY} == "gnu" ]]; then
+  #  if [[ ${COMPILER_MAJOR_VERSION} -ge 10 ]]; then
+  #    ${FC} -c -fno-second-underscore -fallow-argument-mismatch `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
+  #  elif [[ ${COMPILER_MAJOR_VERSION} -lt 10 ]]; then
+  #    ${FC} -c -fno-second-underscore -Wno-argument-mismatch `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
+  #  fi	
+  #elif [[ ${COMPILER_FAMILY} == "intel" ]] || [[ ${COMPILER_FAMILY} == "ics" ]] || [[ ${COMPILER_FAMILY} == "ips" ]] || [[ ${COMPILER_FAMILY} == "intel-classic" ]] || [[ ${COMPILER_FAMILY} == "PrgEnv-intel" ]] || [[ ${COMPILER_FAMILY} == "intel-oneapi" ]]; then
+      #${FC} -c `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
+  #    ifort -c `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
+  #elif [[ ${COMPILER_FAMILY} == "pgi" ]]; then
+  #  ${FC} -c -Mnosecond_underscore `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
+  #fi
+
+  #ar crv libbufr.a *.o >> bufr.make.log 2>&1
+  #cp *.a ${LIB_DIR}/lib/.
 fi
+
 
 # Compile ZLIB
 if [ $COMPILE_ZLIB -eq 1 ]; then
