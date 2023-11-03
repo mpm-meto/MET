@@ -53,16 +53,18 @@
 # MET_HDF5, MET_NETCDF, MET_PROJ, MET_GSL, LIB_JASPER, LIB_PNG, LIB_Z,
 # SQLITE_INCLUDE_DIR, SQLITE_LIB_DIR.
 #
-# The optional libraries HDF4, HDFEOS, FREETYPE, and CAIRO are
+# The optional libraries ecKit and atlas offer support for unstructured
+# grids. The optional libraries HDF4, HDFEOS, FREETYPE, and CAIRO are
 # used for the following, not widely used tools, MODIS-Regrid,
-# lidar2nc, and MODE Graphics.  To enable building of these libraries,
-# set the compile flags for the library (e.g. COMPILE_HDF, COMPILE_HDFEOS) to
-# any value in the environment config file. If these libraries have already
-# been installed and don't need to be reinstalled, please
-# supply values for the following environment variables in the input
-# environment configuration file (install_met_env.<machine_name>):
-# MET_HDF, MET_HDFEOS, MET_FREETYPEINC, MET_FREETYPELIB,
-# MET_CAIROINC, MET_CAIROLIB.
+# lidar2nc, and MODE Graphics. To enable building of these libraries,
+# set the compile flags for the library (e.g. COMPILE_ECKIT, COMPILE_ATLAS,
+# COMPILE_HDF, COMPILE_HDFEOS) to any value in the environment config
+# file. If these libraries have already been installed and don't need
+# to be reinstalled, please supply values for the following environment
+# variables in the input environment configuration file
+# (install_met_env.<machine_name>): MET_ECKIT, MET_ATLAS, MET_HDF,
+# MET_HDFEOS, MET_FREETYPEINC, MET_FREETYPELIB, MET_CAIROINC,
+# MET_CAIROLIB.
 #
 # Users can speed up the compilation of MET and its dependent libraries
 # by adding the following to their environment configuration file:
@@ -199,13 +201,26 @@ else
   COMPILE_GSL=0
 fi
 
+# Only set COMPILE_ECKIT and COMPILE_ATLAS if you want to compile and enable support for unstructued grids
+if [ ! -z "${COMPILE_ECKIT}" ]; then COMPILE_ECKIT=1; else COMPILE_ECKIT=0; fi
+if [ ! -z "${COMPILE_ATLAS}" ]; then COMPILE_ATLAS=1; else COMPILE_ATLAS=0;  fi
+
+if [[ -z ${MET_ECKIT} ]] && [[ -z ${MET_ATLAS} ]]; then
+  if [[ $COMPILE_ECKIT -eq 1 && $COMPILE_ATLAS -eq 1 ]]; then
+    export MET_ECKIT=${LIB_DIR}
+    export MET_ATLAS=${LIB_DIR}
+  fi
+else
+  # Only set COMPILE_ECKIT and COMPILE_ATLAS to 1 if you have already compiled ECKIT and ATLAS,
+  # have set MET_ECKIT and MET_ATLAS in your configuration file, and want to enable
+  # unstructured grids 
+  COMPILE_ECKIT=0
+  COMPILE_ATLAS=0
+fi
+
 # Only set COMPILE_HDF and COMPILE_HDFEOS if you want to compile and enable MODIS-Regrid (not widely used)
 if [ ! -z "${COMPILE_HDF}" ]; then COMPILE_HDF=1; else COMPILE_HDF=0; fi
 if [ ! -z "${COMPILE_HDFEOS}" ]; then COMPILE_HDFEOS=1; else COMPILE_HDFEOS=0;  fi
-
-# Only set COMPILE_FREETYPE and COMPILE_CAIRO if you want to compile and enable MODE Graphics (not widely used)
-if [ ! -z "${COMPILE_FREETYPE}" ]; then COMPILE_FREETYPE=1; else COMPILE_FREETYPE=0; fi
-if [ ! -z "${COMPILE_CAIRO}" ]; then COMPILE_CAIRO=1; else COMPILE_CAIRO=0; fi
 
 if [[ -z ${MET_HDF} ]] && [[ -z ${MET_HDFEOS} ]]; then
   if [[ $COMPILE_HDF -eq 1 && $COMPILE_HDFEOS -eq 1 ]]; then
@@ -219,6 +234,11 @@ else
   COMPILE_HDF=0
   COMPILE_HDFEOS=0
 fi
+
+# Only set COMPILE_FREETYPE and COMPILE_CAIRO if you want to compile and enable MODE Graphics (not widely used) 
+if [ ! -z "${COMPILE_FREETYPE}" ]; then COMPILE_FREETYPE=1; else COMPILE_FREETYPE=0; fi
+if [ ! -z "${COMPILE_CAIRO}" ]; then COMPILE_CAIRO=1; else COMPILE_CAIRO=0; fi
+
 
 if [[ ! -z ${MET_FREETYPE} ]]; then
   echo "ERROR: MET_FREETYPEINC and MET_FREETYPELIB must be set instead of MET_FREETYPE"
@@ -259,6 +279,8 @@ if [ ! -z "${SKIP_LIBS}" ]; then
   COMPILE_LIBPNG=0
   COMPILE_JASPER=0
   COMPILE_G2CLIB=0
+  COMPILE_ECKIT=0
+  COMPILE_ATLAS=0
   COMPILE_HDF=0
   COMPILE_HDFEOS=0
   COMPILE_NETCDF=0
@@ -608,6 +630,42 @@ if [ $COMPILE_G2CLIB -eq 1 ]; then
   run_cmd "make install ${MAKE_ARGS} > g2c.make_install.log 2>&1"
 fi
 
+# Compile ECKIT
+if  [ $COMPILE_ECKIT -eq 1 ]; then
+
+  vrs="1.20.2";
+
+  echo
+  echo "Compiling ECKIT at `date`"
+  mkdir -p ${LIB_DIR}/eckit
+  rm -rf ${LIB_DIR}/eckit/eckit*
+  tar -xf ${TAR_DIR}/eckit-${vrs}.tar.gz -C ${LIB_DIR}/eckit
+  cd ${LIB_DIR}/eckit/eckit*
+  echo "cd `pwd`"
+  run_cmd "mkdir build; cd build"
+  run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR}"
+  run_cmd "make install ${MAKE_ARGS} > eckit.make_install.log 2>&1"
+
+fi
+
+# Compile ATLAS
+if [ $COMPILE_ATLAS -eq 1 ]; then
+
+  vrs="0.30.0";
+
+  echo
+  echo "Compiling ATLAS at `date`"
+  mkdir -p ${LIB_DIR}/atlas
+  rm -rf ${LIB_DIR}/atlas/atlas*
+  tar -xf ${TAR_DIR}/atlas-${vrs}.tar.gz -C ${LIB_DIR}/atlas
+  cd ${LIB_DIR}/atlas/atlas*
+  echo "cd `pwd`"
+  run_cmd "mkdir build; cd build"
+  run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR}"
+  run_cmd "make ${MAKE_ARGS} > atlas.make.log 2>&1"
+  run_cmd "make install ${MAKE_ARGS} > atlas.make_install.log 2>&1"
+
+fi
 
 # Compile HDF
 # Depends on jpeg
@@ -818,6 +876,10 @@ configure_cmd="${configure_cmd} GRIB2CLIB_NAME=${GRIB2CLIB_NAME} --enable-grib2"
 if [[ ! -z ${MET_FREETYPEINC} && ! -z ${MET_FREETYPELIB} && \
       ! -z ${MET_CAIROINC} && ! -z ${MET_CAIROLIB} ]]; then
   configure_cmd="${configure_cmd} --enable-mode_graphics"
+fi
+
+if [[ ! -z $MET_ECKIT && ! -z $MET_ATLAS ]]; then
+  configure_cmd="${configure_cmd} --enable-ugrid"
 fi
 
 if [[ ! -z $MET_HDF && ! -z $MET_HDFEOS ]]; then
