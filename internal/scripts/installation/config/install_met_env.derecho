@@ -4,10 +4,10 @@ module load cmake/3.26.3
 module load hdf5/1.12.2
 module load netcdf/4.9.2
 
-export TEST_BASE=/glade/p/ral/jntp/MET/MET_releases/12.0.0-beta1_oneapi
+export TEST_BASE=/glade/p/ral/jntp/MET/MET_releases/12.0.0
 export COMPILER=intel-oneapi_2023.0.0
 export MET_SUBDIR=${TEST_BASE}
-export MET_TARBALL=vfeature_2231_unstructured_grid.tar.gz
+export MET_TARBALL=v12.0.0.tar.gz
 export USE_MODULES=TRUE
 export MET_PYTHON=/glade/p/ral/jntp/MET/METplus/miniconda/miniconda3/envs/metplus_v5.1_py3.10
 export MET_PYTHON_CC=-I${MET_PYTHON}/include/python3.10
