@@ -633,6 +633,22 @@ fi
 # Compile ECKIT
 if  [ $COMPILE_ECKIT -eq 1 ]; then
 
+  # Need to obtain ecbuild before installing eckit
+
+  vrs="3.5.0";  
+    
+  echo  
+  echo "Compiling ECBUILD at `date`"
+  mkdir -p ${LIB_DIR}/ecbuild
+  rm -rf ${LIB_DIR}/ecbuild/ecbuild*
+  tar -xf ${TAR_DIR}/ecbuild-${vrs}.tar.gz -C ${LIB_DIR}/ecbuild
+  cd ${LIB_DIR}/ecbuild/ecbuild*
+  echo "cd `pwd`"
+  run_cmd "mkdir build; cd build"
+  run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR}"
+  run_cmd "make install ${MAKE_ARGS} > ecbuild.make_install.log 2>&1"
+  #ecbuild_DIR=${LIB_DIR}/lib64/cmake/ecbuild/
+  
   vrs="1.20.2";
 
   echo
@@ -643,7 +659,7 @@ if  [ $COMPILE_ECKIT -eq 1 ]; then
   cd ${LIB_DIR}/eckit/eckit*
   echo "cd `pwd`"
   run_cmd "mkdir build; cd build"
-  run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR}"
+  run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_PREFIX_PATH=${LIB_DIR}"
   run_cmd "make install ${MAKE_ARGS} > eckit.make_install.log 2>&1"
 
 fi
@@ -661,7 +677,7 @@ if [ $COMPILE_ATLAS -eq 1 ]; then
   cd ${LIB_DIR}/atlas/atlas*
   echo "cd `pwd`"
   run_cmd "mkdir build; cd build"
-  run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR}"
+  run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_PREFIX_PATH=${LIB_DIR}"
   run_cmd "make ${MAKE_ARGS} > atlas.make.log 2>&1"
   run_cmd "make install ${MAKE_ARGS} > atlas.make_install.log 2>&1"
 
