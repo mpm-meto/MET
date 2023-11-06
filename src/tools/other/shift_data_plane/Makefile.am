@@ -21,6 +21,7 @@ shift_data_plane_LDADD = -lvx_statistics \
 	-lvx_data2d_nc_pinterp \
 	$(PYTHON_LIBS) \
 	-lvx_data2d_nccf \
+	$(UGRID_LIBS) \
 	-lvx_statistics \
 	-lvx_nc_util \
 	-lvx_data2d \

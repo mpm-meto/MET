@@ -103,7 +103,8 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_test_read_nc_met_OBJECTS =  \
 	test_read_nc_met-test_read_nc_met.$(OBJEXT)
 test_read_nc_met_OBJECTS = $(am_test_read_nc_met_OBJECTS)
-test_read_nc_met_DEPENDENCIES =
+am__DEPENDENCIES_1 =
+test_read_nc_met_DEPENDENCIES = $(am__DEPENDENCIES_1)
 test_read_nc_met_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(test_read_nc_met_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
@@ -211,11 +212,17 @@ LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
+MET_ATLAS = @MET_ATLAS@
+MET_ATLASINC = @MET_ATLASINC@
+MET_ATLASLIB = @MET_ATLASLIB@
 MET_BUFR = @MET_BUFR@
 MET_BUFRLIB = @MET_BUFRLIB@
 MET_CAIRO = @MET_CAIRO@
 MET_CAIROINC = @MET_CAIROINC@
 MET_CAIROLIB = @MET_CAIROLIB@
+MET_ECKIT = @MET_ECKIT@
+MET_ECKITINC = @MET_ECKITINC@
+MET_ECKITLIB = @MET_ECKITLIB@
 MET_FREETYPE = @MET_FREETYPE@
 MET_FREETYPEINC = @MET_FREETYPEINC@
 MET_FREETYPELIB = @MET_FREETYPELIB@
@@ -259,6 +266,7 @@ RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+UGRID_LIBS = @UGRID_LIBS@
 VERSION = @VERSION@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
@@ -320,6 +328,7 @@ test_read_nc_met_SOURCES = test_read_nc_met.cc
 test_read_nc_met_CPPFLAGS = ${MET_CPPFLAGS}
 test_read_nc_met_LDFLAGS = -L. ${MET_LDFLAGS}
 test_read_nc_met_LDADD = -lvx_data2d_nc_met \
+	$(UGRID_LIBS) \
 	-lvx_nc_util \
 	-lvx_data2d \
 	-lvx_grid \

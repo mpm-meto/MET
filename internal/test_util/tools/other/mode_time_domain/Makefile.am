@@ -58,6 +58,7 @@ test_velocity_LDADD = \
 	$(PYTHON_LIBS) \
 	-lvx_statistics \
 	-lvx_data2d_nccf \
+	$(UGRID_LIBS) \
 	-lvx_data2d \
 	-lvx_nc_util \
 	-lvx_regrid \

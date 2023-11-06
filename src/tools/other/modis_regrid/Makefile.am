@@ -35,6 +35,7 @@ modis_regrid_LDADD = -lvx_pxm \
 	-lvx_data2d_nccf \
 	-lvx_data2d_grib $(GRIB2_LIBS) \
 	-lvx_data2d_nc_pinterp \
+	$(UGRID_LIBS) \
 	$(PYTHON_LIBS) \
 	-lvx_statistics \
 	-lvx_data2d \

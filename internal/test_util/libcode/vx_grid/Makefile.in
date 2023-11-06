@@ -102,7 +102,8 @@ CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
 am_test_grid_area_OBJECTS = test_grid_area-test_grid_area.$(OBJEXT)
 test_grid_area_OBJECTS = $(am_test_grid_area_OBJECTS)
-test_grid_area_DEPENDENCIES =
+am__DEPENDENCIES_1 =
+test_grid_area_DEPENDENCIES = $(am__DEPENDENCIES_1)
 test_grid_area_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(test_grid_area_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
@@ -209,11 +210,17 @@ LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
+MET_ATLAS = @MET_ATLAS@
+MET_ATLASINC = @MET_ATLASINC@
+MET_ATLASLIB = @MET_ATLASLIB@
 MET_BUFR = @MET_BUFR@
 MET_BUFRLIB = @MET_BUFRLIB@
 MET_CAIRO = @MET_CAIRO@
 MET_CAIROINC = @MET_CAIROINC@
 MET_CAIROLIB = @MET_CAIROLIB@
+MET_ECKIT = @MET_ECKIT@
+MET_ECKITINC = @MET_ECKITINC@
+MET_ECKITLIB = @MET_ECKITLIB@
 MET_FREETYPE = @MET_FREETYPE@
 MET_FREETYPEINC = @MET_FREETYPEINC@
 MET_FREETYPELIB = @MET_FREETYPELIB@
@@ -257,6 +264,7 @@ RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+UGRID_LIBS = @UGRID_LIBS@
 VERSION = @VERSION@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
@@ -317,8 +325,9 @@ MAINTAINERCLEANFILES = Makefile.in
 test_grid_area_SOURCES = test_grid_area.cc
 test_grid_area_CPPFLAGS = ${MET_CPPFLAGS}
 test_grid_area_LDFLAGS = -L. ${MET_LDFLAGS}
-test_grid_area_LDADD = -lvx_grid \
-	-lvx_geodesy \
+test_grid_area_LDADD = \
+	$(UGRID_LIBS) \
+	-lvx_grid \
 	-lvx_geodesy \
 	-lvx_nav \
 	-lvx_util_math \

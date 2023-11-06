@@ -293,7 +293,7 @@ ConcatString parse_conf_string(Dictionary *dict, const char *conf_key,
    const char *method_name = "parse_conf_string() -> ";
 
    if(!dict) {
-      mlog << Error << "\n" << method_name << "empty dictionary!\n\n";
+      mlog << Error << "\n" << method_name << "empty dictionary! (" << conf_key <<")\n\n";
       exit(1);
    }
 
@@ -356,6 +356,7 @@ GrdFileType parse_conf_file_type(Dictionary *dict) {
       else if(v == conf_const.lookup_int(conf_val_netcdf_met))    t = FileType_NcMet;
       else if(v == conf_const.lookup_int(conf_val_netcdf_pint))   t = FileType_NcPinterp;
       else if(v == conf_const.lookup_int(conf_val_netcdf_nccf))   t = FileType_NcCF;
+      else if(v == conf_const.lookup_int(conf_val_netcdf_ugrid))  t = FileType_UGrid;
       else if(v == conf_const.lookup_int(conf_val_python_numpy))  t = FileType_Python_Numpy;
       else if(v == conf_const.lookup_int(conf_val_python_xarray)) t = FileType_Python_Xarray;
       else {
@@ -2258,6 +2259,32 @@ WaveletType parse_conf_wavelet_type(Dictionary *dict) {
 
    return t;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+double parse_conf_ugrid_max_distance_km(Dictionary *dict) {
+   return dict ? dict->lookup_double(conf_key_ugrid_max_distance_km, false) : bad_data_double;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+ConcatString parse_conf_ugrid_coordinates_file(Dictionary *dict) {
+   return dict ? dict->lookup_string(conf_key_ugrid_coordinates_file, false) : "";
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+map<ConcatString,StringArray> parse_conf_ugrid_metadata_map(Dictionary *dict) {
+   const char *method_name = "parse_conf_ugrid_metadata_map() -> ";
+   return parse_conf_key_values_map(dict, conf_key_ugrid_metadata_map, method_name);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+ConcatString parse_conf_ugrid_user_map_config(Dictionary *dict) {
+   return dict ? dict->lookup_string(conf_key_ugrid_user_map_config, false) : "";
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 

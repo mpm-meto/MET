@@ -103,7 +103,8 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_dump_default_table_OBJECTS =  \
 	dump_default_table-dump_default_table.$(OBJEXT)
 dump_default_table_OBJECTS = $(am_dump_default_table_OBJECTS)
-dump_default_table_DEPENDENCIES =
+am__DEPENDENCIES_1 =
+dump_default_table_DEPENDENCIES = $(am__DEPENDENCIES_1)
 dump_default_table_LINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) \
 	$(dump_default_table_LDFLAGS) $(LDFLAGS) -o $@
 am_test_table_read_OBJECTS =  \
@@ -219,11 +220,17 @@ LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
+MET_ATLAS = @MET_ATLAS@
+MET_ATLASINC = @MET_ATLASINC@
+MET_ATLASLIB = @MET_ATLASLIB@
 MET_BUFR = @MET_BUFR@
 MET_BUFRLIB = @MET_BUFRLIB@
 MET_CAIRO = @MET_CAIRO@
 MET_CAIROINC = @MET_CAIROINC@
 MET_CAIROLIB = @MET_CAIROLIB@
+MET_ECKIT = @MET_ECKIT@
+MET_ECKITINC = @MET_ECKITINC@
+MET_ECKITLIB = @MET_ECKITLIB@
 MET_FREETYPE = @MET_FREETYPE@
 MET_FREETYPEINC = @MET_FREETYPEINC@
 MET_FREETYPELIB = @MET_FREETYPELIB@
@@ -267,6 +274,7 @@ RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
+UGRID_LIBS = @UGRID_LIBS@
 VERSION = @VERSION@
 YACC = @YACC@
 YFLAGS = @YFLAGS@
@@ -345,6 +353,7 @@ dump_default_table_LDFLAGS = -L. ${MET_LDFLAGS}
 dump_default_table_LDADD = -lvx_config \
 	-lvx_gsl_prob \
 	-lvx_log \
+	$(UGRID_LIBS) \
 	-lvx_data2d \
 	-lvx_grid \
 	-lvx_geodesy \

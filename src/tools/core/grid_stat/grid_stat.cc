@@ -114,8 +114,6 @@
 //
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <cstdio>
 #include <cstdlib>
 #include <ctype.h>
@@ -127,8 +125,6 @@ using namespace std;
 #include <sys/types.h>
 
 #include <netcdf>
-using namespace netCDF;
-
 #include "main.h"
 #include "handle_openmp.h"
 
@@ -140,7 +136,20 @@ using namespace netCDF;
 #include "vx_log.h"
 #include "seeps.h"
 
+#ifdef WITH_UGRID
+#include "vx_data2d_ugrid.h"
+#endif
+
+using namespace std;
+using namespace netCDF;
+
+
 ////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////
+
 
 static void process_command_line(int, char **);
 static void setup_first_pass    (const DataPlane &);
@@ -220,6 +229,7 @@ void process_command_line(int argc, char **argv) {
    GrdFileType ftype, otype;
    ConcatString default_config_file;
    DataPlane dp;
+   const char *method_name = "process_command_line() -> ";
 
    // Set the default output directory
    out_dir = replace_path(default_out_dir);
@@ -284,6 +294,35 @@ void process_command_line(int argc, char **argv) {
 
    // Process the configuration
    conf_info.process_config(ftype, otype);
+
+#ifdef WITH_UGRID
+   if (FileType_UGrid == ftype) {
+      ConcatString ugrid_nc = conf_info.ugrid_nc;
+      ConcatString ugrid_user_map_config = conf_info.ugrid_user_map_config;
+      MetUGridDataFile *ugrid_mtddf = (MetUGridDataFile *)fcst_mtddf;
+      ugrid_mtddf->set_max_distance_km(conf_info.ugrid_max_distance_km);
+      if (0 < ugrid_user_map_config.length())
+         ugrid_mtddf->set_user_map_config_file(ugrid_user_map_config);
+      if (0 == ugrid_nc.length() || ugrid_nc == "NA") ugrid_nc = fcst_file;
+      ugrid_mtddf->open_metadata(ugrid_nc.c_str());
+      mlog << Debug(9) << method_name
+           << "FCST: ugrid_coordinates_nc: " << ugrid_nc
+           << "  ugrid_max_distance_km: " << conf_info.ugrid_max_distance_km << "\n";
+   }
+   if (FileType_UGrid == otype) {
+      ConcatString ugrid_nc = conf_info.ugrid_nc;
+      ConcatString ugrid_user_map_config = conf_info.ugrid_user_map_config;
+      MetUGridDataFile *ugrid_mtddf = (MetUGridDataFile *)obs_mtddf;
+      ugrid_mtddf->set_max_distance_km(conf_info.ugrid_max_distance_km);
+      if (0 < ugrid_user_map_config.length())
+         ugrid_mtddf->set_user_map_config_file(ugrid_user_map_config);
+      if (0 == ugrid_nc.length() || ugrid_nc == "NA") ugrid_nc = fcst_file;
+      ugrid_mtddf->open_metadata(ugrid_nc.c_str());
+      mlog << Debug(9) << method_name
+           << "OBS: ugrid_coordinates_nc: " << ugrid_nc
+           << "  ugrid_max_distance_km: " << conf_info.ugrid_max_distance_km << "\n";
+   }
+#endif
 
    // For python types read the first field to set the grid
    if(is_python_grdfiletype(ftype)) {

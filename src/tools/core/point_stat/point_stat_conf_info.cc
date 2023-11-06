@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <dirent.h>
 #include <iostream>
 #include <unistd.h>
@@ -22,6 +20,9 @@ using namespace std;
 #include "vx_data2d_factory.h"
 #include "vx_data2d.h"
 #include "vx_log.h"
+
+using namespace std;
+
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -70,7 +71,11 @@ void PointStatConfInfo::clear() {
    tmp_dir.clear();
    output_prefix.clear();
    version.clear();
-
+#ifdef WITH_UGRID
+   ugrid_nc.clear();
+   ugrid_user_map_config.clear();
+   ugrid_max_distance_km = bad_data_double;
+#endif
    // Deallocate memory
    if(vx_opt) { delete [] vx_opt; vx_opt = (PointStatVxOpt *) 0; }
 
@@ -119,6 +124,17 @@ void PointStatConfInfo::process_config(GrdFileType ftype) {
 
    // Conf: tmp_dir
    tmp_dir = parse_conf_tmp_dir(&conf);
+
+#ifdef WITH_UGRID
+   // Conf: ugrid_nc
+   ugrid_nc = parse_conf_ugrid_coordinates_file(&conf);
+
+   // Conf: ugrid_user_map_config
+   ugrid_user_map_config = parse_conf_ugrid_user_map_config(&conf);
+
+   // Conf: ugrid_max_distance_km
+   ugrid_max_distance_km = parse_conf_ugrid_max_distance_km(&conf);
+#endif
 
    // Conf: output_prefix
    output_prefix = conf.lookup_string(conf_key_output_prefix);

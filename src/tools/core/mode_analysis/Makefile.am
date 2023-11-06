@@ -29,6 +29,7 @@ mode_analysis_LDADD = -lvx_stat_out \
 	-lvx_data2d_nc_pinterp \
 	$(PYTHON_LIBS) \
 	-lvx_data2d_nccf \
+	$(UGRID_LIBS) \
 	-lvx_data2d_grib $(GRIB2_LIBS) \
 	-lvx_data2d \
 	-lvx_nc_util \
