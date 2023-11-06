@@ -6876,12 +6876,13 @@ fi
 # Unstructure grid with ECMF libraries (Atlas/ecKit)
 
 # Check whether --enable-ugrid was given.
-if test "${enable_ugrid+set}" = set; then :
+if test ${enable_ugrid+y}
+then :
   enableval=$enable_ugrid; case "${enableval}" in
      yes | no ) ENABLE_UGRID="${enableval}" ;;
      *) as_fn_error $? "bad value ${enableval} for --enable-ugrid" "$LINENO" 5 ;;
    esac
-else
+else $as_nop
   ENABLE_UGRID="no"
 
 fi
@@ -6898,16 +6899,16 @@ fi
 
 if test "x$ENABLE_UGRID" = "xyes"; then
 
-$as_echo "#define ENABLE_UGRID /**/" >>confdefs.h
+printf "%s\n" "#define ENABLE_UGRID /**/" >>confdefs.h
 
-  { $as_echo "$as_me:${as_lineno-$LINENO}: unstructured grid will be compiled" >&5
-$as_echo "$as_me: unstructured grid will be compiled" >&6;}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: unstructured grid will be compiled" >&5
+printf "%s\n" "$as_me: unstructured grid will be compiled" >&6;}
   CPPFLAGS="${CPPFLAGS} -I${MET_ATLASINC} -I${MET_ECKITINC} -DWITH_UGRID"
   LDFLAGS="${LDFLAGS} -L${MET_ATLASLIB} -L${MET_ECKITLIB} -Wl,-rpath,${MET_ATLASLIB}:${MET_ECKITLIB}"
   UGRID_LIBS="-lvx_data2d_ugrid -latlas -leckit -leckit_mpi -leckit_geometry"
 else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: unstructured grid will not be compiled" >&5
-$as_echo "$as_me: unstructured grid will not be compiled" >&6;}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: unstructured grid will not be compiled" >&5
+printf "%s\n" "$as_me: unstructured grid will not be compiled" >&6;}
   UGRID_LIBS=
 fi
 
