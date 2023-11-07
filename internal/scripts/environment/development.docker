@@ -36,6 +36,8 @@ export USE_MODULES=FALSE
 
 export MET_INSTALL_DIR=/usr/local
 
+export COMPILE_ECKIT=1
+export COMPILE_ATLAS=1
 export COMPILE_HDF=1
 export COMPILE_HDFEOS=1
 export COMPILE_FREETYPE=1
