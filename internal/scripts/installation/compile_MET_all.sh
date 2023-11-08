@@ -660,7 +660,7 @@ if  [ $COMPILE_ECKIT -eq 1 ]; then
   echo "cd `pwd`"
   run_cmd "mkdir build; cd build"
   run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_PREFIX_PATH=${LIB_DIR}"
-  run_cmd "make install ${MAKE_ARGS} > eckit.make_install.log 2>&1"
+  run_cmd "make install > eckit.make_install.log 2>&1"
 
 fi
 
@@ -678,8 +678,8 @@ if [ $COMPILE_ATLAS -eq 1 ]; then
   echo "cd `pwd`"
   run_cmd "mkdir build; cd build"
   run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_PREFIX_PATH=${LIB_DIR}"
-  run_cmd "make ${MAKE_ARGS} > atlas.make.log 2>&1"
-  run_cmd "make install ${MAKE_ARGS} > atlas.make_install.log 2>&1"
+  run_cmd "make > atlas.make.log 2>&1"
+  run_cmd "make install > atlas.make_install.log 2>&1"
 
 fi
 
