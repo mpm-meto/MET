@@ -518,41 +518,7 @@ if [ $COMPILE_BUFRLIB -eq 1 ]; then
   run_cmd "cd ${BUILD_DIR}"
   run_cmd "make ${MAKE_ARGS} > bufr.make.log 2>&1"
   run_cmd "ctest > bufr.ctest.log 2>&1"
-  run_cmd "make install > bufr.make_install.log 2>&1"
-
-  #vrs="v11.3.0";
-
-  #echo
-  #echo "Compiling BUFRLIB_${vrs} at `date`"
-  #mkdir -p ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}
-  #rm -rf ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}/*
-  #cd ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}
-  #echo "cd `pwd`"
-
-  #tar -xf ${TAR_DIR}/BUFRLIB_`echo $vrs | sed 's/\./-/g'`.tar -C ${LIB_DIR}/bufrlib/BUFRLIB_${vrs}
-
-  #if [[ ${COMPILER_FAMILY} == "intel-oneapi" ]]; then
-  #  icc -c -DUNDERSCORE `./getdefflags_C.sh` *.c >> make.log 2>&1
-  #else
-  #  ${CC} -c -DUNDERSCORE `./getdefflags_C.sh` *.c >> make.log 2>&1
-  #fi
-
-  # For GNU and Intel follow bufr11 instructions
-  #if [[ ${COMPILER_FAMILY} == "gnu" ]]; then
-  #  if [[ ${COMPILER_MAJOR_VERSION} -ge 10 ]]; then
-  #    ${FC} -c -fno-second-underscore -fallow-argument-mismatch `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
-  #  elif [[ ${COMPILER_MAJOR_VERSION} -lt 10 ]]; then
-  #    ${FC} -c -fno-second-underscore -Wno-argument-mismatch `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
-  #  fi	
-  #elif [[ ${COMPILER_FAMILY} == "intel" ]] || [[ ${COMPILER_FAMILY} == "ics" ]] || [[ ${COMPILER_FAMILY} == "ips" ]] || [[ ${COMPILER_FAMILY} == "intel-classic" ]] || [[ ${COMPILER_FAMILY} == "PrgEnv-intel" ]] || [[ ${COMPILER_FAMILY} == "intel-oneapi" ]]; then
-      #${FC} -c `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
-  #    ifort -c `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
-  #elif [[ ${COMPILER_FAMILY} == "pgi" ]]; then
-  #  ${FC} -c -Mnosecond_underscore `./getdefflags_F.sh` modv*.F moda*.F `ls -1 *.F *.f | grep -v "mod[av]_"` >> bufr.make.log 2>&1
-  #fi
-
-  #ar crv libbufr.a *.o >> bufr.make.log 2>&1
-  #cp *.a ${LIB_DIR}/lib/.
+  run_cmd "make ${MAKE_ARGS} install > bufr.make_install.log 2>&1"
 fi
 
 
@@ -607,8 +573,8 @@ if [ $COMPILE_JASPER -eq 1 ]; then
   run_cmd "cmake -G \"Unix Makefiles\" -H${SOURCE_DIR} -B${BUILD_DIR} -DCMAKE_INSTALL_PREFIX=${LIB_DIR}"
   run_cmd "cd ${BUILD_DIR}"
   run_cmd "make clean all"
-  run_cmd "make test > jasper.make_test.log 2>&1"
-  run_cmd "make install > jasper.make_install.log 2>&1"
+  run_cmd "make ${MAKE_ARGS} test > jasper.make_test.log 2>&1"
+  run_cmd "make ${MAKE_ARGS} install > jasper.make_install.log 2>&1"
 fi
 
 # Compile G2CLIB
@@ -626,8 +592,8 @@ if [ $COMPILE_G2CLIB -eq 1 ]; then
   run_cmd "mkdir build; cd build"
   run_cmd "cmake -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_PREFIX_PATH=${LIB_DIR} .."
   run_cmd "make ${MAKE_ARGS} > g2c.make.log 2>&1"
-  run_cmd "make test ${MAKE_ARGS} > g2c.make_test.log 2>&1"
-  run_cmd "make install ${MAKE_ARGS} > g2c.make_install.log 2>&1"
+  run_cmd "make ${MAKE_ARGS} test > g2c.make_test.log 2>&1"
+  run_cmd "make ${MAKE_ARGS} install > g2c.make_install.log 2>&1"
 fi
 
 # Compile ECKIT
@@ -646,8 +612,7 @@ if  [ $COMPILE_ECKIT -eq 1 ]; then
   echo "cd `pwd`"
   run_cmd "mkdir build; cd build"
   run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR}"
-  run_cmd "make install ${MAKE_ARGS} > ecbuild.make_install.log 2>&1"
-  #ecbuild_DIR=${LIB_DIR}/lib64/cmake/ecbuild/
+  run_cmd "make ${MAKE_ARGS} install > ecbuild.make_install.log 2>&1"
   
   vrs="1.20.2";
 
@@ -660,7 +625,7 @@ if  [ $COMPILE_ECKIT -eq 1 ]; then
   echo "cd `pwd`"
   run_cmd "mkdir build; cd build"
   run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_PREFIX_PATH=${LIB_DIR}"
-  run_cmd "make install > eckit.make_install.log 2>&1"
+  run_cmd "make ${MAKE_ARGS} install > eckit.make_install.log 2>&1"
 
 fi
 
@@ -678,8 +643,8 @@ if [ $COMPILE_ATLAS -eq 1 ]; then
   echo "cd `pwd`"
   run_cmd "mkdir build; cd build"
   run_cmd "cmake ../ -DCMAKE_INSTALL_PREFIX=${LIB_DIR} -DCMAKE_PREFIX_PATH=${LIB_DIR}"
-  run_cmd "make > atlas.make.log 2>&1"
-  run_cmd "make install > atlas.make_install.log 2>&1"
+  run_cmd "make ${MAKE_ARGS} > atlas.make.log 2>&1"
+  run_cmd "make ${MAKE_ARGS} install > atlas.make_install.log 2>&1"
 
 fi
 
