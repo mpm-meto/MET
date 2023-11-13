@@ -17,7 +17,6 @@ export CXXFLAGS=${CFLAGS}
 # Set LDFLAGS to include -rpath settings when compiling MET
 export LDFLAGS="-Wl,--disable-new-dtags"
 export LDFLAGS="${LDFLAGS} -Wl,-rpath,/usr/local/lib:/usr/lib64"
-export LDFLAGS="${LDFLAGS} -L/usr/local/lib -L/usr/lib64"
 
 # Variables required to run MET
 export MET_TEST_INPUT=${MET_PROJ_DIR}/MET_test_data/unit_test
@@ -46,3 +45,6 @@ export COMPILE_CAIRO=1
 
 export SQLITE_INCLUDE_DIR=/usr/include
 export SQLITE_LIB_DIR=/usr/lib/x86_64-linux-gnu
+
+export MET_ECKIT=${MET_INSTALL_DIR}
+export MET_ATLAS=${MET_INSTALL_DIR}
