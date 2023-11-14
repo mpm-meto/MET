@@ -12,6 +12,7 @@ echo "Running bootstrap for MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}
 
 LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_compile_MET_all.log
 echo "Running compile_MET_all.sh for MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
+chmod 755 ./internal/scripts/installation/compile_MET_all.sh
 ./internal/scripts/installation/compile_MET_all.sh internal/scripts/environment/development.docker >> ${LOG_FILE} 2>&1  
 
 #echo "Configuring MET ${MET_GIT_NAME} and appending to log file ${LOG_FILE}"
