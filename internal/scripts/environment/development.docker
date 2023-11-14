@@ -48,3 +48,6 @@ export SQLITE_LIB_DIR=/usr/lib/x86_64-linux-gnu
 
 export MET_ECKIT=${MET_INSTALL_DIR}
 export MET_ATLAS=${MET_INSTALL_DIR}
+
+export BUFRLIB_NAME="-lbufr_4"
+export GRIB2CLIB_NAME="-lg2c"
