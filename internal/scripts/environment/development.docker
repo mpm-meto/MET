@@ -31,7 +31,7 @@ export MAKE_ARGS="-j 5"
 export TEST_BASE=/met
 export COMPILER=gnu_12.2.0
 export MET_SUBDIR=${TEST_BASE}
-export MET_TARBALL=none
+export MET_TARBALL=MET-${MET_GIT_NAME}.tar.gz
 export USE_MODULES=FALSE
 
 export MET_INSTALL_DIR=/usr/local
