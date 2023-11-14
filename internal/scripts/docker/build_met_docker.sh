@@ -8,7 +8,7 @@ cd /met
 echo "Creating tar file for MET ${MET_GIT_NAME}"
 tar -zcf MET-${MET_GIT_NAME}.tar.gz MET-${MET_GIT_NAME}/
 echo "Moving tar file to tar_files subdirectory"
-mv MET-${MET_GIT_NAME}.tar.gz
+mv MET-${MET_GIT_NAME}.tar.gz tar_files
 
 mkdir -p /met/logs
 
