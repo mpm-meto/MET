@@ -11,8 +11,8 @@ export MET_PYTHON_BIN_EXE=${MET_PYTHON}/bin/python3
 export MET_PYTHON_CC="-I${MET_PYTHON}/include/python3.10"
 export MET_PYTHON_LD="-L${MET_PYTHON}/lib -lpython3.10 -lcrypt -lpthread -ldl -lutil -lm"
 
-#export CFLAGS="-DUNDERSCORE -fPIC -g"
-#export CXXFLAGS=${CFLAGS}
+export CFLAGS="-DUNDERSCORE -fPIC -g"
+export CXXFLAGS=${CFLAGS}
 
 # Set LDFLAGS to include -rpath settings when compiling MET
 export LDFLAGS="-Wl,--disable-new-dtags"
@@ -31,7 +31,7 @@ export MAKE_ARGS="-j 5"
 export TEST_BASE=/met
 export COMPILER=gnu_12.2.0
 export MET_SUBDIR=${TEST_BASE}
-export MET_TARBALL=MET-${MET_GIT_NAME}.tar.gz
+export MET_TARBALL=none
 export USE_MODULES=FALSE
 
 export MET_INSTALL_DIR=/usr/local
@@ -46,20 +46,5 @@ export COMPILE_CAIRO=1
 export SQLITE_INCLUDE_DIR=/usr/include
 export SQLITE_LIB_DIR=/usr/lib/x86_64-linux-gnu
 
-export MET_PROJ=${MET_INSTALL_DIR}
-export MET_ECKIT=${MET_INSTALL_DIR}
-export MET_ATLAS=${MET_INSTALL_DIR}
-export MET_GSL=${MET_INSTALL_DIR}
-export MET_BUFRLIB=${MET_INSTALL_DIR}
 export BUFRLIB_NAME="-lbufr_4"
-export MET_GRIB2CLIB=${MET_INSTALL_DIR}/lib
-export MET_GRIB2CINC=${MET_INSTALL_DIR}/include
 export GRIB2CLIB_NAME="-lg2c"
-export MET_NETCDF=${MET_INSTALL_DIR}
-export MET_HDF5=${MET_INSTALL_DIR}
-export MET_CAIROLIB=${MET_INSTALL_DIR}/lib
-export MET_CAIROINC=${MET_INSTALL_DIR}/include
-export MET_FREETYPELIB=${MET_INSTALL_DIR}/lib
-export MET_FREETYPEINC=${MET_INSTALL_DIR}/include/freetype2
-export MET_HDF=${MET_INSTALL_DIR}
-export MET_HDFEOS=${MET_INSTALL_DIR}
