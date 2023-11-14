@@ -4,51 +4,37 @@ echo "Running script to build MET in Docker"
 
 source internal/scripts/environment/development.docker
 
-cd /met
-echo "Creating tar file for MET ${MET_GIT_NAME}"
-tar -zcf MET-${MET_GIT_NAME}.tar.gz MET-${MET_GIT_NAME}/
-echo "Moving tar file to tar_files subdirectory"
-mv MET-${MET_GIT_NAME}.tar.gz tar_files
-
 mkdir -p /met/logs
 
-echo "Changing directories to /met/MET-${MET_GIT_NAME}"
-cd /met/MET-${MET_GIT_NAME}
 LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_configure.log
 echo "Running bootstrap for MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
 ./bootstrap > ${LOG_FILE} 2>&1
+echo "Configuring MET ${MET_GIT_NAME} and appending to log file ${LOG_FILE}"
+./configure BUFRLIB_NAME=${BUFRLIB_NAME} GRIB2CLIB_NAME=${GRIB2CLIB_NAME} --enable-grib2 --enable-mode_graphics --enable-modis --enable-lidar2nc --enable-python CPPFLAGS="-I/usr/local/include -I/usr/local/include/freetype2 -I/usr/local/include/cairo" LIBS="-ltirpc" >> ${LOG_FILE} 2>&1
+if [ $? != 0 ]; then
+  cat ${LOG_FILE}
+  exit 1
+fi
 
-LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_compile_MET_all.log
-echo "Running compile_MET_all.sh for MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
-chmod 755 ./internal/scripts/installation/compile_MET_all.sh
-./internal/scripts/installation/compile_MET_all.sh internal/scripts/environment/development.docker >> ${LOG_FILE} 2>&1  
+if [ ! -z "${MAKE_ARGS}" ]; then
+  echo Adding make arguments: ${MAKE_ARGS}
+fi
 
-#echo "Configuring MET ${MET_GIT_NAME} and appending to log file ${LOG_FILE}"
-#./configure BUFRLIB_NAME=${BUFRLIB_NAME} GRIB2CLIB_NAME=${GRIB2CLIB_NAME} --enable-grib2 --enable-ugrid --enable-mode_graphics --enable-modis --enable-lidar2nc --enable-python CPPFLAGS="-I/usr/local/include -I/usr/local/include/freetype2 -I/usr/local/include/cairo" LIBS="-ltirpc" >> ${LOG_FILE} 2>&1
-#if [ $? != 0 ]; then
-#  cat ${LOG_FILE}
-#  exit 1
-#fi
+LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_make_install.log
+echo "Compiling MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
+make ${MAKE_ARGS} install > ${LOG_FILE} 2>&1
+if [ $? != 0 ]; then
+  cat ${LOG_FILE}
+  exit 1
+fi
 
-#if [ ! -z "${MAKE_ARGS}" ]; then
-#  echo Adding make arguments: ${MAKE_ARGS}
-#fi
-
-#LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_make_install.log
-#echo "Compiling MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
-#make ${MAKE_ARGS} install > ${LOG_FILE} 2>&1
-#if [ $? != 0 ]; then
-#  cat ${LOG_FILE}
-#  exit 1
-#fi
-
-#LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_make_test.log
-#echo "Testing MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
-#make ${MAKE_ARGS} test > ${LOG_FILE} 2>&1
-#if [ $? != 0 ]; then
-#  cat ${LOG_FILE}
-#  exit 1
-#fi
+LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_make_test.log
+echo "Testing MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
+make ${MAKE_ARGS} test > ${LOG_FILE} 2>&1
+if [ $? != 0 ]; then
+  cat ${LOG_FILE}
+  exit 1
+fi
 
 if [[ $MET_GIT_NAME == "v"* ]]; then
     cd /met; rm -rf MET-*;
