@@ -4,8 +4,16 @@ echo "Running script to build MET in Docker"
 
 source internal/scripts/environment/development.docker
 
+cd /met
+echo "Creating tar file for MET ${MET_GIT_NAME}"
+tar -zcf MET-${MET_GIT_NAME}.tar.gz MET-${MET_GIT_NAME}/
+echo "Moving tar file to tar_files subdirectory"
+mv MET-${MET_GIT_NAME}.tar.gz
+
 mkdir -p /met/logs
 
+echo "Changing directories to /met/MET-${MET_GIT_NAME}"
+cd /met/MET-${MET_GIT_NAME}
 LOG_FILE=/met/logs/MET-${MET_GIT_NAME}_configure.log
 echo "Running bootstrap for MET ${MET_GIT_NAME} and writing log file ${LOG_FILE}"
 ./bootstrap > ${LOG_FILE} 2>&1
