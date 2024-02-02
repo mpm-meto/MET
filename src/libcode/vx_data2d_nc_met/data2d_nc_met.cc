@@ -10,8 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -21,6 +19,9 @@ using namespace std;
 #include "get_met_grid.h"
 #include "vx_math.h"
 #include "vx_log.h"
+
+using namespace std;
+
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -63,7 +64,7 @@ MetNcMetDataFile & MetNcMetDataFile::operator=(const MetNcMetDataFile &) {
 
 void MetNcMetDataFile::nc_met_init_from_scratch() {
 
-   MetNc  = (MetNcFile *) 0;
+   MetNc  = (MetNcFile *) nullptr;
 
    close();
 
@@ -74,7 +75,7 @@ void MetNcMetDataFile::nc_met_init_from_scratch() {
 
 void MetNcMetDataFile::close() {
 
-   if(MetNc) { delete MetNc; MetNc = (MetNcFile *) 0; }
+   if(MetNc) { delete MetNc; MetNc = (MetNcFile *) nullptr; }
 
    return;
 }
@@ -123,8 +124,7 @@ bool MetNcMetDataFile::data_plane(VarInfo &vinfo, DataPlane &plane) {
    bool status = false;
    ConcatString req_time_str, data_time_str;
    VarInfoNcMet * vinfo_nc = (VarInfoNcMet *) &vinfo;
-   NcVarInfo *info = (NcVarInfo *) 0;
-   int i;
+   NcVarInfo *info = (NcVarInfo *) nullptr;
 
    // Initialize the data plane
    plane.clear();
@@ -133,7 +133,7 @@ bool MetNcMetDataFile::data_plane(VarInfo &vinfo, DataPlane &plane) {
    if( vinfo_nc->req_name() ==  na_str ) {
 
       // Store the name of the first data variable
-      for(i=0; i<MetNc->Nvars; i++) {
+      for(int i=0; i<MetNc->Nvars; i++) {
          if( MetNc->Var[i].name != nc_met_lat_var_name &&
              MetNc->Var[i].name != nc_met_lon_var_name ) {
             vinfo_nc->set_req_name(MetNc->Var[i].name.c_str());
@@ -188,7 +188,7 @@ bool MetNcMetDataFile::data_plane(VarInfo &vinfo, DataPlane &plane) {
       if(info->units_att.length()     > 0) vinfo.set_units(info->units_att.c_str());
    }
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -211,7 +211,7 @@ int MetNcMetDataFile::data_plane_array(VarInfo &vinfo,
       n_rec = 1;
    }
 
-   return(n_rec);
+   return n_rec;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -225,9 +225,9 @@ int MetNcMetDataFile::index(VarInfo &vinfo) {
    if( ( vinfo.valid() != 0         && ncinfo->ValidTime   != vinfo.valid() ) ||
        ( vinfo.init() != 0          && ncinfo->InitTime    != vinfo.init()  ) ||
        ( !is_bad_data(vinfo.lead()) && ncinfo->lead_time() != vinfo.lead()  ) )
-      return(-1);
+      return -1;
 
-   return(0);
+   return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -17,8 +17,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <map>
 #include <regex>
 #include <stdlib.h>
@@ -31,6 +29,8 @@ using namespace std;
 #include "vx_math.h"
 #include "vx_util.h"
 #include "vx_log.h"
+
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -63,11 +63,11 @@ VarInfoNcWrf::VarInfoNcWrf(const VarInfoNcWrf &f) {
 
 VarInfoNcWrf & VarInfoNcWrf::operator=(const VarInfoNcWrf &f) {
 
-   if ( this == &f )  return ( *this );
+   if ( this == &f )  return *this;
 
    assign(f);
 
-   return ( *this );
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -93,14 +93,13 @@ void VarInfoNcWrf::init_from_scratch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void VarInfoNcWrf::assign(const VarInfoNcWrf &v) {
-   int i;
 
    // First call the parent's assign
    VarInfo::assign(v);
 
    // Copy
    clear_dimension();
-   for(i=0; i<v.n_dimension(); i++) {
+   for(int i=0; i<v.n_dimension(); i++) {
       add_dimension(v.dimension(i), v.is_offset(i), v.dim_value(i));
    }
 
@@ -308,9 +307,9 @@ bool VarInfoNcWrf::is_precipitation() const {
    // Check to see if the VarInfo name matches any of expected Pinterp
    // precipitation variables.
    //
-   return(has_prefix(pinterp_precipitation_names,
+   return has_prefix(pinterp_precipitation_names,
                      n_pinterp_precipitation_names,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -328,9 +327,9 @@ bool VarInfoNcWrf::is_specific_humidity() const {
    // Check to see if the VarInfo name matches any of expected Pinterp
    // specific humidity variables.
    //
-   return(has_prefix(pinterp_specific_humidity_names,
+   return has_prefix(pinterp_specific_humidity_names,
                      n_pinterp_specific_humidity_names,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -353,9 +352,9 @@ bool VarInfoNcWrf::is_u_wind() const {
    // Check to see if the VarInfo name matches any of expected Pinterp
    // U-component of wind variables.
    //
-   return(has_prefix(pinterp_u_wind_names,
+   return has_prefix(pinterp_u_wind_names,
                      n_pinterp_u_wind_names,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -378,9 +377,9 @@ bool VarInfoNcWrf::is_v_wind() const {
    // Check to see if the VarInfo name matches any of expected Pinterp
    // V-component of wind variables.
    //
-   return(has_prefix(pinterp_v_wind_names,
+   return has_prefix(pinterp_v_wind_names,
                      n_pinterp_v_wind_names,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -398,9 +397,9 @@ bool VarInfoNcWrf::is_wind_speed() const {
    // Check to see if the VarInfo name matches any of expected Pinterp
    // wind speed variables.
    //
-   return(has_prefix(pinterp_wind_speed_names,
+   return has_prefix(pinterp_wind_speed_names,
                      n_pinterp_wind_speed_names,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -414,7 +413,7 @@ bool VarInfoNcWrf::is_wind_direction() const {
       return(SetAttrIsWindDirection != 0);
    }
 
-   return(false);
+   return false;
 }
 
 
@@ -426,9 +425,9 @@ bool VarInfoNcWrf::is_grid_relative() const {
    // Check to see if the VarInfo name matches any of expected Pinterp
    // variables that should be rotated from grid-relative to earth-relative.
    //
-   return(has_prefix(pinterp_grid_relative_names,
+   return has_prefix(pinterp_grid_relative_names,
                      n_pinterp_grid_relative_names,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////

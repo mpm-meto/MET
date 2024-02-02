@@ -17,8 +17,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <map>
 #include <stdlib.h>
 #include <string.h>
@@ -31,6 +29,8 @@ using namespace std;
 #include "util_constants.h"
 #include "vx_log.h"
 #include "grib_strings.h"
+
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -67,11 +67,11 @@ VarInfoNcMet::VarInfoNcMet(const VarInfoNcMet &f) {
 
 VarInfoNcMet & VarInfoNcMet::operator=(const VarInfoNcMet &f) {
 
-   if ( this == &f )  return ( *this );
+   if ( this == &f )  return *this;
 
    assign(f);
 
-   return ( *this );
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -98,14 +98,13 @@ void VarInfoNcMet::init_from_scratch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void VarInfoNcMet::assign(const VarInfoNcMet &v) {
-   int i;
 
    // First call the parent's assign
    VarInfo::assign(v);
 
    // Copy
    Dimension.clear();
-   for(i=0; i<v.n_dimension(); i++) Dimension.add(v.dimension(i));
+   for(int i=0; i<v.n_dimension(); i++) Dimension.add(v.dimension(i));
 
    return;
 }
@@ -257,9 +256,9 @@ bool VarInfoNcMet::is_precipitation() const {
    // Check to see if the VarInfo name begins with the GRIB code abbreviation
    // for any precipitation variables.
    //
-   return(has_prefix(grib_precipitation_abbr,
+   return has_prefix(grib_precipitation_abbr,
                      n_grib_precipitation_abbr,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -277,9 +276,9 @@ bool VarInfoNcMet::is_specific_humidity() const {
    // Check to see if the VarInfo name begins with the GRIB code abbreviation
    // for any specific humidity variables.
    //
-   return(has_prefix(grib_specific_humidity_abbr,
+   return has_prefix(grib_specific_humidity_abbr,
                      n_grib_specific_humidity_abbr,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -293,7 +292,7 @@ bool VarInfoNcMet::is_u_wind() const {
       return(SetAttrIsUWind != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, ugrd_grib_code));
+   return is_grib_code_abbr_match(Name, ugrd_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -307,7 +306,7 @@ bool VarInfoNcMet::is_v_wind() const {
       return(SetAttrIsVWind != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, vgrd_grib_code));
+   return is_grib_code_abbr_match(Name, vgrd_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -321,7 +320,7 @@ bool VarInfoNcMet::is_wind_speed() const {
       return(SetAttrIsWindSpeed != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, wind_grib_code));
+   return is_grib_code_abbr_match(Name, wind_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -335,7 +334,7 @@ bool VarInfoNcMet::is_wind_direction() const {
       return(SetAttrIsWindDirection != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, wdir_grib_code));
+   return is_grib_code_abbr_match(Name, wdir_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -348,7 +347,7 @@ bool is_grib_code_abbr_match(const ConcatString &str, int grib_code) {
    ConcatString abbr_str;
    bool match = false;
 
-   if(str.empty()) return(false);
+   if(str.empty()) return false;
 
    //
    // Use the default GRIB1 parameter table version number 2
@@ -361,7 +360,7 @@ bool is_grib_code_abbr_match(const ConcatString &str, int grib_code) {
    //
    if(strncasecmp(str.c_str(), abbr_str.c_str(), abbr_str.length()) == 0) match = true;
 
-   return(match);
+   return match;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -100,7 +100,7 @@ if ( (user_ppath = getenv(user_python_path_env)) != 0 )  {   //  do_tmp_nc = tru
 
 
 
-return ( status );
+return status;
 
 }
 
@@ -114,11 +114,11 @@ bool straight_python_dataplane(const char * user_script_name,
 
 {
 
-PyObject * module_obj      = 0;
-PyObject * module_dict_obj = 0;
-PyObject * key_obj         = 0;
-PyObject * numpy_array_obj = 0;
-PyObject * attrs_dict_obj  = 0;
+PyObject * module_obj      = nullptr;
+PyObject * module_dict_obj = nullptr;
+PyObject * key_obj         = nullptr;
+PyObject * numpy_array_obj = nullptr;
+PyObject * attrs_dict_obj  = nullptr;
 ConcatString cs, user_dir, user_base;
 const char *method_name = "straight_python_dataplane() -> ";
 
@@ -165,7 +165,7 @@ if ( PyErr_Occurred() )  {
         << "an error occurred initializing python\n\n";
    release_memory(script_argc, script_argv);
 
-   return ( false );
+   return false;
 
 }
 
@@ -218,7 +218,7 @@ if ( PyErr_Occurred() )  {
         << "an error occurred importing module \""
         << user_script_name << "\"\n\n";
 
-   return ( false );
+   return false;
 
 }
 
@@ -228,7 +228,7 @@ if ( ! module_obj )  {
         << "error running python script \""
         << user_script_name << "\"\n\n";
 
-   return ( false );
+   return false;
 
 }
 
@@ -244,7 +244,7 @@ module_dict_obj = PyModule_GetDict (module_obj);
 
 if ( use_xarray )  {
 
-   PyObject * data_array_obj = 0;
+   PyObject * data_array_obj = nullptr;
 
       //  look up the data array variable name from the dictionary
 
@@ -258,7 +258,7 @@ if ( use_xarray )  {
            << "trouble reading data from \""
            << user_script_name << "\"\n\n";
 
-      return ( false );
+      return false;
    }
 
    dataplane_from_xarray(data_array_obj, met_dp_out, met_grid_out, vinfo);
@@ -286,7 +286,7 @@ if ( use_xarray )  {
                                   << numpy_dict_name << " is missing\n";
       mlog << Warning << "\n";
 
-      return ( false );
+      return false;
    }
 
    Python3_Numpy np;
@@ -301,7 +301,7 @@ if ( use_xarray )  {
    //  done
    //
 
-return ( true );
+return true;
 
 }
 
@@ -321,7 +321,7 @@ int status;
 ConcatString command;
 ConcatString path;
 ConcatString tmp_nc_path;
-const char * tmp_dir = 0;
+const char * tmp_dir = nullptr;
 Wchar_Argv wa;
 
 mlog << Debug(3) << "Calling " << user_ppath
@@ -385,7 +385,7 @@ if ( PyErr_Occurred() )  {
    mlog << Warning << "\ntmp_nc_dataplane() -> "
         << "an error occurred initializing python\n\n";
 
-   return ( false );
+   return false;
 
 }
 
@@ -435,7 +435,7 @@ if ( PyErr_Occurred() )  {
         << "an error occurred importing module "
         << '\"' << path << "\"\n\n";
 
-   return ( false );
+   return false;
 
 }
 
@@ -444,7 +444,7 @@ if ( ! module_obj )  {
    mlog << Warning << "\ntmp_nc_dataplane() -> "
         << "error running python script\n\n";
 
-   return ( false );
+   return false;
 
 }
 
@@ -495,7 +495,7 @@ remove_temp_file(tmp_nc_path);
    //  done
    //
 
-return ( true );
+return true;
 
 }
 

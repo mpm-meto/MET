@@ -17,7 +17,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 
 #include <map>
 #include <stdlib.h>
@@ -31,6 +30,9 @@ using namespace std;
 #include "util_constants.h"
 #include "vx_log.h"
 #include "grib_strings.h"
+
+using namespace std;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -67,11 +69,11 @@ VarInfoNcCF::VarInfoNcCF(const VarInfoNcCF &f) {
 
 VarInfoNcCF & VarInfoNcCF::operator=(const VarInfoNcCF &f) {
 
-   if ( this == &f )  return ( *this );
+   if ( this == &f )  return *this;
 
    assign(f);
 
-   return ( *this );
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -98,14 +100,13 @@ void VarInfoNcCF::init_from_scratch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void VarInfoNcCF::assign(const VarInfoNcCF &v) {
-   int i;
 
    // First call the parent's assign
    VarInfo::assign(v);
 
    // Copy
    clear_dimension();
-   for(i=0; i<v.n_dimension(); i++) {
+   for(int i=0; i<v.n_dimension(); i++) {
       add_dimension(v.dimension(i), v.is_offset(i), v.dim_value(i));
    }
 
@@ -368,9 +369,9 @@ bool VarInfoNcCF::is_precipitation() const {
    // Check to see if the VarInfo name begins with the GRIB code abbreviation
    // for any precipitation variables.
    //
-   return(has_prefix(grib_precipitation_abbr,
+   return has_prefix(grib_precipitation_abbr,
                      n_grib_precipitation_abbr,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -381,16 +382,16 @@ bool VarInfoNcCF::is_specific_humidity() const {
    // Check set_attrs entry
    //
    if(!is_bad_data(SetAttrIsSpecificHumidity)) {
-      return(SetAttrIsSpecificHumidity != 0);
+      return (SetAttrIsSpecificHumidity != 0);
    }
 
    //
    // Check to see if the VarInfo name begins with the GRIB code abbreviation
    // for any specific humidity variables.
    //
-   return(has_prefix(grib_specific_humidity_abbr,
+   return has_prefix(grib_specific_humidity_abbr,
                      n_grib_specific_humidity_abbr,
-                     Name.c_str()));
+                     Name.c_str());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -404,7 +405,7 @@ bool VarInfoNcCF::is_u_wind() const {
       return(SetAttrIsUWind != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, ugrd_grib_code));
+   return is_grib_code_abbr_match(Name, ugrd_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -415,10 +416,10 @@ bool VarInfoNcCF::is_v_wind() const {
    // Check set_attrs entry
    //
    if(!is_bad_data(SetAttrIsVWind)) {
-      return(SetAttrIsVWind != 0);
+      return (SetAttrIsVWind != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, vgrd_grib_code));
+   return is_grib_code_abbr_match(Name, vgrd_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -429,10 +430,10 @@ bool VarInfoNcCF::is_wind_speed() const {
    // Check set_attrs entry
    //
    if(!is_bad_data(SetAttrIsWindSpeed)) {
-      return(SetAttrIsWindSpeed != 0);
+      return (SetAttrIsWindSpeed != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, wind_grib_code));
+   return is_grib_code_abbr_match(Name, wind_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -446,7 +447,7 @@ bool VarInfoNcCF::is_wind_direction() const {
       return(SetAttrIsWindDirection != 0);
    }
 
-   return(is_grib_code_abbr_match(Name, wdir_grib_code));
+   return is_grib_code_abbr_match(Name, wdir_grib_code);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -459,7 +460,7 @@ bool is_grib_code_abbr_match(const ConcatString &str, int grib_code) {
    ConcatString abbr_str;
    bool match = false;
 
-   if(str.empty()) return(false);
+   if(str.empty()) return false;
 
    //
    // Use the default GRIB1 parameter table version number 2
@@ -472,7 +473,7 @@ bool is_grib_code_abbr_match(const ConcatString &str, int grib_code) {
    //
    if(strncasecmp(str.c_str(), abbr_str.c_str(), abbr_str.length()) == 0) match = true;
 
-   return(match);
+   return match;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
