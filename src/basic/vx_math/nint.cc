@@ -11,15 +11,15 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
 #include <cmath>
 
 #include "nint.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ a = (int) y;
 
 if ( fabs(a - y) > 0.3 )  ++a;
 
-return ( a );
+return a;
 
 }
 

@@ -10,9 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -22,6 +19,9 @@ using namespace std;
 #include "vx_log.h"
 #include "pwl.h"
 #include "is_bad_data.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -83,11 +83,11 @@ PiecewiseLinear & PiecewiseLinear::operator=(const PiecewiseLinear & pl)
 
 {
 
-if ( this == &pl )  return ( *this );
+if ( this == &pl )  return *this;
 
 assign(pl);
 
-return ( *this );
+return *this;
 
 }
 
@@ -169,7 +169,6 @@ void PiecewiseLinear::dump(ostream & out, int indent_depth) const
 
 {
 
-int j;
 Indent prefix;
 int N = X.size();
 
@@ -186,7 +185,7 @@ out << prefix << "   # Points = " << N << "\n";
 
 out.setf(ios::fixed);
 
-for (j=0; j<N; ++j)  {
+for (int j=0; j<N; ++j)  {
 
    out.width(3);  out << prefix << j << "    ";
 
@@ -234,7 +233,7 @@ if ( k < 0 || k >= X.size() )  {
 
 }
 
-return ( X[k] );
+return X[k];
 
 }
 
@@ -254,7 +253,7 @@ if ( k < 0 || k >= Y.size() )  {
 
 }
 
-return ( Y[k] );
+return Y[k];
 
 }
 
@@ -283,17 +282,15 @@ double PiecewiseLinear::operator()(double t) const
 
 int N = X.size();
 
-if ( t < X[0] )      return ( Y[0] );
+if ( t < X[0] )      return Y[0];
 
-if ( t > X[N - 1] )  return ( Y[N - 1] );
+if ( t > X[N - 1] )  return Y[N - 1];
 
-int j;
-
-for (j=0; j<(N - 1); ++j)  {
+for (int j=0; j<(N - 1); ++j)  {
 
    if ( (t >= X[j]) && (t <= X[j + 1]) )  {
 
-      return ( linear_interpolate(t, X[j], Y[j], X[j + 1], Y[j + 1]) );
+      return linear_interpolate(t, X[j], Y[j], X[j + 1], Y[j + 1]);
 
    }
 
@@ -335,7 +332,7 @@ m = (y_1 - y_0)/(x_1 - x_0);
 y = y_0 + (x - x_0)*m;
 
 
-return ( y );
+return y;
 
 }
 
