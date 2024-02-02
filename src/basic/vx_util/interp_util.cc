@@ -8,7 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 
 #include <cstdlib>
 #include <iostream>
@@ -25,6 +24,8 @@ using namespace std;
 #include "vx_math.h"
 #include "vx_log.h"
 
+using namespace std;
+
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -33,8 +34,8 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////
 
 void SurfaceInfo::clear() {
-   land_ptr = (MaskPlane *) 0;
-   topo_ptr = (DataPlane *) 0;
+   land_ptr = (MaskPlane *) nullptr;
+   topo_ptr = (DataPlane *) nullptr;
    topo_use_obs_thresh.clear();
    topo_interp_fcst_thresh.clear();
 }
@@ -61,7 +62,7 @@ NumArray interp_points(const DataPlane &dp, const GridTemplate &gt, double x_dbl
       y = floor(y_dbl);
    }
 
-   return(interp_points(dp, gt, x, y));
+   return interp_points(dp, gt, x, y);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -82,7 +83,7 @@ NumArray interp_points(const DataPlane &dp, const GridTemplate &gt, int x, int y
       }
    }
 
-   return(points);
+   return points;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -126,16 +127,16 @@ double interp_min(const DataPlane &dp, const GridTemplate &gt,
 ////////////////////////////////////////////////////////////////////////
 
 double interp_min_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, double t) {
-   int x, y, count;
+   int count;
    double v, min_v;
 
    // Search the neighborhood for the minimum value
    count = 0;
    min_v = 1.0e30;
-   for(x=x_ll; x<x_ll+wdth; x++) {
+   for(int x=x_ll; x<x_ll+wdth; x++) {
       if(x < 0 || x >= dp.nx()) continue;
 
-      for(y=y_ll; y<y_ll+wdth; y++) {
+      for(int y=y_ll; y<y_ll+wdth; y++) {
          if(y < 0 || y >= dp.ny())     continue;
          if(is_bad_data(dp.get(x, y))) continue;
 
@@ -151,7 +152,7 @@ double interp_min_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, double t
       min_v = bad_data_double;
    }
 
-   return(min_v);
+   return min_v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -193,16 +194,16 @@ double interp_max(const DataPlane &dp, const GridTemplate &gt,
 ////////////////////////////////////////////////////////////////////////
 
 double interp_max_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, double t) {
-   int x, y, count;
+   int count;
    double v, max_v;
 
    // Search the neighborhood for the maximum value
    count = 0;
    max_v = -1.0e30;
-   for(x=x_ll; x<x_ll+wdth; x++) {
+   for(int x=x_ll; x<x_ll+wdth; x++) {
       if(x < 0 || x >= dp.nx()) continue;
 
-      for(y=y_ll; y<y_ll+wdth; y++) {
+      for(int y=y_ll; y<y_ll+wdth; y++) {
          if(y < 0 || y >= dp.ny())     continue;
          if(is_bad_data(dp.get(x, y))) continue;
 
@@ -218,7 +219,7 @@ double interp_max_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, double t
       max_v = bad_data_double;
    }
 
-   return(max_v);
+   return max_v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -226,7 +227,7 @@ double interp_max_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, double t
 double interp_median(const DataPlane &dp, const GridTemplate &gt,
                      int x, int y, double t, const MaskPlane *mp) {
 
-   double *data = (double *) 0;
+   double *data = (double *) nullptr;
    int num_good_points = 0;
    int num_points = gt.size();
    double median_v;
@@ -270,8 +271,8 @@ double interp_median(const DataPlane &dp, const GridTemplate &gt,
 ////////////////////////////////////////////////////////////////////////
 
 double interp_median_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, double t) {
-   double *data = (double *) 0;
-   int x, y, count;
+   double *data = (double *) nullptr;
+   int count;
    double v, median_v;
 
    // Allocate space to store the data points
@@ -279,10 +280,10 @@ double interp_median_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, doubl
 
    // Search the neighborhood for valid data points
    count = 0;
-   for(x=x_ll; x<x_ll+wdth; x++) {
+   for(int x=x_ll; x<x_ll+wdth; x++) {
       if(x < 0 || x >= dp.nx()) continue;
 
-      for(y=y_ll; y<y_ll+wdth; y++) {
+      for(int y=y_ll; y<y_ll+wdth; y++) {
          if(y < 0 || y >= dp.ny())     continue;
          if(is_bad_data(dp.get(x, y))) continue;
 
@@ -302,9 +303,9 @@ double interp_median_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, doubl
       median_v = percentile(data, count, 0.50);
    }
 
-   if(data) { delete [] data; data = (double *) 0; }
+   if(data) { delete [] data; data = (double *) nullptr; }
 
-   return(median_v);
+   return median_v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -349,16 +350,16 @@ double interp_uw_mean(const DataPlane &dp, const GridTemplate &gt,
 ////////////////////////////////////////////////////////////////////////
 
 double interp_uw_mean_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, double t) {
-   int x, y, count;
+   int count;
    double v, sum, uw_mean_v;
 
    // Sum up the valid data in the neighborhood
    count = 0;
    sum = 0.0;
-   for(x=x_ll; x<x_ll+wdth; x++) {
+   for(int x=x_ll; x<x_ll+wdth; x++) {
       if(x < 0 || x >= dp.nx()) continue;
 
-      for(y=y_ll; y<y_ll+wdth; y++) {
+      for(int y=y_ll; y<y_ll+wdth; y++) {
          if(y < 0 || y >= dp.ny())     continue;
          if(is_bad_data(dp.get(x, y))) continue;
 
@@ -377,7 +378,7 @@ double interp_uw_mean_ll(const DataPlane &dp, int x_ll, int y_ll, int wdth, doub
       uw_mean_v = sum/count;
    }
 
-   return(uw_mean_v);
+   return uw_mean_v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -438,7 +439,7 @@ double interp_dw_mean(const DataPlane &dp, const GridTemplate &gt,
       return bad_data_double;
    }
 
-   return(numerator/wght_sum);
+   return numerator/wght_sum;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -469,7 +470,7 @@ double interp_ls_fit(const DataPlane &dp, const GridTemplate &gt,
 
    //-------------------------------------------------------------------------------
 
-   int i, j, x, y, count;
+   int x, y, count;
    const int N  = wdth;
    const int N2 = N*N;
    const double alpha     = (N2*(N2 - 1.0))/12.0;
@@ -493,14 +494,14 @@ double interp_ls_fit(const DataPlane &dp, const GridTemplate &gt,
 
    // Search the neighborhood
    count = 0;
-   for(i=0; i<N; i++) {
+   for(int i=0; i<N; i++) {
 
       u = i - beta;
       x = x_ll + i;
 
       if(x < 0 || x >= dp.nx()) continue;
 
-      for(j=0; j<N; j++) {
+      for(int j=0; j<N; j++) {
 
          v = j - beta;
          y = y_ll + j;
@@ -533,7 +534,7 @@ double interp_ls_fit(const DataPlane &dp, const GridTemplate &gt,
       z = bad_data_double;
    }
 
-   return(z);
+   return z;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -624,7 +625,7 @@ double interp_gaussian(const DataPlane &dp, const DataPlane &g_dp,
       gaussian_value /= weight_sum;
    }
 
-   return(gaussian_value);
+   return gaussian_value;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -692,7 +693,7 @@ double interp_geog_match(const DataPlane &dp, const GridTemplate &gt,
            << interp_x << ", " << interp_y << ").\n";
    }
 
-   return(interp_v);
+   return interp_v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -729,7 +730,7 @@ double interp_nbrhd(const DataPlane &dp, const GridTemplate &gt, int x, int y,
       return bad_data_double;
    }
 
-   return((double) count_thr/count);
+   return (double) count_thr/count;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -831,7 +832,7 @@ double interp_bilin(const DataPlane &dp, bool wrap_lon,
       }
    }
 
-   return(bilin_v);
+   return bilin_v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -855,7 +856,7 @@ double interp_xy(const DataPlane &dp, bool wrap_lon, int x, int y,
    if(x < 0 || x >= dp.nx() || y < 0 || y >= dp.ny()) v = bad_data_double;
    else                                               v = dp.get(x, y);
 
-   return(v);
+   return v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -897,7 +898,7 @@ double interp_best(const DataPlane &dp, const GridTemplate &gt,
       return bad_data_double;
    }
 
-   return(min_v);
+   return min_v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1024,7 +1025,7 @@ double compute_sfc_interp(const DataPlane &dp,
    }
 
    delete gt;
-   return(v);
+   return v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1082,7 +1083,7 @@ MaskPlane compute_sfc_mask(const GridTemplate &gt, int x, int y,
       mp.put((land_ok & topo_ok), gp->x, gp->y);
    }
 
-   return(mp);
+   return mp;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1097,9 +1098,9 @@ double compute_horz_interp(const DataPlane &dp,
                            const GridTemplateFactory::GridTemplates shape,
                            bool wrap_lon, double interp_thresh,
                            const SingleThresh *cat_thresh) {
-   return(compute_horz_interp(dp, obs_x, obs_y, obs_v, bad_data_double,
+   return compute_horz_interp(dp, obs_x, obs_y, obs_v, bad_data_double,
              bad_data_double, mthd, width, shape, wrap_lon,
-             interp_thresh, cat_thresh));
+             interp_thresh, cat_thresh);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1198,7 +1199,7 @@ double compute_horz_interp(const DataPlane &dp,
    }
 
    delete gt;
-   return(v);
+   return v;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1230,7 +1231,7 @@ double compute_vert_pinterp(double v1, double prs1,
 
    v_interp = v1 + ((v2-v1)*log(prs1/to_prs)/log(prs1/prs2));
 
-   return(v_interp);
+   return v_interp;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1266,7 +1267,7 @@ double compute_vert_zinterp(double v1, double lvl1,
    // Linearly interpolate betwen lvl_1 and lvl_2
    v_interp = v1*(1.0 - d1/(d1+d2)) + v2*(1.0 - d2/(d1+d2));
 
-   return(v_interp);
+   return v_interp;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1274,7 +1275,6 @@ double compute_vert_zinterp(double v1, double lvl1,
 DataPlane valid_time_interp(const DataPlane &in1, const DataPlane &in2,
                             const unixtime to_ut, InterpMthd mthd) {
    DataPlane dp, dp1, dp2;
-   int x, y;
    bool use_min;
    double v, v1, v2;
    double w1 = bad_data_double;
@@ -1348,8 +1348,8 @@ DataPlane valid_time_interp(const DataPlane &in1, const DataPlane &in2,
    dp.set_valid(to_ut);
 
    // Compute interpolated value for each point
-   for(x=0; x<dp.nx(); x++) {
-      for(y=0; y<dp.ny(); y++) {
+   for(int x=0; x<dp.nx(); x++) {
+      for(int y=0; y<dp.ny(); y++) {
 
          // Get current values
          v1 = dp1.get(x, y);
@@ -1372,7 +1372,7 @@ DataPlane valid_time_interp(const DataPlane &in1, const DataPlane &in2,
       } // end for y
    } // end for x
 
-   return(dp);
+   return dp;
 }
 
 ////////////////////////////////////////////////////////////////////////

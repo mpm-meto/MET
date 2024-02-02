@@ -11,8 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -20,6 +18,8 @@ using namespace std;
 #include <cmath>
 
 #include "fix_float.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////

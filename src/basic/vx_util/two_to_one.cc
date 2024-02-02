@@ -10,8 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -20,6 +18,8 @@ using namespace std;
 #include "two_to_one.h"
 
 #include "vx_log.h"
+
+using namespace std;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -106,11 +106,11 @@ TwoOne & TwoOne::operator=(const TwoOne & t)
 
 {
 
-if ( this == &t )  return ( * this );
+if ( this == &t )  return *this;
 
 assign(t);
 
-return ( * this );
+return *this;
 
 }
 
@@ -136,9 +136,9 @@ void TwoOne::clear()
 
 {
 
-TO = (TwoToOneFunction) 0;
+TO = (TwoToOneFunction) nullptr;
 
-OT = (OneToTwoFunction) 0;
+OT = (OneToTwoFunction) nullptr;
 
 return;
 
@@ -622,7 +622,7 @@ if ( !check )  {
 }
 
 const int k = 4*xdir + 2*ydir + order;
-TwoToOneFunction f = (TwoToOneFunction) 0;
+TwoToOneFunction f = (TwoToOneFunction) nullptr;
 
 
 switch ( k )  {
@@ -650,7 +650,7 @@ switch ( k )  {
    //  done
    //
 
-return ( f );
+return f;
 
 }
 
@@ -674,7 +674,7 @@ if ( !check )  {
 }
 
 const int k = 4*xdir + 2*ydir + order;
-OneToTwoFunction f = (OneToTwoFunction) 0;
+OneToTwoFunction f = (OneToTwoFunction) nullptr;
 
 
 switch ( k )  {
@@ -702,7 +702,7 @@ switch ( k )  {
    //  done
    //
 
-return ( f );
+return f;
 
 }
 

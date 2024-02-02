@@ -11,9 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <cstdio>
 #include <iostream>
 #include <unistd.h>
@@ -29,6 +26,9 @@ using namespace std;
 #include "num_array.h"
 #include "vx_cal.h"
 #include "vx_log.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ bool match_met_version(const char * check_version) {
    ConcatString check_major(parse_version_major(check_version));
    ConcatString met_major(parse_version_major(met_version));
 
-   return(check_major == met_major);
+   return (check_major == met_major);
 }
 
 
@@ -98,14 +98,15 @@ ConcatString parse_version(const char * version, const int ndots) {
    //
    // Parse the version string to the requested depth.
    //
-   for(i=n=0; i<s.length(); i++) {
+   n = 0;
+   for(i=0; i<s.length(); i++) {
       if(s[i] == '.') n++;
       if(n == ndots) break;
    }
 
    cs = s.substr(0, i);
 
-   return(cs);
+   return cs;
 }
 
 
@@ -113,7 +114,7 @@ ConcatString parse_version(const char * version, const int ndots) {
 
 
 ConcatString parse_version_major(const char * version) {
-   return(parse_version(version, 1));
+   return parse_version(version, 1);
 }
 
 
@@ -121,7 +122,7 @@ ConcatString parse_version_major(const char * version) {
 
 
 ConcatString parse_version_major_minor(const char * version) {
-   return(parse_version(version, 2));
+   return parse_version(version, 2);
 }
 
 
@@ -147,7 +148,7 @@ if ( path ) {
 
 }
 
-return ( short_name );
+return short_name;
 
 }
 
@@ -235,7 +236,7 @@ int num_tokens(const char *test_str, const char *separator)
 
    if(temp_str) { delete [] temp_str; temp_str = (char *) nullptr; }
 
-   return(n);
+   return n;
 }
 
 
@@ -248,21 +249,20 @@ int num_tokens(const char *test_str, const char *separator)
 
 bool has_prefix(const char **prefix_list, int n_prefix,
                 const char *str) {
-   int i;
    bool status = false;
 
    //
    // Check to see the string begins with any of the prefixes, using
    // case-insensitive matching.
    //
-   for(i=0; i<n_prefix; i++) {
+   for(int i=0; i<n_prefix; i++) {
       if(strncasecmp(str, prefix_list[i], m_strlen(prefix_list[i])) == 0) {
          status = true;
          break;
       }
    }
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -400,7 +400,7 @@ int parse_thresh_index(const char *col_name) {
       exit(1);
    }
 
-   return(i);
+   return i;
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -11,9 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -21,6 +18,9 @@ using namespace std;
 
 #include "substring.h"
 #include "vx_log.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -38,11 +38,11 @@ if ( first > last )  {
 
 }
 
-int j, n;
+int n;
 
 n = last - first + 1;
 
-for (j=0; j<n; ++j)  {
+for (int j=0; j<n; ++j)  {
 
    out[j] = text[first + j];
 

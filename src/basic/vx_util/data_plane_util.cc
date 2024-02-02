@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <cstdlib>
 #include <iostream>
 #include <math.h>
@@ -30,6 +28,9 @@ using namespace std;
 
 #include "GridTemplate.h"
 
+using namespace std;
+
+
 ////////////////////////////////////////////////////////////////////////
 //
 // Utility functions operating on a DataPlane
@@ -45,7 +46,6 @@ using namespace std;
 
 void rescale_probability(DataPlane &dp) {
    double v, min_v, max_v;
-   int x, y;
 
    //
    // Get the range of data values in the field
@@ -73,8 +73,8 @@ void rescale_probability(DataPlane &dp) {
       //
       // Divide each value by 100
       //
-      for(x=0; x<dp.nx(); x++) {
-         for(y=0; y<dp.ny(); y++) {
+      for(int x=0; x<dp.nx(); x++) {
+         for(int y=0; y<dp.ny(); y++) {
 
             v = dp.get(x, y);
             if(!is_bad_data(v)) dp.set(v/100.0, x, y);
@@ -100,7 +100,6 @@ void smooth_field(const DataPlane &dp, DataPlane &smooth_dp,
                   const GridTemplateFactory::GridTemplates shape,
                   bool wrap_lon, double t, const GaussianInfo &gaussian) {
    double v = 0.0;
-   int x, y;
 
    // Initialize the smoothed field to the raw field
    smooth_dp = dp;
@@ -119,8 +118,8 @@ void smooth_field(const DataPlane &dp, DataPlane &smooth_dp,
         << " interpolation method.\n";
 
    // Otherwise, apply smoothing to each grid point
-   for(x=0; x<dp.nx(); x++) {
-      for(y=0; y<dp.ny(); y++) {
+   for(int x=0; x<dp.nx(); x++) {
+      for(int y=0; y<dp.ny(); y++) {
 
          // Compute the smoothed value based on the interpolation method
          switch(mthd) {
@@ -194,7 +193,7 @@ DataPlane smooth_field(const DataPlane &dp,
 
    smooth_field(dp, smooth_dp, mthd, width, shape, wrap_lon, t, gaussian);
 
-   return(smooth_dp);
+   return smooth_dp;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -495,7 +494,7 @@ DataPlane subtract(const DataPlane &dp1, const DataPlane &dp2) {
       }
    }
 
-   return(diff);
+   return diff;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -525,7 +524,7 @@ DataPlane normal_cdf(const DataPlane &dp, const DataPlane &mn,
       }
    }
 
-   return(cdf);
+   return cdf;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -561,13 +560,13 @@ DataPlane normal_cdf_inv(const double area, const DataPlane &mn,
       }
    }
 
-   return(cdf_inv);
+   return cdf_inv;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 DataPlane gradient(const DataPlane &dp, int dim, int delta) {
-   int x, y, x1, y1;
+   int x1, y1;
    double v, v1, gr;
    DataPlane grad_dp;
 
@@ -581,8 +580,8 @@ DataPlane gradient(const DataPlane &dp, int dim, int delta) {
    grad_dp = dp;
    grad_dp.set_constant(bad_data_double);
 
-   for(x=0; x<dp.nx(); x++) {
-      for(y=0; y<dp.ny(); y++) {
+   for(int x=0; x<dp.nx(); x++) {
+      for(int y=0; y<dp.ny(); y++) {
 
          // dim: 0 for x-dimension, 1 for y-dimension
          x1 = (dim == 0 ? x+delta : x  );
@@ -597,7 +596,7 @@ DataPlane gradient(const DataPlane &dp, int dim, int delta) {
       }
    }
 
-   return(grad_dp);
+   return grad_dp;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -728,7 +727,7 @@ DataPlane distance_map(const DataPlane &dp) {
    // Mask the distance map with bad data values of the input field
    mask_bad_data(dm, dp);
 
-   return(dm);
+   return dm;
 }
 
 ////////////////////////////////////////////////////////////////////////

@@ -11,8 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -25,6 +23,8 @@ using namespace std;
 #include "read_fortran_binary.h"
 #include "check_endian.h"
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ long long read_fortran_binary(const int fd, void * buf, const int buf_size,
 
 {
 
-ShuffleFunc shuffle = 0;
+ShuffleFunc shuffle = nullptr;
 
    //
    //  we don't "shuffle" the data ... only the record pads
@@ -84,9 +84,9 @@ int bytes;
 
 n_read = ::read(fd, local_buf, rec_pad_length);
 
-if ( n_read == 0 )  return ( 0LL );
+if ( n_read == 0 )  return 0LL;
 
-if ( n_read < 0 )  return ( (long long) (-1) );
+if ( n_read < 0 )  return (long long) (-1);
 
 if ( swap_endian )  shuffle(local_buf);
 
@@ -149,7 +149,7 @@ if ( rec_size_2 != rec_size_1 )  {
    //  done
    //
 
-return ( rec_size_1 );
+return rec_size_1;
 
 }
 
@@ -163,7 +163,7 @@ long long read_fortran_binary_realloc(const int fd, void * & buf, int & buf_size
 
 {
 
-ShuffleFunc shuffle = 0;
+ShuffleFunc shuffle = nullptr;
 
    //
    //  we don't "shuffle" the data ... only the record pads
@@ -191,9 +191,9 @@ long long rec_size_1, rec_size_2;
 
 n_read = ::read(fd, local_buf, rec_pad_length);
 
-if ( n_read == 0 )  return ( 0LL );
+if ( n_read == 0 )  return 0LL;
 
-if ( n_read < 0 )  return ( (long long) (-1) );
+if ( n_read < 0 )  return (long long) (-1);
 
 if ( swap_endian )  shuffle(local_buf);
 
@@ -207,7 +207,7 @@ if ( rec_size_1 > buf_size )  {
 
    unsigned char * B = (unsigned char *) buf;
 
-   if ( B )  { delete [] B;  B = 0; }
+   if ( B )  { delete [] B;  B = nullptr; }
 
    buf = new unsigned char [rec_size_1];
 
@@ -272,7 +272,7 @@ if ( rec_size_2 != rec_size_1 )  {
    //  done
    //
 
-return ( rec_size_1 );
+return rec_size_1;
 
 }
 
@@ -299,7 +299,7 @@ if ( rec_pad_length >= (int) sizeof(peek_buf) )  {
 
 n_read = read(fd, peek_buf, rec_pad_length);
 
-if ( n_read == 0 )  return ( 0LL );
+if ( n_read == 0 )  return 0LL;
 
 switch ( rec_pad_length )  {
 
@@ -335,7 +335,7 @@ if ( lseek(fd, -rec_pad_length, SEEK_CUR) < 0 )  {
    //  done
    //
 
-return ( size );
+return size;
 
 }
 
@@ -368,7 +368,7 @@ if ( rec_pad_length == 4 )  {
 }
 
 
-return ( s );
+return s;
 
 }
 
@@ -450,7 +450,7 @@ if ( lseek(fd, 0, SEEK_SET) < 0 )  {
    //  nope
    //
 
-return ( status );
+return status;
 
 }
 
@@ -575,7 +575,7 @@ if ( rec_size_1 == rec_size_2 )  status = true;
    //  nope
    //
 
-return ( status );
+return status;
 
 }
 

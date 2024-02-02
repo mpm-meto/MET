@@ -7,11 +7,8 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 
-
 ////////////////////////////////////////////////////////////////////////
 
-
-using namespace std;
 
 #include <iostream>
 #include <unistd.h>
@@ -22,6 +19,8 @@ using namespace std;
 
 #include "roman_numeral.h"
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -94,10 +93,9 @@ rn_add(c, n,   1,   rn_1,   rn_5,   rn_10);
 
 if ( lower_case_flag )  {
 
-   int j;
    const int k = m_strlen(s);
 
-   for (j=0; j<k; ++j)  {
+   for (int j=0; j<k; ++j)  {
 
       s[j] = (char) tolower(s[j]);
 

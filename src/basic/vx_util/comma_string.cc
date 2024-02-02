@@ -11,9 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -21,6 +18,9 @@ using namespace std;
 #include <cmath>
 
 #include "comma_string.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ ConcatString str;
 
 comma_string(i, str);
 
-return ( str );
+return str;
 
 }
 

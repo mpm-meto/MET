@@ -1,5 +1,3 @@
-
-
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 // ** Copyright UCAR (c) 1992 - 2023
 // ** University Corporation for Atmospheric Research (UCAR)
@@ -9,12 +7,7 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 
-
-
 ////////////////////////////////////////////////////////////////////////
-
-
-using namespace std;
 
 
 #include <iostream>
@@ -25,6 +18,8 @@ using namespace std;
 
 #include "long_array.h"
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -80,11 +75,11 @@ LongArray & LongArray::operator=(const LongArray & a)
 
 {
 
-if ( this == &a )  return ( * this );
+if ( this == &a )  return *this;
 
 assign(a);
 
-return ( * this );
+return *this;
 
 }
 
@@ -96,7 +91,7 @@ void LongArray::init_from_scratch()
 
 {
 
-e = (long *) 0;
+e = (long *) nullptr;
 
 AllocInc = 10;   //  default value
 
@@ -114,7 +109,7 @@ void LongArray::clear()
 
 {
 
-if ( e )  { delete [] e;  e = (long *) 0; }
+if ( e )  { delete [] e;  e = (long *) nullptr; }
 
 
 
@@ -164,7 +159,7 @@ if ( ! exact )  {
 }
 
 int j;
-long * u = (long *) 0;
+long * u = (long *) nullptr;
 
 u = new long [n];
 
@@ -189,7 +184,7 @@ if ( e )  { delete [] e;  e = (long *) 0; }
 
 e = u;
 
-u = (long *) 0;
+u = (long *) nullptr;
 
 Nalloc = n;
 
@@ -211,9 +206,7 @@ out << prefix << "Nelements = " << Nelements << "\n";
 out << prefix << "Nalloc    = " << Nalloc    << "\n";
 out << prefix << "AllocInc  = " << AllocInc  << "\n";
 
-int j;
-
-for(j=0; j<Nelements; ++j)  {
+for(int j=0; j<Nelements; ++j)  {
 
    out << prefix << "Element # " << j << " = " << e[j] << "\n";
 
@@ -274,11 +267,9 @@ void LongArray::add(const LongArray & a)
 
 {
 
-int j;
-
 extend(Nelements + a.n_elements());
 
-for (j=0; j<(a.n_elements()); ++j)  {
+for (int j=0; j<(a.n_elements()); ++j)  {
 
    add(a[j]);
 
@@ -296,15 +287,13 @@ int LongArray::has(const long l) const
 
 {
 
-int j;
+for (int j=0; j<Nelements; ++j)  {
 
-for (j=0; j<Nelements; ++j)  {
-
-   if ( e[j] == l )  return ( 1 );
+   if ( e[j] == l )  return 1;
 
 }
 
-return ( 0 );
+return 0;
 
 }
 
@@ -324,7 +313,7 @@ if ( (n < 0) || (n >= Nelements) )  {
    exit ( 1 );
 }
 
-return ( e[n] );
+return e[n];
 
 }
 

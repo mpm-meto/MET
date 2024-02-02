@@ -8,15 +8,16 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 
 #include <iostream>
-#include <unistd.h>
+//#include <unistd.h>
 #include <stdlib.h>
-#include <cmath>
+//#include <cmath>
 
-#include "memory.h"
+//#include "memory.h"
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////

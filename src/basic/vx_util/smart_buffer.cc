@@ -1,7 +1,4 @@
-
-
 ////////////////////////////////////////////////////////////////////////
-
 
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 // ** Copyright UCAR (c) 1992 - 2023
@@ -15,8 +12,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -29,6 +24,8 @@ using namespace std;
 #include "vx_log.h"
 
 #include "smart_buffer.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -84,11 +81,11 @@ SmartBuffer & SmartBuffer::operator=(const SmartBuffer & b)
 
 {
 
-if ( this == &b )  return ( * this );
+if ( this == &b )  return *this;
 
 assign(b);
 
-return ( * this );
+return *this;
 
 }
 
@@ -100,7 +97,7 @@ void SmartBuffer::clear()
 
 {
 
-if ( Buf )  { delete [] Buf;  Buf = 0; }
+if ( Buf )  { delete [] Buf;  Buf = nullptr; }
 
 Size = 0;
 
@@ -156,7 +153,7 @@ void SmartBuffer::extend(const int bytes)
 
 if ( Size >= bytes )  return;
 
-unsigned char * u = 0;
+unsigned char * u = nullptr;
 
 u = new unsigned char [bytes];
 
@@ -168,7 +165,7 @@ if ( Buf )  {
 
    if ( Size > 0 )  memcpy(u, Buf, Size);
 
-   delete [] Buf;  Buf = 0;
+   delete [] Buf;  Buf = nullptr;
 
 }
 
@@ -206,7 +203,7 @@ n_read = ::read(fd, Buf, bytes);
    //  done
    //
 
-return ( n_read );
+return n_read;
 
 }
 
@@ -236,7 +233,7 @@ n_written = ::write(fd, Buf, bytes);
    //  done
    //
 
-return ( n_written );
+return n_written;
 
 }
 

@@ -10,9 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +24,9 @@ using namespace std;
 #include "temp_file.h"
 
 #include "python_line.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -116,7 +116,7 @@ UserScriptArgs.clear();
 
 UserPathToPython.clear();
 
-if ( script ) { delete script;  script = 0; }
+if ( script ) { delete script;  script = nullptr; }
 
 
 return;
@@ -179,7 +179,7 @@ N = PyList_Size(main_list);
    //  done
    //
 
-return ( true );
+return true;
 
 }
 
@@ -222,7 +222,7 @@ line << "LINE_TYPE";
    //  done
    //
 
-return ( line );
+return line;
 
 }
 
@@ -234,10 +234,9 @@ ConcatString PyLineDataFile::make_data_line()
 
 {
 
-int j;
 ConcatString line;
 ConcatString a;
-PyObject * sublist = 0;
+PyObject * sublist = nullptr;
 
 
    //
@@ -281,7 +280,7 @@ line << met_version;
    //  the rest
    //
 
-for (j=0; j<N; ++j)  {
+for (int j=0; j<N; ++j)  {
 
    get_cs(PyList_GetItem(sublist, j), a);
 
@@ -384,12 +383,11 @@ void PyLineDataFile::do_tmp_ascii()
 
 {
 
-int j;
 const int N = UserScriptArgs.n();
 ConcatString command;
 ConcatString path;
 ConcatString tmp_ascii_path;
-const char * tmp_dir = 0;
+const char * tmp_dir = nullptr;
 int status;
 
 mlog << Debug(3) << "Calling " << UserPathToPython
@@ -413,7 +411,7 @@ command << cs_erase
         << tmp_ascii_path                      << ' '    //  temporary ascii output filename
         << UserScriptPath;                               //  user's script name
 
-for (j=0; j<N; ++j)  {
+for (int j=0; j<N; ++j)  {
 
    command << ' ' << UserScriptArgs[j];
 
@@ -479,7 +477,7 @@ if ( first_call )  {
 
    first_call = false;
 
-   return ( true );
+   return true;
 
 }
 
@@ -489,12 +487,12 @@ if ( first_call )  {
 
 ++index;
 
-if ( index >= N )  return ( false );
+if ( index >= N )  return false;
 
 s_out = make_data_line();
 
 
-return ( true );
+return true;
 
 }
 
@@ -612,7 +610,7 @@ bool is_na (PyObject * obj)
 
 {
 
-if ( ! PyUnicode_Check(obj) )  return ( false );
+if ( ! PyUnicode_Check(obj) )  return false;
 
    //
    //  now we know it's a string, the value had better be "NA"
@@ -620,13 +618,13 @@ if ( ! PyUnicode_Check(obj) )  return ( false );
 
 ConcatString s = pyobject_as_concat_string(obj);
 
-if ( strcmp(s.text(), na_string.c_str()) == 0 )  return ( true );
+if ( strcmp(s.text(), na_string.c_str()) == 0 )  return true;
 
    //
    //  done
    //
 
-return ( false );   //  control flow should never get here
+return false;   //  control flow should never get here
 
 }
 

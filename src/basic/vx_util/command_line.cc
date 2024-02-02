@@ -10,8 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -24,6 +22,8 @@ using namespace std;
 #include "is_number.h"
 #include "util_constants.h"
 #include "file_exists.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -79,11 +79,11 @@ CLOptionInfo & CLOptionInfo::operator=(const CLOptionInfo & i)
 
 {
 
-if ( this == &i )  return ( * this );
+if ( this == &i )  return *this;
 
 assign(i);
 
-return ( * this );
+return *this;
 
 }
 
@@ -113,7 +113,7 @@ option_text.clear();
 
 Nargs = 0;
 
-f = (CLSetFunction) 0;
+f = (CLSetFunction) nullptr;
 
 return;
 
@@ -218,11 +218,11 @@ CLOptionInfoArray & CLOptionInfoArray::operator=(const CLOptionInfoArray & a)
 
 {
 
-if ( this == &a )  return ( * this );
+if ( this == &a )  return *this;
 
 assign(a);
 
-return ( * this );
+return *this;
 
 }
 
@@ -234,7 +234,7 @@ void CLOptionInfoArray::init_from_scratch()
 
 {
 
-e = (CLOptionInfo *) 0;
+e = (CLOptionInfo *) nullptr;
 
 AllocInc = 16;   //  default value
 
@@ -252,7 +252,7 @@ void CLOptionInfoArray::clear()
 
 {
 
-if ( e )  { delete [] e;  e = (CLOptionInfo *) 0; }
+if ( e )  { delete [] e;  e = (CLOptionInfo *) nullptr; }
 
 
 
@@ -298,7 +298,7 @@ if ( n <= Nalloc )  return;
 n = AllocInc*( (n + AllocInc - 1)/AllocInc );
 
 int j;
-CLOptionInfo * u = (CLOptionInfo *) 0;
+CLOptionInfo * u = (CLOptionInfo *) nullptr;
 
 u = new CLOptionInfo [n];
 
@@ -321,7 +321,7 @@ if ( e )  { delete [] e;  e = (CLOptionInfo *) 0; }
 
 e = u;
 
-u = (CLOptionInfo *) 0;
+u = (CLOptionInfo *) nullptr;
 
 Nalloc = n;
 
@@ -343,9 +343,7 @@ out << prefix << "Nelements = " << Nelements << "\n";
 out << prefix << "Nalloc    = " << Nalloc    << "\n";
 out << prefix << "AllocInc  = " << AllocInc  << "\n";
 
-int j;
-
-for(j=0; j<Nelements; ++j)  {
+for(int j=0; j<Nelements; ++j)  {
 
    out << prefix << "Element # " << j << " ... \n";
 
@@ -407,11 +405,9 @@ void CLOptionInfoArray::add(const CLOptionInfoArray & a)
 
 {
 
-int j;
-
 extend(Nelements + a.n_elements());
 
-for (j=0; j<(a.n_elements()); ++j)  {
+for (int j=0; j<(a.n_elements()); ++j)  {
 
    add(a[j]);
 
@@ -437,7 +433,7 @@ if ( (n < 0) || (n >= Nelements) )  {
    exit ( 1 );
 }
 
-return ( e[n] );
+return e[n];
 
 }
 
@@ -449,12 +445,11 @@ int CLOptionInfoArray::lookup(const string & name) const
 
 {
 
-int j;
 ConcatString cs = name;
 
-for (j=0; j<Nelements; ++j)  {
+for (int j=0; j<Nelements; ++j)  {
 
-  if ( e[j].option_text == cs )  return ( j );
+  if ( e[j].option_text == cs )  return j;
 
 }
 
@@ -462,7 +457,7 @@ for (j=0; j<Nelements; ++j)  {
    //  nope
    //
 
-return ( -1 );
+return -1;
 
 }
 
@@ -520,11 +515,11 @@ CommandLine & CommandLine::operator=(const CommandLine & c)
 
 {
 
-if ( this == &c )  return ( * this );
+if ( this == &c )  return *this;
 
 assign(c);
 
-return ( * this );
+return *this;
 
 }
 
@@ -554,7 +549,7 @@ options.clear();
 
 ProgramName.clear();
 
-Usage = (UsageFunction) 0;
+Usage = (UsageFunction) nullptr;
 
 AllowNumbers = false;
 
@@ -633,11 +628,9 @@ void CommandLine::set(int argc, char ** argv)
 
 clear();
 
-int j;
-
 ProgramName = get_short_name(argv[0]);
 
-for (j=1; j<argc; ++j)  {   //  j starts at one here, not zero
+for (int j=1; j<argc; ++j)  {   //  j starts at one here, not zero
 
    args.add(argv[j]);
 
@@ -658,13 +651,12 @@ void CommandLine::set(const StringArray & a)
 
 clear();
 
-int j;
 ConcatString s;
 
 
 ProgramName = get_short_name(a[0].c_str());
 
-for (j=1; j<(a.n()); ++j)  {   //  j starts at one here, not zero
+for (int j=1; j<(a.n()); ++j)  {   //  j starts at one here, not zero
 
    s = a[j];
 
@@ -728,7 +720,7 @@ const string CommandLine::operator[](int k) const
    //    StringArray::operator[](int)
    //
 
-return ( args[k] );
+return args[k];
 
 }
 
@@ -744,7 +736,7 @@ bool status;
 
 status = ( args.has(text) == 1 );
 
-return ( status );
+return status;
 
 }
 
@@ -756,12 +748,12 @@ int CommandLine::next_option(int & option_index) const
 
 {
 
-int j, N;
+int N;
 
 
 N = args.n_elements();
 
-for (j=0; j<N; ++j)  {
+for (int j=0; j<N; ++j)  {
 
    if ( is_switch(args[j]) )  {
 
@@ -780,7 +772,7 @@ for (j=0; j<N; ++j)  {
 
       option_index = options.lookup(args[j]);
 
-      if ( option_index >= 0 )  return ( j );
+      if ( option_index >= 0 )  return j;
 
         //
         //  option not recognized
@@ -804,7 +796,7 @@ for (j=0; j<N; ++j)  {
    //  nope
    //
 
-return ( -1 );
+return -1;
 
 }
 
@@ -954,7 +946,7 @@ int CommandLine::length(int k) const
 
 {
 
-return ( args.length(k) );
+return args.length(k);
 
 }
 
@@ -1039,10 +1031,10 @@ a.clear();
 
 if ( Nargs == 0 )  return;
 
-int j, k;
+int k;
 
 
-for (j=0; j<Nargs; ++j)  {
+for (int j=0; j<Nargs; ++j)  {
 
    k = j + pos;
 
@@ -1112,7 +1104,7 @@ while ( 1 )  {
    //  done
    //
 
-return ( count );
+return count;
 
 }
 
@@ -1133,11 +1125,11 @@ if ( text.empty() )  {
 
 }
 
-if ( text[0] != '-' )  return ( false );
+if ( text[0] != '-' )  return false;
 
-if ( AllowNumbers && is_number(text.c_str()) )  return ( false );
+if ( AllowNumbers && is_number(text.c_str()) )  return false;
 
-return ( true );
+return true;
 
 }
 

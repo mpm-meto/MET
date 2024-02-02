@@ -11,8 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -22,6 +20,8 @@ using namespace std;
 #include "met_buffer.h"
 #include "read_fortran_binary.h"
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -85,11 +85,11 @@ MetBuffer & MetBuffer::operator=(const MetBuffer & b)
 
 {
 
-if ( this == &b )  return ( * this );
+if ( this == &b )  return *this;
 
 mb_assign(b);
 
-return ( * this );
+return *this;
 
 }
 
@@ -119,7 +119,7 @@ void MetBuffer::mb_clear()
 
 {
 
-if ( Buf )  { delete [] Buf;  Buf = 0; }
+if ( Buf )  { delete [] Buf;  Buf = nullptr; }
 
 Nalloc = Nbytes = (bigint) 0;
 
@@ -210,7 +210,7 @@ if ( Buf )  {
 
    memcpy(u, Buf, bytes);
 
-   delete [] Buf;  Buf = 0;
+   delete [] Buf;  Buf = nullptr;
 
 }
 
@@ -282,9 +282,9 @@ n_read = ::read(fd, Buf, bytes);
 
 Nbytes = n_read;
 
-if ( n_read < 0 )  return ( -1 );
+if ( n_read < 0 )  return -1;
 
-return ( n_read );
+return n_read;
 
 }
 
@@ -306,7 +306,7 @@ n_read = ::read_fortran_binary(fd, Buf, Nalloc, RecPadSize, SwapEndian);
 
 Nbytes = n_read;
 
-return ( false );
+return false;
 
 }
 

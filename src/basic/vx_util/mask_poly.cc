@@ -10,8 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
@@ -25,6 +23,8 @@ using namespace std;
 #include "vx_math.h"
 #include "vx_util.h"
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -87,11 +87,11 @@ MaskPoly & MaskPoly::operator=(const MaskPoly & m)
 
 {
 
-if ( this == &m )  return ( * this );
+if ( this == &m )  return *this;
 
 assign(m);
 
-return ( * this );
+return *this;
 
 }
 
@@ -173,7 +173,6 @@ void MaskPoly::dump(ostream & out, int depth) const
 
 if ( Name.empty() )  return;
 
-int j;
 char NS, EW;
 char junk[256];
 
@@ -186,7 +185,7 @@ out << prefix << "FileName = \"" << FileName << "\"\n";
 out << prefix << "Npoints  = "   << Npoints  << "\n";
 out << prefix << "LonShift = "   << LonShift << "\n";
 
-for (j=0; j<Npoints; ++j)  {
+for (int j=0; j<Npoints; ++j)  {
 
    if ( Lat[j] >= 0.0 )  NS = 'N';
    else                  NS = 'S';
@@ -229,7 +228,7 @@ if ( i < 0 || i >= Npoints ) {
    //   done
    //
 
-return ( Lat[i] );
+return Lat[i];
 
 }
 
@@ -257,7 +256,7 @@ adj_lon -= 360.0*floor((adj_lon + 180.0)/360.0);
    //   done
    //
 
-return ( adj_lon );
+return adj_lon;
 
 }
 
@@ -496,7 +495,7 @@ int is_inside(const NumArray &x, const NumArray &y, const double x_test, const d
 
 {
 
-int j, k;
+int k;
 int n = x.n_elements();
 double angle, angle0, a, b, c, d;
 
@@ -506,7 +505,7 @@ b = y[0] - y_test;
 
 angle = angle0 = atan2(b, a)/pi;
 
-for (j=0; j<n; ++j)  {
+for (int j=0; j<n; ++j)  {
 
    k = (j + 1)%n;
 
@@ -520,7 +519,7 @@ for (j=0; j<n; ++j)  {
 
 }
 
-return ( nint( (angle - angle0)/2 ) );
+return nint( (angle - angle0)/2 );
 
 }
 

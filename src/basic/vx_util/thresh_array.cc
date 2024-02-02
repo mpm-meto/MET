@@ -7,7 +7,6 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 
 #include <iostream>
 #include <unistd.h>
@@ -18,6 +17,9 @@ using namespace std;
 #include "thresh_array.h"
 #include "vx_math.h"
 #include "vx_log.h"
+
+using namespace std;
+
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -54,18 +56,18 @@ ThreshArray::ThreshArray(const ThreshArray & a) {
 
 ThreshArray & ThreshArray::operator=(const ThreshArray & a) {
 
-   if(this == &a) return(*this);
+   if(this == &a) return *this;
 
    assign(a);
 
-   return(* this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void ThreshArray::init_from_scratch() {
 
-   t = (SingleThresh *) 0;
+   t = (SingleThresh *) nullptr;
 
    clear();
 
@@ -76,7 +78,7 @@ void ThreshArray::init_from_scratch() {
 
 void ThreshArray::clear() {
 
-   if(t) { delete [] t;  t = (SingleThresh *) 0; }
+   if(t) { delete [] t;  t = (SingleThresh *) nullptr; }
 
    Nelements = Nalloc = 0;
 
@@ -86,13 +88,12 @@ void ThreshArray::clear() {
 ////////////////////////////////////////////////////////////////////////
 
 void ThreshArray::assign(const ThreshArray & a) {
-   int j;
 
    clear();
 
    extend(a.Nelements);
 
-   for(j=0; j<(a.Nelements); j++) add(a.t[j]);
+   for(int j=0; j<(a.Nelements); j++) add(a.t[j]);
 
    Nelements = a.Nelements;
 
@@ -102,7 +103,6 @@ void ThreshArray::assign(const ThreshArray & a) {
 ////////////////////////////////////////////////////////////////////////
 
 void ThreshArray::dump(ostream & out, int depth) const {
-   int j;
 
    Indent prefix(depth);
    Indent prefix2(depth + 1);
@@ -110,7 +110,7 @@ void ThreshArray::dump(ostream & out, int depth) const {
    out << prefix << "Nelements = " << Nelements << "\n";
    out << prefix << "Nalloc    = " << Nalloc    << "\n";
 
-   for(j=0; j<Nelements; j++) {
+   for(int j=0; j<Nelements; j++) {
       out << prefix2 << "Element # " << j << " = \"" << t[j].get_str() << "\"\n";
    }
 
@@ -134,17 +134,17 @@ void ThreshArray::extend(int n, bool exact) {
       n = k*thresharray_alloc_inc;
    }
 
-   SingleThresh *u = (SingleThresh *) 0;
+   SingleThresh *u = (SingleThresh *) nullptr;
 
    u = new SingleThresh [n];
 
    if(t) {
       for(j=0; j<Nelements; j++) u[j] = t[j];
 
-      delete [] t; t = (SingleThresh *) 0;
+      delete [] t; t = (SingleThresh *) nullptr;
    }
 
-   t = u; u = (SingleThresh *) 0;
+   t = u; u = (SingleThresh *) nullptr;
 
    Nalloc = n;
 
@@ -156,14 +156,14 @@ void ThreshArray::extend(int n, bool exact) {
 bool ThreshArray::operator==(const ThreshArray &ta) const {
 
    // Check for the same length
-   if(Nelements != ta.n()) return(false);
+   if(Nelements != ta.n()) return false;
 
    // Check for equality of individual elements
    for(int i=0; i<Nelements; i++) {
-      if(!(t[i] == ta[i])) return(false);
+      if(!(t[i] == ta[i])) return false;
    }
 
-   return(true);
+   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -177,7 +177,7 @@ SingleThresh ThreshArray::operator[](int n) const {
 
    }
 
-   return(t[n]);
+   return t[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -228,13 +228,12 @@ void ThreshArray::add(const char *thresh_str) {
 ////////////////////////////////////////////////////////////////////////
 
 void ThreshArray::add(const ThreshArray & a) {
-   int j;
 
    if(a.n() == 0) return;
 
    extend(Nelements + a.n());
 
-   for(j=0; j<(a.n()); j++) add(a[j]);
+   for(int j=0; j<(a.n()); j++) add(a[j]);
 
    return;
 }
@@ -242,14 +241,13 @@ void ThreshArray::add(const ThreshArray & a) {
 ////////////////////////////////////////////////////////////////////////
 
 void ThreshArray::add_css(const char *text) {
-   int j;
    StringArray sa;
 
    sa.parse_css(text);
 
    extend(Nelements + sa.n());
 
-   for(j=0; j<sa.n(); j++) add(sa[j].c_str());
+   for(int j=0; j<sa.n(); j++) add(sa[j].c_str());
 
    return;
 }
@@ -295,78 +293,74 @@ int ThreshArray::has(const SingleThresh &st) const {
 
    status = has(st, index);
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 int ThreshArray::has(const SingleThresh &st, int & index) const {
-   int j;
 
    index = -1;
 
-   if(Nelements == 0) return(0);
+   if(Nelements == 0) return 0;
 
-   for(j=0; j<Nelements; j++) {
+   for(int j=0; j<Nelements; j++) {
 
-      if(t[j] == st) { index = j; return(1); }
+      if(t[j] == st) { index = j; return 1; }
    }
 
    //
    // Not found
    //
 
-   return(0);
+   return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 ConcatString ThreshArray::get_str(const char *sep, int precision) const {
-   int i;
    ConcatString cur_str;
    ConcatString tmp_str;
 
    if(Nelements == 0) tmp_str = na_str;
 
-   for(i=0; i<Nelements; i++) {
+   for(int i=0; i<Nelements; i++) {
       cur_str = t[i].get_str(precision);
 
       if(i==0) tmp_str << cur_str;
       else     tmp_str << sep << cur_str;
    }
 
-   return(tmp_str);
+   return tmp_str;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 ConcatString ThreshArray::get_abbr_str(const char *sep, int precision) const {
-   int i;
    ConcatString cur_str;
    ConcatString tmp_str;
 
    if(Nelements == 0) tmp_str = na_str;
 
-   for(i=0; i<Nelements; i++) {
+   for(int i=0; i<Nelements; i++) {
       cur_str = t[i].get_abbr_str(precision);
 
       if(i==0) tmp_str << cur_str;
       else     tmp_str << sep << cur_str;
    }
 
-   return(tmp_str);
+   return tmp_str;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void ThreshArray::check_bin_thresh() const {
-   int i;
 
    //
    // Check that the threshold values are monotonically increasing
    // and the threshold types are inequalities that remain the same
    //
-   for(i=0; i<Nelements-1; i++) {
+   for(int i=0; i<Nelements-1; i++) {
 
       if(t[i].get_value() >  t[i+1].get_value() ||
          t[i].get_type()  != t[i+1].get_type()  ||
@@ -387,7 +381,7 @@ void ThreshArray::check_bin_thresh() const {
 ////////////////////////////////////////////////////////////////////////
 
 int ThreshArray::check_bins(double v) const {
-   return(check_bins(v, bad_data_double, bad_data_double));
+   return check_bins(v, bad_data_double, bad_data_double);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -396,7 +390,7 @@ int ThreshArray::check_bins(double v, double mn, double sd) const {
    int i, bin;
 
    // Check for bad data or no thresholds
-   if(is_bad_data(v) || Nelements == 0) return(bad_data_int);
+   if(is_bad_data(v) || Nelements == 0) return bad_data_int;
 
    // For < and <=, check thresholds left to right.
    if(t[0].get_type() == thresh_lt || t[0].get_type() == thresh_le) {
@@ -423,26 +417,25 @@ int ThreshArray::check_bins(double v, double mn, double sd) const {
 
    // The bin value returned is 1-based, not 0-based.
 
-   return(bin);
+   return bin;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 bool ThreshArray::check_dbl(double v) const {
-   return(check_dbl(v, bad_data_double, bad_data_double));
+   return check_dbl(v, bad_data_double, bad_data_double);
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 bool ThreshArray::check_dbl(double v, double mn, double sd) const {
-   int i;
 
    //
    // Check if the value satisifes all the thresholds in the array
    //
-   for(i=0; i<Nelements; i++) if(!t[i].check(v, mn, sd)) return(false);
+   for(int i=0; i<Nelements; i++) if(!t[i].check(v, mn, sd)) return false;
 
-   return(true);
+   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -535,14 +528,13 @@ void ThreshArray::get_simple_nodes(vector <Simple_Node> &v) {
 
 ThreshArray string_to_prob_thresh(const char *s) {
    ThreshArray ta;
-   double v;
-   int i;
 
    // Parse the input string as a comma-separated list
    ta.add_css(s);
 
    // Handle special case of a single threshold of type equality
    if(ta.n() == 1 && ta[0].get_type() == thresh_eq) {
+      double v;
 
       // Store the threshold value
       v = ta[0].get_value();
@@ -563,7 +555,7 @@ ThreshArray string_to_prob_thresh(const char *s) {
 
       // Construct list of probability thresholds using the input precision
       ta.clear();
-      for(i=0; i*v<1.0; i++) {
+      for(int i=0; i*v<1.0; i++) {
          cs << cs_erase << ">=" << i*v;
          ta.add(cs.c_str());
       }
@@ -574,7 +566,7 @@ ThreshArray string_to_prob_thresh(const char *s) {
    // Check probability thresholds
    check_prob_thresh(ta);
 
-   return(ta);
+   return ta;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -602,13 +594,13 @@ ConcatString prob_thresh_to_string(const ThreshArray &ta) {
    // If not an array of probabilities, return comma-separated string
    if(!status) s = ta.get_str();
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 bool check_prob_thresh(const ThreshArray &ta, bool error_out) {
-   int i, n;
+   int n;
 
    n = ta.n();
 
@@ -628,11 +620,11 @@ bool check_prob_thresh(const ThreshArray &ta, bool error_out) {
          exit(1);
       }
       else {
-         return(false);
+         return false;
       }
    }
 
-   for(i=0; i<n; i++) {
+   for(int i=0; i<n; i++) {
 
       // Check that all threshold types are greater than or equal to
       if(ta[i].get_type() != thresh_ge) {
@@ -647,7 +639,7 @@ bool check_prob_thresh(const ThreshArray &ta, bool error_out) {
             exit(1);
          }
          else {
-            return(false);
+            return false;
          }
       }
 
@@ -663,12 +655,12 @@ bool check_prob_thresh(const ThreshArray &ta, bool error_out) {
             exit(1);
          }
          else {
-            return(false);
+            return false;
          }
       }
    } // end for i
 
-   return(true);
+   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -681,10 +673,10 @@ bool check_prob_thresh(const ThreshArray &ta, bool error_out) {
 ThreshArray process_perc_thresh_bins(const ThreshArray &ta_in) {
    ThreshArray ta_bins, ta_out;
    ConcatString cs;
-   int i, j;
+   int j;
 
    // Loop over and process each input threshold
-   for(i=0; i<ta_in.n(); i++) {
+   for(int i=0; i<ta_in.n(); i++) {
 
       // Pass through non-equality thresholds thresholds to the output
       if(ta_in[i].get_type()   != thresh_eq                || 
@@ -731,7 +723,7 @@ ThreshArray process_perc_thresh_bins(const ThreshArray &ta_in) {
       }
    } // end for i
 
-   return(ta_out);
+   return ta_out;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -771,7 +763,7 @@ ThreshArray process_rps_cdp_thresh(const ThreshArray &ta) {
       ta_out = ta;
    }
 
-   return(ta_out);
+   return ta_out;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -792,7 +784,7 @@ ThreshArray derive_cdp_thresh(const ThreshArray &ta) {
       ta_out.add(st);
    }
 
-   return(ta_out);
+   return ta_out;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -804,7 +796,7 @@ ConcatString write_css(const ThreshArray &ta) {
       css << (i == 0 ? "" : ",") << ta[i].get_str();
    }
 
-   return(css);
+   return css;
 }
 
 ////////////////////////////////////////////////////////////////////////

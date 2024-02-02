@@ -14,19 +14,19 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
-#include <unistd.h>
+//#include <unistd.h>
 #include <stdlib.h>
-#include <sys/types.h>
+//#include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
-#include <cmath>
+//#include <unistd.h>
+//#include <cmath>
 
 #include "vx_log.h"
 
 #include "file_size.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ if ( status < 0 )  {
    //  return the file size in bytes
    //
 
-return( (long long) sbuf.st_size );
+return (long long) sbuf.st_size;
 
 }
 
