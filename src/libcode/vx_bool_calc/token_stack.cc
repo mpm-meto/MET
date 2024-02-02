@@ -1,4 +1,10 @@
-
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1992 - 2023
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Research Applications Lab (RAL)
+// ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -16,9 +22,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -28,6 +31,9 @@ using namespace std;
 #include "vx_util.h"
 
 #include "token_stack.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -83,11 +89,11 @@ TokenStack & TokenStack::operator=(const TokenStack & a)
 
 {
 
-if ( this == &a )  return ( * this );
+if ( this == &a )  return *this;
 
 assign(a);
 
-return ( * this );
+return *this;
 
 }
 
@@ -99,7 +105,7 @@ void TokenStack::init_from_scratch()
 
 {
 
-e = (Token *) 0;
+e = (Token *) nullptr;
 
 AllocInc = 50;   //  default value
 
@@ -117,7 +123,7 @@ void TokenStack::clear()
 
 {
 
-if ( e )  { delete [] e;  e = (Token *) 0; }
+if ( e )  { delete [] e;  e = (Token *) nullptr; }
 
 
 
@@ -189,11 +195,11 @@ for(j=0; j<Nelements; ++j)  {
 
 }
 
-if ( e )  { delete [] e;  e = (Token *) 0; }
+if ( e )  { delete [] e;  e = (Token *) nullptr; }
 
 e = u;
 
-u = (Token *) 0;
+u = (Token *) nullptr;
 
 Nalloc = n;
 
@@ -215,9 +221,7 @@ out << prefix << "Nelements = " << Nelements << "\n";
 // out << prefix << "Nalloc    = " << Nalloc    << "\n";
 // out << prefix << "AllocInc  = " << AllocInc  << "\n";
 
-int j;
-
-for(j=0; j<Nelements; ++j)  {
+for(int j=0; j<Nelements; ++j)  {
 
    // out << prefix << "Element # " << j << " ... \n";
    // e[j].dump(out, _depth_ + 1);
@@ -292,7 +296,7 @@ Token _t = e[Nelements - 1];
 
 --Nelements;
 
-return ( _t );
+return _t;
 
 }
 
@@ -314,7 +318,7 @@ if ( Nelements <= 0 )  {
 
 Token _t = e[Nelements - 1];
 
-return ( _t );
+return _t;
 
 }
 
@@ -336,7 +340,7 @@ if ( Nelements <= 0 )  {
 
 int k = e[Nelements - 1].in_prec;
 
-return ( k );
+return k;
 
 }
 
@@ -358,7 +362,7 @@ if ( Nelements <= 0 )  {
 
 char c = e[Nelements - 1].value;
 
-return ( c );
+return c;
 
 }
 */
@@ -381,7 +385,7 @@ if ( Nelements <= 0 )  {
 
 bool tf = e[Nelements - 1].is_mark();
 
-return ( tf );
+return tf;
 
 }
 
@@ -403,7 +407,7 @@ ostream & operator<<(ostream & out, const TokenStack & ts)
 
 ts.dump(out);
 
-return ( out );
+return out;
 
 }
 

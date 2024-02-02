@@ -1,9 +1,13 @@
-
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1992 - 2023
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Research Applications Lab (RAL)
+// ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 ////////////////////////////////////////////////////////////////////////
 
-
-using namespace std;
 
 #include <iostream>
 #include <unistd.h>
@@ -14,6 +18,8 @@ using namespace std;
 #include "make_program.h"
 
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -71,9 +77,9 @@ void BoolCalc::clear()
 
 {
 
-if ( s )  { delete s;  s = 0; }
+if ( s )  { delete s;  s = nullptr; }
 
-if ( program )  { delete program;  program = 0; }
+if ( program )  { delete program;  program = nullptr; }
 
 Max_depth = Max_local = 0;
 
@@ -111,10 +117,9 @@ void BoolCalc::dump_program(ostream & out) const
 
 {
 
-int j;
 const Program P = *program;
 
-for (j=0; j<(int) (program->size()); ++j)  {
+for (int j=0; j<(int) (program->size()); ++j)  {
 
    out << "\nElement # " << j << " ... \n";
 
@@ -176,7 +181,6 @@ bool BoolCalc::run(const vector<bool> arg)
 
 {
 
-int j;
 Token tok;
 bool tf = false;
 bool tf2 = false;
@@ -184,25 +188,22 @@ bool result = false;
 Program & P = *program;
 
 
-for (j=0; j<((int) P.size()); ++j)  {
+for (int j=0; j<((int) P.size()); ++j)  {
 
    tok = P[j];
 
    switch ( tok.type )  {
-
 
       case tok_local_var:
          tf = arg[tok.number_1b - 1];   //  don't forget the -1
          s->push(tf);
          break;
 
-
       case tok_negation:
          tf = s->top();
          s->pop();
          s->push(!tf);
          break;
-
 
       case tok_union:
          tf2 = s->top();
@@ -212,7 +213,6 @@ for (j=0; j<((int) P.size()); ++j)  {
          s->push(tf || tf2);
          break;
 
-
       case tok_intersection:
          tf2 = s->top();
          s->pop();
@@ -220,7 +220,6 @@ for (j=0; j<((int) P.size()); ++j)  {
          s->pop();
          s->push(tf && tf2);
          break;
-
 
       default:
          mlog << Error << "\nBoolCalc::run(const vector<bool>) -> "
@@ -247,7 +246,7 @@ result = s->top();
 
 s->pop();
 
-return ( result );
+return result;
 
 }
 
