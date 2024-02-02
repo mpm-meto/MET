@@ -21,8 +21,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -31,6 +29,8 @@ using namespace std;
 
 #include "interest.h"
 #include "vx_math.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -78,11 +78,11 @@ assign(s);
 
 SingleFeature & SingleFeature::operator=(const SingleFeature &s) {
 
-   if(this == &s) return(*this);
+   if(this == &s) return *this;
 
    assign(s);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -316,11 +316,11 @@ PairFeature & PairFeature::operator=(const PairFeature &p)
 
 {
 
-   if(this == &p) return(*this);
+   if(this == &p) return *this;
 
    assign(p);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -560,7 +560,7 @@ ostream & operator<<(ostream & out, const SingleFeature & s)
    out << "Intensity Sum          = "  << (s.intensity_ptile.sum) << "\n";
    out.flush();
 
-   return(out);
+   return out;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -588,7 +588,7 @@ ostream & operator<<(ostream & out, const PairFeature & p)
    out << "Percentile Intensity Ratio        = " << (p.percentile_intensity_ratio) << "\n";
    out.flush();
 
-   return(out);
+   return out;
 }
 
 ////////////////////////////////////////////////////////////////////////

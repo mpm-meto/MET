@@ -7,11 +7,8 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 
-
 //////////////////////////////////////////////////////////////////////////////////
 
-
-using namespace std;
 
 #include <iostream>
 #include <unistd.h>
@@ -24,6 +21,8 @@ using namespace std;
 #include "vx_log.h"
 #include "copy_bytes.h"
 #include "do_unblocking.h"
+
+using namespace std;
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +79,7 @@ int n_read, bytes;
 int value;
 unsigned int I;
 unsigned long long L;
-unsigned char * b = (unsigned char *) 0;
+unsigned char * b = (unsigned char *) nullptr;
 
 
 switch ( padsize )  {
@@ -138,7 +137,7 @@ switch ( padsize )  {
    //  done
    //
 
-return ( value );
+return value;
 
 }
 

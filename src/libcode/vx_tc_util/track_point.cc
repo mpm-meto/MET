@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -20,6 +18,8 @@ using namespace std;
 #include "vx_math.h"
 
 #include "track_point.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -52,11 +52,11 @@ QuadInfo::QuadInfo(const QuadInfo &t) {
 
 QuadInfo & QuadInfo::operator=(const QuadInfo &t) {
 
-   if(this == &t) return(*this);
+   if(this == &t) return *this;
 
    assign(t);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ QuadInfo & QuadInfo::operator+=(const QuadInfo &t) {
    if(is_bad_data(NWVal) || is_bad_data(t.NWVal)) NWVal  = bad_data_double;
    else                                           NWVal += t.NWVal;
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ ConcatString QuadInfo::serialize() const {
      << ", SWVal = " << SWVal
      << ", NWVal = " << NWVal;
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -162,7 +162,7 @@ ConcatString QuadInfo::serialize_r(int n, int indent_depth) const {
 
    s << prefix << "[" << n << "] " << serialize() << "\n";
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -352,17 +352,16 @@ TrackPoint::TrackPoint(const TrackPoint &p) {
 
 TrackPoint & TrackPoint::operator=(const TrackPoint &p) {
 
-   if(this == &p) return(*this);
+   if(this == &p) return *this;
 
    assign(p);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 TrackPoint & TrackPoint::operator+=(const TrackPoint &p) {
-   int i;
 
    // Check valid time
    if(ValidTime == (unixtime) 0) ValidTime = p.valid();
@@ -414,9 +413,9 @@ TrackPoint & TrackPoint::operator+=(const TrackPoint &p) {
    MSLPStdev   = bad_data_double;
    
    // Increment wind quadrants
-   for(i=0; i<NWinds; i++) Wind[i] += p[i];
+   for(int i=0; i<NWinds; i++) Wind[i] += p[i];
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -474,7 +473,6 @@ void TrackPoint::clear() {
 
 void TrackPoint::dump(ostream &out, int indent_depth) const {
    Indent prefix(indent_depth);
-   int i;
 
    out << prefix << "ValidTime = " << (ValidTime > 0 ? unix_to_yyyymmdd_hhmmss(ValidTime).text() : na_str) << "\n";
    out << prefix << "LeadTime  = " << (!is_bad_data(LeadTime) ? sec_to_hhmmss(LeadTime).text() : na_str) << "\n";
@@ -501,7 +499,7 @@ void TrackPoint::dump(ostream &out, int indent_depth) const {
    out << prefix << "VmaxStdev   = " << VmaxStdev << "\n";
    out << prefix << "MSLPStdev   = " << MSLPStdev << "\n";
    
-   for(i=0; i<NWinds; i++) {
+   for(int i=0; i<NWinds; i++) {
       out << prefix << "Wind[" << i+1 << "]:" << "\n";
       Wind[i].dump(out, indent_depth+1);
    }
@@ -541,7 +539,7 @@ ConcatString TrackPoint::serialize() const {
      << ", MSLPStdev = " << MSLPStdev
      << ", NDiag = " << DiagVal.n();
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -549,20 +547,18 @@ ConcatString TrackPoint::serialize() const {
 ConcatString TrackPoint::serialize_r(int n, int indent_depth) const {
    Indent prefix(indent_depth);
    ConcatString s;
-   int i;
 
    s << prefix << "[" << n << "] " << serialize() << ", Winds:\n";
 
-   for(i=0; i<NWinds; i++)
+   for(int i=0; i<NWinds; i++)
       s << Wind[i].serialize_r(i+1, indent_depth+1) << "\n";
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackPoint::assign(const TrackPoint &t) {
-   int i;
 
    clear();
 
@@ -594,7 +590,7 @@ void TrackPoint::assign(const TrackPoint &t) {
 
    DiagVal = t.DiagVal;
 
-   for(i=0; i<NWinds; i++) Wind[i] = t.Wind[i];
+   for(int i=0; i<NWinds; i++) Wind[i] = t.Wind[i];
 
    return;
 }
@@ -641,7 +637,7 @@ const QuadInfo & TrackPoint::operator[](int n) const {
       exit(1);
    }
 
-   return(Wind[n]);
+   return Wind[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -663,15 +659,14 @@ double TrackPoint::diag_val(int i) const {
 ////////////////////////////////////////////////////////////////////////
 
 bool TrackPoint::set(const ATCFTrackLine &l) {
-   int i;
 
    // Initialize TrackPoint with ATCFTrackLine, if necessary
    if(!IsSet) initialize(l);
 
    // Attempt to set each WindInfo object with ATCFTrackLine
-   for(i=0; i<NWinds; i++) Wind[i].set_wind(l);
+   for(int i=0; i<NWinds; i++) Wind[i].set_wind(l);
 
-   return(true);
+   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -706,7 +701,7 @@ bool TrackPoint::is_match(const ATCFTrackLine &l) const {
       Level     != l.level())
       match = false;
 
-   return(match);
+   return match;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -741,7 +736,7 @@ double TrackPoint::get_diag_val(const StringArray &diag_names, const string cur_
    else
       diag_val = bad_data_double;
    
-   return(diag_val);
+   return diag_val;
 }
 
 ////////////////////////////////////////////////////////////////////////

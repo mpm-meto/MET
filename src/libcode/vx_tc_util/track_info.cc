@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -19,6 +17,8 @@ using namespace std;
 
 #include "math_constants.h"
 #include "track_info.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -51,18 +51,18 @@ TrackInfo::TrackInfo(const TrackInfo & t) {
 
 TrackInfo & TrackInfo::operator=(const TrackInfo & t) {
 
-   if(this == &t) return(*this);
+   if(this == &t) return *this;
 
    assign(t);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackInfo::init_from_scratch() {
 
-   Point = (TrackPoint *) 0;
+   Point = (TrackPoint *) nullptr;
 
    clear();
 
@@ -106,7 +106,7 @@ void TrackInfo::clear() {
 
 void TrackInfo::clear_points() {
 
-   if(Point) { delete [] Point; Point = (TrackPoint *) 0; }
+   if(Point) { delete [] Point; Point = (TrackPoint *) nullptr; }
    NPoints = NAlloc = 0;
 
    return;
@@ -116,7 +116,6 @@ void TrackInfo::clear_points() {
 
 void TrackInfo::dump(ostream &out, int indent_depth) const {
    Indent prefix(indent_depth);
-   int i;
 
    out << prefix << "StormId         = \"" << StormId.contents() << "\"\n";
    out << prefix << "IsBestTrack     = " << bool_to_string(IsBestTrack) << "\n";
@@ -142,7 +141,7 @@ void TrackInfo::dump(ostream &out, int indent_depth) const {
    out << prefix << "NAlloc          = " << NAlloc << "\n";
    out << prefix << "NTrackLines     = " << TrackLines.n() << "\n";
 
-   for(i=0; i<NPoints; i++) {
+   for(int i=0; i<NPoints; i++) {
       out << prefix << "TrackPoint[" << i+1 << "]:" << "\n";
       Point[i].dump(out, indent_depth+1);
    }
@@ -183,7 +182,7 @@ ConcatString TrackInfo::serialize() const {
      << ", NAlloc = " << NAlloc
      << ", NTrackLines = " << TrackLines.n();
 
-   return(s);
+   return s;
 
 }
 
@@ -192,21 +191,19 @@ ConcatString TrackInfo::serialize() const {
 ConcatString TrackInfo::serialize_r(int n, int indent_depth) const {
    Indent prefix(indent_depth);
    ConcatString s;
-   int i;
 
    s << prefix << "[" << n << "] " << serialize() << ", Points:\n";
 
-   for(i=0; i<NPoints; i++)
+   for(int i=0; i<NPoints; i++)
       s << Point[i].serialize_r(i+1, indent_depth+1);
 
-   return(s);
+   return s;
 
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackInfo::assign(const TrackInfo &t) {
-   int i;
 
    clear();
 
@@ -238,7 +235,7 @@ void TrackInfo::assign(const TrackInfo &t) {
 
    extend(t.NPoints);
 
-   for(i=0; i<t.NPoints; i++) Point[i] = t.Point[i];
+   for(int i=0; i<t.NPoints; i++) Point[i] = t.Point[i];
 
    NPoints = t.NPoints;
 
@@ -249,7 +246,7 @@ void TrackInfo::assign(const TrackInfo &t) {
 
 void TrackInfo::extend(int n, bool exact) {
    int j, k;
-   TrackPoint *new_line = (TrackPoint *) 0;
+   TrackPoint *new_line = (TrackPoint *) nullptr;
 
    // Check if enough memory is already allocated
    if(NAlloc >= n) return;
@@ -273,12 +270,12 @@ void TrackInfo::extend(int n, bool exact) {
    // Copy the array contents and delete the old one
    if(Point) {
       for(j=0; j<NPoints; j++) new_line[j] = Point[j];
-      delete [] Point;  Point = (TrackPoint *) 0;
+      delete [] Point;  Point = (TrackPoint *) nullptr;
    }
 
    // Point to the new array
    Point     = new_line;
-   new_line = (TrackPoint *) 0;
+   new_line = (TrackPoint *) nullptr;
 
    // Store the allocated length
    NAlloc = n;
@@ -346,7 +343,7 @@ int TrackInfo::lead_index(int l) const {
 
    if(i == NPoints) i = -1;
 
-   return(i);
+   return i;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -361,7 +358,7 @@ int TrackInfo::valid_index(unixtime u) const {
 
    if(i == NPoints) i = -1;
 
-   return(i);
+   return i;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -375,7 +372,7 @@ const TrackPoint & TrackInfo::operator[](int n) const {
       exit(1);
    }
 
-   return(Point[n]);
+   return Point[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -411,15 +408,14 @@ const char * TrackInfo::diag_name(int i) const {
 ////////////////////////////////////////////////////////////////////////
 
 int TrackInfo::valid_inc() const {
-   int i;
    NumArray ut_inc;
 
    // Compute list of time spacing between TrackPoints
-   for(i=1; i<NPoints; i++)
+   for(int i=1; i<NPoints; i++)
       ut_inc.add((int) (Point[i].valid() - Point[i-1].valid()));
 
    // Return the most common spacing
-   return(nint(ut_inc.mode()));
+   return nint(ut_inc.mode());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -451,13 +447,12 @@ void TrackInfo::add(const TrackPoint &p) {
 bool TrackInfo::add(const ATCFTrackLine &l, bool check_dup, bool check_anly) {
    bool found = false;
    bool status = false;
-   int i;
 
    // Initialize TrackInfo with ATCFTrackLine, if necessary
    if(!IsSet) initialize(l, check_anly);
 
    // Check if TrackPoint doesn't match this TrackInfo
-   if(!is_match(l)) return(false);
+   if(!is_match(l)) return false;
 
    // Check if the storm name needs to be set or has changed
    ConcatString name = l.storm_name();
@@ -479,12 +474,12 @@ bool TrackInfo::add(const ATCFTrackLine &l, bool check_dup, bool check_anly) {
               << unix_to_yyyymmdd_hhmmss(l.valid()) << " < "
               << unix_to_yyyymmdd_hhmmss(Point[NPoints-1].valid())
               << "):\n" << l.get_line() << "\n\n";
-         return(false);
+         return false;
       }
    }
 
    // Add ATCFTrackLine to an existing TrackPoint if possible
-   for(i=NPoints-1; i>=0; i--) {
+   for(int i=NPoints-1; i>=0; i--) {
       if(Point[i].is_match(l)) {
          found = true;
          status = Point[i].set(l);
@@ -515,20 +510,19 @@ bool TrackInfo::add(const ATCFTrackLine &l, bool check_dup, bool check_anly) {
    // Store the ATCFTrackLine that was just added
    if(check_dup) TrackLines.add(l.get_line());
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackInfo::add_watch_warn(const ConcatString &ww_sid,
                                WatchWarnType ww_type, unixtime ww_ut) {
-   int i;
 
    // Check for a matching storm id
    if(storm_id() != ww_sid) return;
 
    // Loop over the TrackPoints
-   for(i=0; i<NPoints; i++) Point[i].set_watch_warn(ww_type, ww_ut);
+   for(int i=0; i<NPoints; i++) Point[i].set_watch_warn(ww_type, ww_ut);
 
    return;
 }
@@ -540,7 +534,7 @@ bool TrackInfo::add_diag_data(DiagFile &diag_file, const StringArray &req_diag_n
    // Check for a match
    if(StormId  != diag_file.storm_id() ||
       InitTime != diag_file.init()     ||
-      !diag_file.technique().has(Technique)) return(false);
+      !diag_file.technique().has(Technique)) return false;
 
    // Store the diagnostic metadata
    DiagSource  = diag_file.diag_source();
@@ -550,10 +544,10 @@ bool TrackInfo::add_diag_data(DiagFile &diag_file, const StringArray &req_diag_n
    // If empty, store all diagnostics
    bool store_all_diag = (req_diag_name.n() == 0 ? true : false);
 
-   int i_name, i_time, i_pnt;
+   int i_pnt;
 
    // Loop over the diagnostics in the file
-   for(i_name=0; i_name<diag_file.n_diag(); i_name++) {
+   for(int i_name=0; i_name<diag_file.n_diag(); i_name++) {
 
       // Skip diagnostics not requested
       if(!store_all_diag &&
@@ -563,7 +557,7 @@ bool TrackInfo::add_diag_data(DiagFile &diag_file, const StringArray &req_diag_n
       DiagName.add(diag_file.diag_name()[i_name]);
       NumArray diag_val = diag_file.diag_val(diag_file.diag_name()[i_name]);
       // Add diagnostic values to the TrackPoints
-      for(i_time=0; i_time<diag_file.n_time(); i_time++) {
+      for(int i_time=0; i_time<diag_file.n_time(); i_time++) {
 
          // Get the index of the TrackPoint for this lead time
          if((i_pnt = lead_index(nint(diag_file.lead(i_time)))) < 0) continue;
@@ -596,7 +590,7 @@ bool TrackInfo::add_diag_data(DiagFile &diag_file, const StringArray &req_diag_n
       } // end for i_time
    } // end for i_name
 
-   return(true);
+   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -628,7 +622,7 @@ void TrackInfo::add_uniq_diag_name(const string diag_name) {
 ////////////////////////////////////////////////////////////////////////
 
 bool TrackInfo::has(const ATCFTrackLine &l) const {
-   return(TrackLines.has(l.get_line()));
+   return TrackLines.has(l.get_line());
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -638,12 +632,12 @@ bool TrackInfo::is_match(const ATCFTrackLine &l) {
    int diff;
 
    // Make sure the technique is defined.
-   if(Technique.empty()) return(false);
+   if(Technique.empty()) return false;
 
    // Make sure the basin, cyclone, and technique stay constant.
    if(Basin     != l.basin() ||
       Cyclone   != l.cyclone_number() ||
-      Technique != l.technique()) return(false);
+      Technique != l.technique()) return false;
 
    // Check for an analysis track where the technique number matches,
    // the lead time remains zero, and the valid time changes.
@@ -683,7 +677,7 @@ bool TrackInfo::is_match(const ATCFTrackLine &l) {
          match = false;
    }
 
-   return(match);
+   return match;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -700,7 +694,7 @@ bool TrackInfo::is_match(const TrackInfo &t) const {
       match = false;
 
    // Check that technique is defined
-   if(Technique.empty() || t.technique().empty()) return(false);
+   if(Technique.empty() || t.technique().empty()) return false;
 
    // Check that init times match for non-BEST, non-analysis tracks
    if(!IsBestTrack && !t.is_best_track() &&
@@ -709,7 +703,7 @@ bool TrackInfo::is_match(const TrackInfo &t) const {
       match = false;
    }
 
-   return(match);
+   return match;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -755,11 +749,11 @@ TrackInfoArray::TrackInfoArray(const TrackInfoArray & t) {
 
 TrackInfoArray & TrackInfoArray::operator=(const TrackInfoArray & t) {
 
-   if(this == &t)  return(*this);
+   if(this == &t)  return *this;
 
    assign(t);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -784,11 +778,10 @@ void TrackInfoArray::clear() {
 
 void TrackInfoArray::dump(ostream &out, int indent_depth) const {
    Indent prefix(indent_depth);
-   int i;
 
    out << prefix << "NTracks = " << Track.size() << "\n";
 
-   for(i=0; i<Track.size(); i++) {
+   for(int i=0; i<Track.size(); i++) {
       out << prefix << "TrackInfo[" << i+1 << "]:" << "\n";
       Track[i].dump(out, indent_depth+1);
    }
@@ -807,7 +800,7 @@ ConcatString TrackInfoArray::serialize() const {
    s << "TrackInfoArray: "
      << "NTracks = " << n();
 
-   return(s);
+   return s;
 
 }
 
@@ -816,25 +809,23 @@ ConcatString TrackInfoArray::serialize() const {
 ConcatString TrackInfoArray::serialize_r(int indent_depth) const {
    Indent prefix(indent_depth);
    ConcatString s;
-   int i;
 
    s << prefix << serialize() << ", Tracks:\n";
 
-   for(i=0; i<Track.size(); i++)
+   for(int i=0; i<Track.size(); i++)
       s << Track[i].serialize_r(i+1, indent_depth+1) << "\n";
 
-   return(s);
+   return s;
 
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackInfoArray::assign(const TrackInfoArray &t) {
-   int i;
 
    clear();
 
-   for(i=0; i<t.n(); i++) Track.push_back(t[i]);
+   for(int i=0; i<t.n(); i++) Track.push_back(t[i]);
 
    return;
 }
@@ -850,7 +841,7 @@ const TrackInfo & TrackInfoArray::operator[](int n) const {
       exit(1);
    }
 
-   return(Track[n]);
+   return Track[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -883,7 +874,6 @@ void TrackInfoArray::set(int n, const TrackInfo &t) {
 bool TrackInfoArray::add(const ATCFTrackLine &l, bool check_dup, bool check_anly) {
    bool found  = false;
    bool status = false;
-   int i;
 
    // Check if this ATCFTrackLine already exists in the TrackInfoArray
    if(check_dup) {
@@ -892,12 +882,12 @@ bool TrackInfoArray::add(const ATCFTrackLine &l, bool check_dup, bool check_anly
               << "\nTrackInfoArray::add(const ATCFTrackLine &) -> "
               << "skipping duplicate ATCFTrackLine:\n"
               << l.get_line() << "\n\n";
-         return(false);
+         return false;
       }
    }
 
    // Add ATCFTrackLine to an existing track if possible
-   for(i=Track.size()-1; i>=0; i--) {
+   for(int i=Track.size()-1; i>=0; i--) {
       if(Track[i].is_match(l)) {
          found = true;
          status = Track[i].add(l, check_dup, check_anly);
@@ -913,17 +903,16 @@ bool TrackInfoArray::add(const ATCFTrackLine &l, bool check_dup, bool check_anly
       status = true;
    }
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 bool TrackInfoArray::has(const ATCFTrackLine &l) const {
    bool found = false;
-   int i;
 
    // Check if the TrackInfo data matches
-   for(i=Track.size()-1; i>=0; i--) {
+   for(int i=Track.size()-1; i>=0; i--) {
       if(Track[i].has(l)) {
          found = true;
          break;
@@ -931,17 +920,16 @@ bool TrackInfoArray::has(const ATCFTrackLine &l) const {
    }
 
    // Return whether the TrackInfo matches
-   return(found);
+   return found;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 bool TrackInfoArray::erase_storm_id(const ConcatString &s) {
    bool status = false;
-   int i;
 
    // Erase all tracks with this storm id
-   for(i=0; i<Track.size(); i++) {
+   for(int i=0; i<Track.size(); i++) {
       if(Track[i].storm_id() == s) {
          Track.erase(Track.begin()+i);
          i--;
@@ -949,7 +937,7 @@ bool TrackInfoArray::erase_storm_id(const ConcatString &s) {
       }
    }
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -962,7 +950,7 @@ int TrackInfoArray::add_diag_data(DiagFile &diag_file, const StringArray &diag_n
       if(Track[i].add_diag_data(diag_file, diag_name)) n_match++;
    }
 
-   return(n_match);
+   return n_match;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1228,7 +1216,7 @@ TrackInfo consensus(const TrackInfoArray &tracks,
    } // end loop over lead times
 
    // Return the consensus track
-   return(tavg);
+   return tavg;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1267,12 +1255,12 @@ bool has_storm_id(const StringArray &storm_id,
                   const ConcatString &basin,
                   const ConcatString &cyclone,
                   unixtime ut) {
-   int i, year, year_beg, year_end;
+   int year, year_beg, year_end;
    unixtime ut_beg, ut_end;
    bool match = false;
 
    // Loop over the storm id entries
-   for(i=0; i<storm_id.n(); i++) {
+   for(int i=0; i<storm_id.n(); i++) {
 
       // Check that the basin matches
       if(strncasecmp(storm_id[i].c_str(), basin.c_str(), 2) != 0) continue;
@@ -1310,7 +1298,7 @@ bool has_storm_id(const StringArray &storm_id,
       break;
    }
 
-   return(match);
+   return match;
 }
 
 ////////////////////////////////////////////////////////////////////////

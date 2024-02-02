@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -21,6 +19,8 @@ using namespace std;
 
 #include "genesis_info.h"
 #include "vx_config.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -58,7 +58,7 @@ bool GenesisEventInfo::is_genesis(const TrackPoint &p) const {
       status = false;
    }
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,6 @@ GenesisEventInfo &GenesisEventInfo::operator=(const GenesisEventInfo &a) noexcep
 GenesisEventInfo parse_conf_genesis_event_info(Dictionary *dict) {
    GenesisEventInfo info;
    StringArray sa;
-   int i;
 
    if(!dict) {
       mlog << Error << "\nparse_conf_genesis_event_info() -> "
@@ -92,7 +91,7 @@ GenesisEventInfo parse_conf_genesis_event_info(Dictionary *dict) {
 
    // Conf: category (optional)
    sa = dict->lookup_string_array(conf_key_category, false);
-   for(i=0; i<sa.n(); i++) {
+   for(int i=0; i<sa.n(); i++) {
       info.Category.push_back(string_to_cyclonelevel(sa[i].c_str()));
    }
 
@@ -102,7 +101,7 @@ GenesisEventInfo parse_conf_genesis_event_info(Dictionary *dict) {
    // Conf: mslp_thresh
    info.MSLPThresh = dict->lookup_thresh(conf_key_mslp_thresh);
 
-   return(info);
+   return info;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -132,11 +131,11 @@ GenesisInfo::GenesisInfo(const GenesisInfo &g) {
 
 GenesisInfo & GenesisInfo::operator=(const GenesisInfo &g) {
 
-   if(this == &g) return(*this);
+   if(this == &g) return *this;
 
    assign(g);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -245,7 +244,7 @@ ConcatString GenesisInfo::serialize() const {
      << ", Lon = " << Lon
      << ", DLand = " << DLand;
 
-   return(s);
+   return s;
 
 }
 
@@ -257,7 +256,7 @@ ConcatString GenesisInfo::serialize_r(int n, int indent_depth) const {
 
    s << prefix << "[" << n << "] " << serialize();
 
-   return(s);
+   return s;
 
 }
 
@@ -285,7 +284,7 @@ bool GenesisInfo::set(const TrackInfo &ti,
    }
 
    // Return bad status if genesis was not found
-   if(is_bad_data(GenesisIndex)) return(false);
+   if(is_bad_data(GenesisIndex)) return false;
 
    // Store the TrackInfo
    TrackInfo::assign(ti);
@@ -299,7 +298,7 @@ bool GenesisInfo::set(const TrackInfo &ti,
    if(IsAnlyTrack) GenesisLead = 0;
    else            GenesisLead = ti[GenesisIndex].lead();
 
-   return(true);
+   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -369,11 +368,11 @@ GenesisInfoArray::GenesisInfoArray(const GenesisInfoArray & t) {
 
 GenesisInfoArray & GenesisInfoArray::operator=(const GenesisInfoArray & t) {
 
-   if(this == &t)  return(*this);
+   if(this == &t)  return *this;
 
    assign(t);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -398,11 +397,10 @@ void GenesisInfoArray::clear() {
 
 void GenesisInfoArray::dump(ostream &out, int indent_depth) const {
    Indent prefix(indent_depth);
-   int i;
 
    out << prefix << "NGenesis = " << (int) Genesis.size() << "\n";
 
-   for(i=0; i<Genesis.size(); i++) {
+   for(int i=0; i<Genesis.size(); i++) {
       out << prefix << "GenesisInfo[" << i+1 << "]:" << "\n";
       Genesis[i].dump(out, indent_depth+1);
    }
@@ -421,7 +419,7 @@ ConcatString GenesisInfoArray::serialize() const {
    s << "GenesisInfoArray: "
      << "NGenesis = " << (int) Genesis.size();
 
-   return(s);
+   return s;
 
 }
 
@@ -430,28 +428,26 @@ ConcatString GenesisInfoArray::serialize() const {
 ConcatString GenesisInfoArray::serialize_r(int indent_depth) const {
    Indent prefix(indent_depth);
    ConcatString s;
-   int i;
 
    s << prefix << serialize() << ", Genesis:\n";
 
-   for(i=0; i<Genesis.size(); i++) {
+   for(int i=0; i<Genesis.size(); i++) {
       s << Genesis[i].serialize_r(i+1, indent_depth+1) << "\n";
    }
 
-   return(s);
+   return s;
 
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void GenesisInfoArray::assign(const GenesisInfoArray &ga) {
-   int i;
 
    clear();
 
    if(ga.Genesis.size() == 0) return;
 
-   for(i=0; i<ga.Genesis.size(); i++) add(ga[i]);
+   for(int i=0; i<ga.Genesis.size(); i++) add(ga[i]);
 
    return;
 }
@@ -468,7 +464,7 @@ const GenesisInfo & GenesisInfoArray::operator[](int n) const {
       exit(1);
    }
 
-   return(Genesis[n]);
+   return Genesis[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -480,13 +476,13 @@ bool GenesisInfoArray::add(const GenesisInfo &gi) {
       mlog << Warning << "\nGenesisInfoArray::add() -> "
            << "Skipping duplicate genesis event:\n"
            << gi.serialize() << "\n\n";
-      return(false);
+      return false;
    }
 
    // Store the genesis object
    Genesis.push_back(gi);
 
-   return(true);
+   return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -494,10 +490,10 @@ bool GenesisInfoArray::add(const GenesisInfo &gi) {
 bool GenesisInfoArray::has(const GenesisInfo &g) const {
 
    for(int i=0; i<Genesis.size(); i++) {
-      if(g == Genesis[i]) return(true);
+      if(g == Genesis[i]) return true;
    }
 
-   return(false);
+   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -505,11 +501,11 @@ bool GenesisInfoArray::has(const GenesisInfo &g) const {
 bool GenesisInfoArray::has_storm(const GenesisInfo &g, int &i) const {
 
    for(i=0; i<Genesis.size(); i++) {
-      if(g.is_storm(Genesis[i])) return(true);
+      if(g.is_storm(Genesis[i])) return true;
    }
 
    i = bad_data_int;
-   return(false);
+   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -517,11 +513,11 @@ bool GenesisInfoArray::has_storm(const GenesisInfo &g, int &i) const {
 bool GenesisInfoArray::has_storm_id(const ConcatString &s, int &i) const {
 
    for(i=0; i<Genesis.size(); i++) {
-      if(Genesis[i].storm_id() == s) return(true);
+      if(Genesis[i].storm_id() == s) return true;
    }
 
    i = bad_data_int;
-   return(false);
+   return false;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -534,7 +530,7 @@ bool GenesisInfoArray::erase_storm_id(const ConcatString &s) {
       Genesis.erase(Genesis.begin()+i);
    }
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -548,7 +544,7 @@ int GenesisInfoArray::n_technique() const {
       }
    }
 
-   return(sa.n());
+   return sa.n();
 }
 
 ////////////////////////////////////////////////////////////////////////

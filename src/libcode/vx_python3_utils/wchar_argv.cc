@@ -13,8 +13,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -25,6 +23,8 @@ using namespace std;
 #include "concat_string.h"
 
 #include "vx_log.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@ void Wchar_Argv::set(const StringArray & a)
 
 {
 
-int j, k, N;
+int k, N;
 int len;
 char * s = nullptr;
 char ** av = nullptr;
@@ -142,7 +142,7 @@ const char *method_name = "Wchar_Argv::set() -> ";
 
 len = 0;
 
-for (j=0; j<(a.n()); ++j)  {
+for (int j=0; j<(a.n()); ++j)  {
 
    len += a.length(j);
 
@@ -158,7 +158,7 @@ memset(s, 0, N);
 
 k = 0;
 
-for (j=0; j<(a.n()); ++j)  {
+for (int j=0; j<(a.n()); ++j)  {
 
    av[j] = s + k;
 

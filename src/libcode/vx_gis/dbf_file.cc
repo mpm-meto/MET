@@ -8,7 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 
 #include <iostream>
 #include <unistd.h>
@@ -24,6 +23,8 @@ using namespace std;
 #include "vx_cal.h"
 
 #include "dbf_file.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -79,11 +80,11 @@ DbfHeader & DbfHeader::operator=(const DbfHeader & h)
 
 {
 
-if ( this == &h )  return ( * this );
+if ( this == &h )  return *this;
 
 assign(h);
 
-return ( * this );
+return *this;
 
 }
 
@@ -111,7 +112,7 @@ void DbfHeader::clear()
 
 {
 
-if ( subrec )  { delete [] subrec;  subrec = 0; }
+if ( subrec )  { delete [] subrec;  subrec = nullptr; }
 
 type = 0;
 
@@ -155,11 +156,9 @@ n_subrecs        = h.n_subrecs;
 
 if ( h.subrec )  {
 
-   int j;
-
    subrec = new DbfSubRecord [h.n_subrecs];
 
-   for (j=0; j<(h.n_subrecs); ++j)  subrec[j] = h.subrec[j];
+   for (int j=0; j<(h.n_subrecs); ++j)  subrec[j] = h.subrec[j];
 
 }   //  if 
 
@@ -178,7 +177,7 @@ void DbfHeader::dump(ostream & out, int depth) const
 
 Indent p0(depth);
 Indent p1(depth + 1);
-int j, pos;
+int pos;
 int m, d, y;
 
    //
@@ -212,7 +211,7 @@ if ( subrec )  {
    out << p0 << "\n";
    out << p0 << "SubRecords ... \n";
 
-   for (j=0; j<n_subrecs; ++j)  {
+   for (int j=0; j<n_subrecs; ++j)  {
 
       // out << "cumulative length = " << pos << '\n';
 
@@ -296,7 +295,6 @@ void DbfHeader::set_subrecords(int fd)
 
 {
 
-int j;
 int bytes, n_read;
 int pos;
 
@@ -328,7 +326,7 @@ bytes = 32;
 
 pos = 1;   //  ignore first (ie, delete flag) byte
 
-for (j=0; j<n_subrecs; ++j)  {
+for (int j=0; j<n_subrecs; ++j)  {
 
    n_read = ::read(fd, buf, bytes);
 
@@ -374,16 +372,14 @@ if ( empty(text) )  {
 
 }
 
-int j;
-
-for (j=0; j<n_subrecs; ++j)  {
+for (int j=0; j<n_subrecs; ++j)  {
 
    if ( text == subrec[j].field_name )  return ( subrec + j );
 
 }
 
 
-return ( 0 );
+return 0;
 
 }
 
@@ -441,11 +437,11 @@ DbfSubRecord & DbfSubRecord::operator=(const DbfSubRecord & r)
 
 {
 
-if ( this == &r )  return ( * this );
+if ( this == &r )  return *this;
 
 assign(r);
 
-return ( * this );
+return *this;
 
 }
 
@@ -769,9 +765,9 @@ const char * DbfFile::filename() const
 
 {
 
-if ( Filename.empty() )  return ( (const char *) 0 );
+if ( Filename.empty() )  return (const char *)nullptr;
 
-return ( Filename.text() );
+return Filename.text();
 
 }
 
@@ -792,7 +788,7 @@ if ( (fd = met_open(path, O_RDONLY)) < 0 )  {
 
    fd = -1;
 
-   return ( false );
+   return false;
 
 }
 
@@ -813,7 +809,7 @@ if((n_read = ::read(fd, buf, bytes)) != bytes) {
         << path << "\"\n\n";
    close();
 
-   return(false);
+   return false;
 }
 
 Header.set_header(buf);
@@ -828,7 +824,7 @@ Header.set_subrecords(fd);
    //  done
    //
 
-return ( true );
+return true;
 
 }
 
@@ -860,7 +856,7 @@ if ( pos < 0 )  {
 }
 
 
-return ( pos );
+return pos;
 
 }
 
@@ -926,11 +922,11 @@ if ( n_read < 0 )  {   //  some kind of error
 
 }
 
-if ( n_read == 0 )  return ( false );
+if ( n_read == 0 )  return false;
 
-if ( n_read == n_bytes )  return ( true );
+if ( n_read == n_bytes )  return true;
 
-return ( false );   //  gotta return something
+return false;   //  gotta return something
 
 }
 
@@ -958,7 +954,7 @@ if ( Header.subrec )  {
 
 }
 
-return ( sa );
+return sa;
 
 }
 
@@ -1033,7 +1029,7 @@ for (int j=0,pos=1; j<(Header.n_subrecs); ++j)  {
 
 }
 
-return ( sa );
+return sa;
 
 }
 

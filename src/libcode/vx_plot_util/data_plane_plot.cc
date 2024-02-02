@@ -19,10 +19,6 @@ static const bool use_flate = true;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-
-using namespace std;
-
-///////////////////////////////////////////////////////////////////////////////
 //
 //   Filename:   data_plane_plot.cc
 //
@@ -48,6 +44,9 @@ using namespace std;
 #include "vx_log.h"
 #include "data_plane_plot.h"
 
+using namespace std;
+
+
 ////////////////////////////////////////////////////////////////////////////////
 
 void data_plane_plot(const ConcatString & inname, const ConcatString & outname,
@@ -62,7 +61,6 @@ void data_plane_plot(const ConcatString & inname, const ConcatString & outname,
    Box page, view, map_box;
    ConcatString short_filename;
    ConcatString junk;
-   int i;
    double mag;
    double tick_m, val_m, tick_val, x1, x2, y1;
 
@@ -229,7 +227,7 @@ void data_plane_plot(const ConcatString & inname, const ConcatString & outname,
 
    val_m = (colortable.data_max(bad_data_double) - colortable.data_min(bad_data_double)) / (num_ticks - 1);
 
-   for (i = 0; i < num_ticks; i++)
+   for (int i = 0; i < num_ticks; i++)
    {
          //
          // first add some tick marks
@@ -272,7 +270,6 @@ void data_plane_plot(const ConcatString & inname, const ConcatString & outname,
 void create_image(Ppm & image, const Grid & grid, const DataPlane & plane,
                   const ColorTable & ctable)
 {
-   int x, y;
    double value;
    Color color;
 
@@ -280,9 +277,9 @@ void create_image(Ppm & image, const Grid & grid, const DataPlane & plane,
       // run thru all the data points and put them into the ppm
       // image
       //
-   for (y = 0; y < grid.ny(); y++)
+   for (int y = 0; y < grid.ny(); y++)
    {
-      for (x = 0; x < grid.nx(); x++)
+      for (int x = 0; x < grid.nx(); x++)
       {
             //
             // get data value from grib record for this point
@@ -328,7 +325,6 @@ void draw_border(PSfile & plot, const Box & dim, double linewidth)
 void fill_colorbar_image(Ppm & image, const ColorTable & ctable)
 {
    Color color;
-   int i;
    double value;
    double dmin, dmax;
    double m;
@@ -341,7 +337,7 @@ void fill_colorbar_image(Ppm & image, const ColorTable & ctable)
 
    m = (dmax - dmin)/(num_cbar_vals - 1);
 
-   for (i = 0; i < num_cbar_vals; i++)
+   for (int i = 0; i < num_cbar_vals; i++)
    {
          //
          // get data value
@@ -359,7 +355,6 @@ void fill_colorbar_image(Ppm & image, const ColorTable & ctable)
       image.putxy(color, 0, i);
 
    }
-
 
 }
 

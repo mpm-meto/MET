@@ -8,8 +8,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 //
 // ach_plotting_pkg.cc
 //
@@ -28,6 +26,8 @@ using namespace std;
 #include "vx_log.h"
 #include "vx_plot_util.h"
 
+using namespace std;
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // Draw a map in a PostScript file.
@@ -44,8 +44,7 @@ void draw_map(const Grid &gr, const Box &gr_bb, PSfile &p, const Box &dim,
       return;
    }
 
-   int i;
-   Dictionary *map_dict = (Dictionary *) 0;
+   Dictionary *map_dict = (Dictionary *) nullptr;
    ConcatString file_name, line_dash;
    NumArray line_color;
    double line_width;
@@ -61,7 +60,7 @@ void draw_map(const Grid &gr, const Box &gr_bb, PSfile &p, const Box &dim,
    map_dict = conf->lookup_array(conf_key_map_data_source);
 
    // Loop over the map data sources
-   for(i=0; i<map_dict->n_entries(); i++) {
+   for(int i=0; i<map_dict->n_entries(); i++) {
 
       // Get the map data setting for the current entry
       file_name  = replace_path((*map_dict)[i]->dict_value()->lookup_string(conf_key_file_name).c_str());
@@ -142,7 +141,6 @@ void draw_map_data(const Grid &gr, const Box &gr_bb, PSfile &p,
 
 void draw_region(const Grid &gr, const Box &gr_bb, PSfile &p,
                  const Box &dim, const MapRegion &r) {
-   int i;
    double px1, py1, px2, py2;
 
    //
@@ -156,7 +154,7 @@ void draw_region(const Grid &gr, const Box &gr_bb, PSfile &p,
 
    p.moveto(px1, py1);
 
-   for(i=1; i<(r.n_points); i++) {
+   for(int i=1; i<(r.n_points); i++) {
 
       latlon_to_pagexy(gr, gr_bb, r.lat[i], r.lon[i], px2, py2, dim);
 
@@ -191,7 +189,6 @@ void draw_region(const Grid &gr, const Box &gr_bb, PSfile &p,
 bool region_overlaps_grid(const Grid & grid, const Box & grid_bb,
                           const MapRegion & reg)
 {
-   int i;
    double x, y;
 
       //
@@ -199,18 +196,18 @@ bool region_overlaps_grid(const Grid & grid, const Box & grid_bb,
       // check if it is in the grid. If it is, return true, and if not
       // check the next point.
       //
-   for (i = 0; i < reg.n_points; i++)
+   for (int i = 0; i < reg.n_points; i++)
    {
       grid.latlon_to_xy(reg.lat[i], reg.lon[i], x, y);
 
       if ((x >= grid_bb.x_ll()) && (x < grid_bb.x_ur()) &&
           (y >= grid_bb.y_ll()) && (y < grid_bb.y_ur()))
 
-         return (true);
+         return true;
 
    }
 
-   return (false);
+   return false;
 
 }
 
@@ -218,14 +215,13 @@ bool region_overlaps_grid(const Grid & grid, const Box & grid_bb,
 
 void draw_grid(const Grid &gr, const Box &gr_bb, int skip, PSfile &p,
                const Box &dim, Color c) {
-   int x, y;
    double page_x, page_y;
 
    p.gsave();
    p.setrgbcolor(c.red()/255.0, c.green()/255.0, c.blue()/255.0);
 
    // Draw the vertical grid lines
-   for(x=(int) floor(gr_bb.x_ll()); x<gr_bb.x_ur(); x++) {
+   for(int x=(int) floor(gr_bb.x_ll()); x<gr_bb.x_ur(); x++) {
 
       if(x%skip != 0) {
          continue;
@@ -240,7 +236,7 @@ void draw_grid(const Grid &gr, const Box &gr_bb, int skip, PSfile &p,
    }
 
    // Draw the horizontal grid lines
-   for(y=(int) floor(gr_bb.y_ll()); y<gr_bb.y_ur(); y++) {
+   for(int y=(int) floor(gr_bb.y_ll()); y<gr_bb.y_ur(); y++) {
 
       if(y%skip != 0) {
          continue;
@@ -264,7 +260,6 @@ void draw_grid(const Grid &gr, const Box &gr_bb, int skip, PSfile &p,
 void gc_arcto(const Grid &gr, const Box &gr_bb, PSfile &p,
               double grid_x_start, double grid_y_start,
               double grid_x_end, double grid_y_end, double dist, const Box &dim) {
-   int i;
    double lat_start, lon_start, lat_end, lon_end, total_dist, num_legs;
    double lat_leg, lon_leg, page_x_leg, page_y_leg;
 
@@ -278,7 +273,7 @@ void gc_arcto(const Grid &gr, const Box &gr_bb, PSfile &p,
    num_legs = total_dist/dist;
 
    // Loop through the legs
-   for(i=1; i<=num_legs; i++) {
+   for(int i=1; i<=num_legs; i++) {
 
       // Find the lat/lon of the next intermediate point
       gc_point_v1(lat_start, lon_start, lat_end, lon_end, i*dist,

@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -20,6 +18,8 @@ using namespace std;
 #include "prob_info_base.h"
 #include "prob_rirw_info.h"
 #include "prob_info_array.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -52,11 +52,11 @@ ProbInfoArray::ProbInfoArray(const ProbInfoArray & t) {
 
 ProbInfoArray & ProbInfoArray::operator=(const ProbInfoArray & t) {
 
-   if(this == &t) return(*this);
+   if(this == &t) return *this;
 
    assign(t);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -122,12 +122,11 @@ ConcatString ProbInfoArray::serialize() const {
 ConcatString ProbInfoArray::serialize_r(int indent_depth) const {
    Indent prefix(indent_depth);
    ConcatString s;
-   int i;
 
    if(ProbRIRW.size() > 0 ) {
       s << prefix << serialize() << ", ProbRIRW:\n";
    }
-   for(i=0; i<ProbRIRW.size(); i++) {
+   for(int i=0; i<ProbRIRW.size(); i++) {
       s << ProbRIRW[i].serialize_r(i+1, indent_depth+1);
    }
 
@@ -135,11 +134,11 @@ ConcatString ProbInfoArray::serialize_r(int indent_depth) const {
       s << prefix << serialize() << ", ProbGen:\n";
    }
 
-   for(i=0; i<ProbGen.size(); i++) {
+   for(int i=0; i<ProbGen.size(); i++) {
       s << ProbGen[i].serialize_r(i+1, indent_depth+1);
    }
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -176,7 +175,7 @@ const ProbInfoBase * ProbInfoArray::operator[](int n) const {
       ptr = &ProbGen[n];
    }
 
-   return(ptr);
+   return ptr;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -190,7 +189,7 @@ ProbRIRWInfo & ProbInfoArray::prob_rirw(int n) {
       exit(1);
    }
 
-   return(ProbRIRW[n]);
+   return ProbRIRW[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -204,7 +203,7 @@ ProbGenInfo & ProbInfoArray::prob_gen(int n) {
       exit(1);
    }
 
-   return(ProbGen[n]);
+   return ProbGen[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -224,7 +223,7 @@ int ProbInfoArray::n_technique() const {
       }
    }
 
-   return(sa.n());
+   return sa.n();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -238,7 +237,7 @@ bool ProbInfoArray::add(const ATCFProbLine &l, double dland, bool check_dup) {
            << "bool ProbInfoArray::add() -> "
            << "skipping probability value (" << l.prob()
            << ") outside of range (0, 100).\n";
-      return(false);
+      return false;
    }
 
    // Store based on the input line type
@@ -300,7 +299,7 @@ bool ProbInfoArray::add(const ATCFProbLine &l, double dland, bool check_dup) {
          status = false;
    }
 
-   return(status);
+   return status;
 }
 
 ////////////////////////////////////////////////////////////////////////

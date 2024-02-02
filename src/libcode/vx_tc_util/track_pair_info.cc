@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -20,6 +18,8 @@ using namespace std;
 #include "math_constants.h"
 
 #include "track_pair_info.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -52,11 +52,11 @@ TrackPairInfo::TrackPairInfo(const TrackPairInfo & t) {
 
 TrackPairInfo & TrackPairInfo::operator=(const TrackPairInfo & t) {
 
-   if(this == &t) return(*this);
+   if(this == &t) return *this;
 
    assign(t);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ ConcatString TrackPairInfo::case_info() const {
      << ", INIT = " << unix_to_yyyymmdd_hhmmss(ADeck.init())
      << ", NPoints = " << NPoints;
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ ConcatString TrackPairInfo::serialize() const {
    s << "TrackPairInfo: "
      << "NPoints = " << NPoints;
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -165,14 +165,13 @@ ConcatString TrackPairInfo::serialize() const {
 ConcatString TrackPairInfo::serialize_r(int n, int indent_depth) const {
    Indent prefix(indent_depth), prefix2(indent_depth+1);
    ConcatString s;
-   int i;
 
    s << prefix << "[" << n << "] " << serialize() << "\n";
 
    s << prefix2 << "ADeck = " << ADeck.serialize() << "\n"
      << prefix2 << "BDeck = " << BDeck.serialize() << "\n";
 
-   for(i=0; i<NPoints; i++) {
+   for(int i=0; i<NPoints; i++) {
      s << prefix2
        << "[" << i+1 << "] "
        << "ADeckDLand = " << ADeckDLand[i]
@@ -185,13 +184,12 @@ ConcatString TrackPairInfo::serialize_r(int n, int indent_depth) const {
        << "\n";
    }
 
-   return(s);
+   return s;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackPairInfo::assign(const TrackPairInfo &t) {
-   int i;
 
    clear();
 
@@ -321,10 +319,9 @@ void TrackPairInfo::add(const TCStatLine &l) {
 
 void TrackPairInfo::add_tcmpr_line(const TCStatLine &l) {
    TrackPoint apoint, bpoint;
-   TrackPoint *tp = (TrackPoint *) 0;
+   TrackPoint *tp = (TrackPoint *) nullptr;
    QuadInfo wind;
    ConcatString cs;
-   int i, j;
 
    // Check the line type
    if(l.type() != TCStatLineType_TCMPR) return;
@@ -343,7 +340,7 @@ void TrackPairInfo::add_tcmpr_line(const TCStatLine &l) {
 
    // Loop over the ADECK/BDECK tracks
    const char deck[] = { 'A', 'B' };
-   for(i=0; i<2; i++) {
+   for(int i=0; i<2; i++) {
 
       // Point at the current track point
       if(deck[i] == 'A') tp = &apoint;
@@ -380,7 +377,7 @@ void TrackPairInfo::add_tcmpr_line(const TCStatLine &l) {
       tp->set_watch_warn(string_to_watchwarntype(l.get_item("WATCH_WARN")));
 
       // Loop over the winds
-      for(j=0; j<NWinds; j++) {
+      for(int j=0; j<NWinds; j++) {
 
          // Initialize
          wind.clear();
@@ -435,7 +432,7 @@ void TrackPairInfo::add_tcmpr_line(const TCStatLine &l) {
 ////////////////////////////////////////////////////////////////////////
 
 void TrackPairInfo::add_tcdiag_line(const TCStatLine &l) {
-   int n_diag, i;
+   int n_diag;
    ConcatString cs;
 
    // Check the line type
@@ -513,7 +510,7 @@ void TrackPairInfo::add_tcdiag_line(const TCStatLine &l) {
    n_diag = atoi(l.get_item("N_DIAG"));
 
    // Parse all the diagnostics entries
-   for(i=0; i<n_diag; i++) {
+   for(int i=0; i<n_diag; i++) {
       cs << cs_erase << "DIAG_" << i+1;
       diag_name.add(l.get_item(cs.c_str()));
       cs << cs_erase << "VALUE_" << i+1;
@@ -545,7 +542,7 @@ unixtime TrackPairInfo::valid(int i) const {
    // Use the ADeck valid time, if defined.
    t = (ADeck[i].valid() > 0 ? ADeck[i].valid() : BDeck[i].valid());
 
-   return(t);
+   return t;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -561,7 +558,7 @@ int TrackPairInfo::i_init() const {
 
    if(i < NPoints) i_match = i;
 
-   return(i_match);
+   return i_match;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -575,7 +572,7 @@ WatchWarnType TrackPairInfo::watch_warn(int i) const {
       ww_type = ww_max(ADeck[i].watch_warn(), BDeck[i].watch_warn());
    }
 
-   return(ww_type);
+   return ww_type;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -600,11 +597,12 @@ void TrackPairInfo::add_watch_warn(const ConcatString &storm_id,
 ////////////////////////////////////////////////////////////////////////
 
 int TrackPairInfo::check_water_only() {
-   int i, n_rej;
+   int n_rej;
    bool hit_land = false;
 
    // Loop over the track points
-   for(i=0, n_rej=0; i<NPoints; i++) {
+   n_rej = 0;
+   for(int i=0; i<NPoints; i++) {
 
       // Check if the current track point is over land.  Require that
       // both ADECK and BDECK values are present.
@@ -621,7 +619,7 @@ int TrackPairInfo::check_water_only() {
       }
    } // end for i
 
-   return(n_rej);
+   return n_rej;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -637,7 +635,7 @@ int TrackPairInfo::check_rirw(const TrackType track_type,
                               const int sec_adeck, const int sec_bdeck,
                               const bool exact_adeck, const bool exact_bdeck,
                               const SingleThresh &st_adeck, const SingleThresh &st_bdeck) {
-   int i, j, n_rej;
+   int n_rej;
    unixtime delta_ut;
    int acur, aprv, bcur, bprv;
 
@@ -665,7 +663,8 @@ int TrackPairInfo::check_rirw(const TrackType track_type,
    }
 
    // Loop over the track points
-   for(i=0, n_rej=0; i<NPoints; i++) {
+   n_rej = 0;
+   for(int i=0; i<NPoints; i++) {
 
       // Initialize
       ADeckRIRW.set(i, bad_data_double);
@@ -680,7 +679,7 @@ int TrackPairInfo::check_rirw(const TrackType track_type,
       bprv = bad_data_int;
 
       // Search other track points for previous times
-      for(j=0; j<NPoints; j++) {
+      for(int j=0; j<NPoints; j++) {
 
          // Compute time offset
          delta_ut = valid(i) - valid(j);
@@ -785,7 +784,7 @@ int TrackPairInfo::check_rirw(const TrackType track_type,
       }
    } // end for i
 
-   return(n_rej);
+   return n_rej;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -799,10 +798,11 @@ int TrackPairInfo::check_rirw(const TrackType track_type,
 
 int TrackPairInfo::check_landfall(const int landfall_beg,
                                   const int landfall_end) {
-   int i, n_rej;
+   int n_rej;
 
    // Loop over the track points
-   for(i=0, n_rej=0; i<NPoints; i++) {
+   n_rej = 0;
+   for(int i=0; i<NPoints; i++) {
 
       // If the current point is over land or landfall did not occur
       // in this time window, discard the point. Subtract and switch
@@ -820,7 +820,7 @@ int TrackPairInfo::check_landfall(const int landfall_beg,
       }
    }
 
-   return(n_rej);
+   return n_rej;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -832,11 +832,10 @@ int TrackPairInfo::check_landfall(const int landfall_beg,
 ////////////////////////////////////////////////////////////////////////
 
 bool TrackPairInfo::landfall_window(unixtime beg_ut, unixtime end_ut) const {
-   int i;
    bool found = false;
 
    // Loop over the track points looking for landfall.
-   for(i=0; i<NPoints; i++) {
+   for(int i=0; i<NPoints; i++) {
 
       // Skip bad data values or points outside of the time window
       if(is_bad_data(BDeckDLand[i]) ||
@@ -853,7 +852,7 @@ bool TrackPairInfo::landfall_window(unixtime beg_ut, unixtime end_ut) const {
       }
    }
 
-   return(found);
+   return found;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -864,11 +863,10 @@ bool TrackPairInfo::landfall_window(unixtime beg_ut, unixtime end_ut) const {
 ////////////////////////////////////////////////////////////////////////
 
 TrackPairInfo TrackPairInfo::keep_subset() const {
-   int i;
    TrackPairInfo tpi;
 
    // Loop over the points
-   for(i=0; i<NPoints; i++) {
+   for(int i=0; i<NPoints; i++) {
 
       // Check the retention status
       if(Keep[i] == 0) continue;
@@ -888,7 +886,7 @@ TrackPairInfo TrackPairInfo::keep_subset() const {
       }
    }
 
-   return(tpi);
+   return tpi;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -922,18 +920,18 @@ TrackPairInfoArray::TrackPairInfoArray(const TrackPairInfoArray & t) {
 
 TrackPairInfoArray & TrackPairInfoArray::operator=(const TrackPairInfoArray & t) {
 
-   if(this == &t)  return(*this);
+   if(this == &t)  return *this;
 
    assign(t);
 
-   return(*this);
+   return *this;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackPairInfoArray::init_from_scratch() {
 
-   Pair = (TrackPairInfo *) 0;
+   Pair = (TrackPairInfo *) nullptr;
 
    clear();
 
@@ -944,7 +942,7 @@ void TrackPairInfoArray::init_from_scratch() {
 
 void TrackPairInfoArray::clear() {
 
-   if(Pair) { delete [] Pair; Pair = (TrackPairInfo *) 0; }
+   if(Pair) { delete [] Pair; Pair = (TrackPairInfo *) nullptr; }
    NPairs = NAlloc = 0;
 
    return;
@@ -954,12 +952,11 @@ void TrackPairInfoArray::clear() {
 
 void TrackPairInfoArray::dump(ostream &out, int indent_depth) const {
    Indent prefix(indent_depth);
-   int i;
 
    out << prefix << "NPairs = " << NPairs << "\n";
    out << prefix << "NAlloc = " << NAlloc << "\n";
 
-   for(i=0; i<NPairs; i++) {
+   for(int i=0; i<NPairs; i++) {
       out << prefix << "TrackPairInfo[" << i+1 << "]:" << "\n";
       Pair[i].dump(out, indent_depth+1);
    }
@@ -979,7 +976,7 @@ ConcatString TrackPairInfoArray::serialize() const {
      << "NPairs = " << NPairs
      << ", NAlloc = " << NAlloc;
 
-   return(s);
+   return s;
 
 }
 
@@ -988,21 +985,19 @@ ConcatString TrackPairInfoArray::serialize() const {
 ConcatString TrackPairInfoArray::serialize_r(int indent_depth) const {
    Indent prefix(indent_depth);
    ConcatString s;
-   int i;
 
    s << prefix << serialize() << ", Pairs:\n";
 
-   for(i=0; i<NPairs; i++)
+   for(int i=0; i<NPairs; i++)
       s << Pair[i].serialize_r(i+1, indent_depth+1);
 
-   return(s);
+   return s;
 
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 void TrackPairInfoArray::assign(const TrackPairInfoArray &t) {
-   int i;
 
    clear();
 
@@ -1010,7 +1005,7 @@ void TrackPairInfoArray::assign(const TrackPairInfoArray &t) {
 
    extend(t.NPairs);
 
-   for(i=0; i<t.NPairs; i++) Pair[i] = t.Pair[i];
+   for(int i=0; i<t.NPairs; i++) Pair[i] = t.Pair[i];
 
    NPairs = t.NPairs;
 
@@ -1020,7 +1015,7 @@ void TrackPairInfoArray::assign(const TrackPairInfoArray &t) {
 ////////////////////////////////////////////////////////////////////////
 
 void TrackPairInfoArray::extend(int n, bool exact) {
-   int j, k;
+   int k;
    TrackPairInfo *new_info = (TrackPairInfo *) 0;
 
    // Check if enough memory is already allocated
@@ -1044,7 +1039,7 @@ void TrackPairInfoArray::extend(int n, bool exact) {
 
    // Copy the array contents and delete the old one
    if(Pair) {
-      for(j=0; j<NPairs; j++) new_info[j] = Pair[j];
+      for(int j=0; j<NPairs; j++) new_info[j] = Pair[j];
       delete [] Pair;  Pair = (TrackPairInfo *) 0;
    }
 
@@ -1069,29 +1064,31 @@ const TrackPairInfo & TrackPairInfoArray::operator[](int n) const {
       exit(1);
    }
 
-   return(Pair[n]);
+   return Pair[n];
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 int TrackPairInfoArray::n_points() const {
-   int i, n;
+   int n;
 
-   for(i=0,n=0; i<NPairs; i++) n += Pair[i].adeck().n_points();
+   n = 0;
+   for(int i=0; i<NPairs; i++) n += Pair[i].adeck().n_points();
 
-   return(n);
+   return n;
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 int TrackPairInfoArray::max_n_diag() const {
-   int i, n;
+   int n;
 
-   for(i=0,n=0; i<NPairs; i++) {
+   n = 0;
+   for(int i=0; i<NPairs; i++) {
       if(Pair[i].adeck().n_diag() > n) n = Pair[i].adeck().n_diag();
    }
 
-   return(n);
+   return n;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -1109,10 +1106,9 @@ void TrackPairInfoArray::add(const TrackPairInfo &p) {
 void TrackPairInfoArray::add_watch_warn(const ConcatString &ww_sid,
                                         WatchWarnType ww_type,
                                         unixtime ww_ut) {
-   int i;
 
    // Loop through the track pairs
-   for(i=0; i<NPairs; i++) Pair[i].add_watch_warn(ww_sid, ww_type, ww_ut);
+   for(int i=0; i<NPairs; i++) Pair[i].add_watch_warn(ww_sid, ww_type, ww_ut);
 
    return;
 }
@@ -1125,9 +1121,9 @@ void TrackPairInfoArray::subset_write_valid(const TimeArray &ta) {
    if(ta.n() == 0) return;
 
    // Check each point for requested valid times
-   int i, j, keep;
-   for(i=0; i<NPairs; i++) {
-      for(j=0; j<Pair[i].n_points(); j++) {
+   int keep;
+   for(int i=0; i<NPairs; i++) {
+      for(int j=0; j<Pair[i].n_points(); j++) {
          keep = (ta.has(Pair[i].valid(j)) ? 1 : 0);
          Pair[i].set_keep(j, keep);
       }

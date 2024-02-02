@@ -11,13 +11,13 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include "vx_regrid.h"
 
 #include "interp_mthd.h"
 
 #include "GridTemplate.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ out.censor(info.censor_thresh, info.censor_val);
    //  done
    //
 
-return ( out );
+return out;
 
 }
 
@@ -101,7 +101,7 @@ ri.method = InterpMthd_Nearest;
 ri.width  = 1;
 ri.shape  = GridTemplateFactory::GridTemplate_Square;
 
-return ( met_regrid_generic(from_data, from_grid, to_grid, ri) );
+return met_regrid_generic(from_data, from_grid, to_grid, ri);
 
 }
 
@@ -113,7 +113,6 @@ DataPlane met_regrid_generic (const DataPlane & from_data, const Grid & from_gri
 
 {
 
-int xt, yt;
 int xf, yf;
 double value, lat, lon;
 double x_from, y_from;
@@ -134,9 +133,9 @@ to_data.set_accum (from_data.accum());
    //  copy data
    //
 
-for (xt=0; xt<(to_grid.nx()); ++xt)  {
+for (int xt=0; xt<(to_grid.nx()); ++xt)  {
 
-   for (yt=0; yt<(to_grid.ny()); ++yt)  {
+   for (int yt=0; yt<(to_grid.ny()); ++yt)  {
 
       to_grid.xy_to_latlon(xt, yt, lat, lon);
 
@@ -165,7 +164,7 @@ for (xt=0; xt<(to_grid.nx()); ++xt)  {
    //  done
    //
 
-return ( to_data );
+return to_data;
 
 }
 
@@ -178,7 +177,6 @@ DataPlane met_regrid_area_weighted (const DataPlane & from_data, const Grid & fr
 {
 
 int xt, yt;
-int xf, yf;
 double value, weight, lat, lon;
 double x_to, y_to;
 DataPlane to_data, wt_data;
@@ -213,9 +211,9 @@ to_data.set_accum (from_data.accum());
    //  loop over the from grid to accumulate sums and area weights
    //
 
-for (xf=0; xf<(from_grid.nx()); ++xf)  {
+for (int xf=0; xf<(from_grid.nx()); ++xf)  {
 
-   for (yf=0; yf<(from_grid.ny()); ++yf)  {
+   for (int yf=0; yf<(from_grid.ny()); ++yf)  {
 
       from_grid.xy_to_latlon(xf, yf, lat, lon);
 
@@ -246,9 +244,9 @@ for (xf=0; xf<(from_grid.nx()); ++xf)  {
    //  loop over the to grid to compute the area weighted average
    //
 
-for (xt=0; xt<(to_grid.nx()); ++xt)  {
+for (int xt=0; xt<(to_grid.nx()); ++xt)  {
 
-   for (yt=0; yt<(to_grid.ny()); ++yt)  {
+   for (int yt=0; yt<(to_grid.ny()); ++yt)  {
 
       if ( is_eq(wt_data(xt, yt), 0.0) )  {
 
@@ -268,7 +266,7 @@ for (xt=0; xt<(to_grid.nx()); ++xt)  {
    //  done
    //
 
-return ( to_data );
+return to_data;
 
 }
 
@@ -296,7 +294,7 @@ if ( from_grid.nx() != to_grid.nx() || from_grid.ny() != to_grid.ny() ) {
 
 }
 
-return ( from_data );
+return from_data;
 
 }
 
@@ -308,7 +306,6 @@ DataPlane met_regrid_maxgauss (const DataPlane & from_data, const Grid & from_gr
 
 {
 
-int xt, yt;
 int xf, yf;
 double value, lat, lon;
 double x_from, y_from;
@@ -329,9 +326,9 @@ to_data.set_accum (from_data.accum());
    //  copy data
    //
 
-for (xt=0; xt<(to_grid.nx()); ++xt)  {
+for (int xt=0; xt<(to_grid.nx()); ++xt)  {
 
-   for (yt=0; yt<(to_grid.ny()); ++yt)  {
+   for (int yt=0; yt<(to_grid.ny()); ++yt)  {
 
       to_grid.xy_to_latlon(xt, yt, lat, lon);
 
@@ -358,7 +355,7 @@ for (xt=0; xt<(to_grid.nx()); ++xt)  {
 
 interp_gaussian_dp(to_data, info.gaussian, info.vld_thresh);
 
-return ( to_data );
+return to_data;
 
 }
 

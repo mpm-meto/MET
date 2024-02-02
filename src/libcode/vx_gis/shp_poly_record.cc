@@ -1,5 +1,3 @@
-
-
 ////////////////////////////////////////////////////////////////////////
 
 
@@ -15,8 +13,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -31,6 +27,8 @@ using namespace std;
 #include "shp_file.h"
 #include "shp_poly_record.h"
 #include "shapetype_to_string.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -249,7 +247,7 @@ if ( (k < 0) || (k >= n_points) )  {
 
 }
 
-return ( points[k].y );
+return points[k].y;
 
 }
 
@@ -272,7 +270,7 @@ if ( (k < 0) || (k >= n_points) )  {
 
 double t = points[k].x;
 
-return ( -t );
+return -t;
 
 }
 
@@ -294,7 +292,7 @@ if ( (partno < 0) || (partno >= n_parts) )  {
 
 }
 
-return ( parts[partno] );
+return parts[partno];
 
 }
 
@@ -330,11 +328,10 @@ void ShpPolyRecord::toggle_longitudes()
 
 {
 
-int j;
 double * d = (double *) points.buf();
 
 
-for (j=0; j<n_points; ++j)  {
+for (int j=0; j<n_points; ++j)  {
 
    *d = -(*d);
 
@@ -372,7 +369,7 @@ unsigned char rh_buf[shp_record_header_bytes];
 
 if ( ! file.read(rh_buf, shp_record_header_bytes) )  {
 
-   if ( file.at_eof() )  return ( false );
+   if ( file.at_eof() )  return false;
 
    mlog << Error
         << "\n\n  operator>>(ShpFile &, ShpPolyRecord &) -> trouble reading record header from shp file \""
@@ -417,7 +414,7 @@ record.set((unsigned char *) Buf);
    //  done
    //
 
-return ( true );
+return true;
 
 }
 

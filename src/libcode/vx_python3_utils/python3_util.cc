@@ -1,9 +1,12 @@
-
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1992 - 2023
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Research Applications Lab (RAL)
+// ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 ////////////////////////////////////////////////////////////////////////
-
-
-using namespace std;
 
 
 #include <iostream>
@@ -17,6 +20,8 @@ using namespace std;
 #include "python3_util.h"
 #include "global_python.h"
 
+using namespace std;
+
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -29,9 +34,9 @@ ostream & operator<<(ostream & out, PyObject * obj)
 
 {
 
-char * buf = 0;
+char * buf = nullptr;
 size_t len = 0;
-FILE * f   = 0;
+FILE * f   = nullptr;
 
 
 if ( (f = open_memstream(&buf, &len)) == nullptr )  {
@@ -63,13 +68,13 @@ if ( buf )  out << buf;
 
 fclose(f);   f = 0;
 
-if ( buf )  { free(buf);   buf = 0; }
+if ( buf )  { free(buf);   buf = nullptr; }
 
    //
    //  done
    //
 
-return ( out );
+return out;
 
 }
 
@@ -81,11 +86,11 @@ PyObject * get_attribute(PyObject * obj, const char * attribute_name)
 
 {
 
-if ( PyObject_HasAttrString(obj, attribute_name) == 0 )  return ( (PyObject *) 0 );
+if ( PyObject_HasAttrString(obj, attribute_name) == 0 )  return (PyObject *)nullptr;
 
 PyObject * att = PyObject_GetAttrString(obj, attribute_name);
 
-return ( att );
+return att;
 
 }
 
@@ -121,7 +126,7 @@ if ( PyLong_Check(obj) )  {   //  long?
 
 }
 
-return ( k );
+return k;
 
 }
 
@@ -169,7 +174,7 @@ if ( PyLong_Check(obj) )  {   //  long?
 
 }
 
-return ( x );
+return x;
 
 }
 
@@ -196,7 +201,7 @@ if ( PyUnicode_Check(obj) )  {   //  string?
 
 }
 
-return ( s );
+return s;
 
 }
 
@@ -223,7 +228,7 @@ if ( PyUnicode_Check(obj) )  {   //  string?
 
 }
 
-return ( s );
+return s;
 
 }
 
@@ -237,7 +242,7 @@ StringArray pyobject_as_string_array (PyObject * obj)
 
 StringArray a;
 ConcatString s;
-PyObject *item = 0;
+PyObject *item = nullptr;
 
 int size = PyList_Size (obj);
 for (int idx=0; idx<size; idx++) {

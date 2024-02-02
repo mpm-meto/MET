@@ -10,9 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <cstdio>
 #include <iostream>
 #include <unistd.h>
@@ -24,6 +21,9 @@ using namespace std;
 #include "vx_util.h"
 #include "vx_log.h"
 #include "gaussian_grid.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ Delta_Lon = 0.0;
 
 memset(&Data, 0, sizeof(Data));
 
-if ( Latitudes )  { delete [] Latitudes;  Latitudes = 0; }
+if ( Latitudes )  { delete [] Latitudes;  Latitudes = nullptr; }
 
 return;
 
@@ -384,7 +384,7 @@ a << "Ny: " << Ny;
    //  done
    //
 
-return ( a );
+return a;
 
 }
 
@@ -401,7 +401,7 @@ GridInfo i;
 
 i.set( Data );
 
-return ( i );
+return i;
 
 }
 
@@ -419,7 +419,7 @@ double GaussianGrid::rot_grid_to_earth(int x, int y) const
    //  need to be changed when support is added for GRIB2.
    //
 
-return ( 0.0 );
+return 0.0;
 
 }
 
@@ -431,7 +431,7 @@ bool GaussianGrid::wrap_lon() const
 
 {
 
-return ( true );
+return true;
 
 }
 
@@ -461,7 +461,7 @@ GaussianGrid * p = new GaussianGrid (Data);
 
 p->Name = Name;
 
-return ( p );
+return p;
 
 }
 

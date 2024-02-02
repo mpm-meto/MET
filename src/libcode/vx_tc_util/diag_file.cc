@@ -8,8 +8,6 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -24,6 +22,8 @@ using namespace std;
 #include "vx_log.h"
 
 #include "diag_file.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -66,7 +66,7 @@ int DiagFile::lead(int i) const {
       exit(1);
    }
 
-   return(LeadTime[i]);
+   return LeadTime[i];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ double DiagFile::lat(int i) const {
       exit(1);
    }
 
-   return(Lat[i]);
+   return Lat[i];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -109,13 +109,13 @@ double DiagFile::lon(int i) const {
       exit(1);
    }
 
-   return(Lon[i]);
+   return Lon[i];
 }
 
 ////////////////////////////////////////////////////////////////////////
 
 bool DiagFile::has_diag(const string &str) const {
-   return(DiagName.has(str));
+   return DiagName.has(str);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ const NumArray & DiagFile::diag_val(const string &str) const {
       exit(1);
    }
 
-   return(DiagVal[i]);
+   return DiagVal[i];
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -393,7 +393,7 @@ void DiagFile::read_ships_rt(const ConcatString &path,
    int i, v_int;
    double v_dbl;
    NumArray data;
-   const UserFunc_1Arg *fx_ptr = 0;
+   const UserFunc_1Arg *fx_ptr = nullptr;
 
    // Initialize
    clear();

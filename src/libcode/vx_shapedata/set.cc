@@ -19,8 +19,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -29,6 +27,8 @@ using namespace std;
 
 #include "set.h"
 #include "vx_log.h"
+
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -78,11 +78,11 @@ FcstObsSet & FcstObsSet::operator=(const FcstObsSet & s)
 
 {
 
-if ( this == &s )  return ( * this );
+if ( this == &s )  return *this;
 
 assign(s);
 
-return ( * this );
+return *this;
 
 }
 
@@ -139,8 +139,8 @@ void FcstObsSet::all_clear()
 
 {
 
-if ( fcst_number )  { delete [] fcst_number;  fcst_number = 0; }
-if (  obs_number )  { delete []  obs_number;   obs_number = 0; }
+if ( fcst_number )  { delete [] fcst_number;  fcst_number = nullptr; }
+if (  obs_number )  { delete []  obs_number;   obs_number = nullptr; }
 
 n_fcst = n_obs = 0;
 
@@ -241,7 +241,7 @@ if ( a )  memcpy(u, a, n_alloc*sizeof(int));
 
 for (j=((n_alloc < 0) ? 0 : n_alloc); j<k; ++j) u[j] = 0;
 
-if ( a )  { delete [] a;  a = 0; }
+if ( a )  { delete [] a;  a = nullptr; }
 
 a = u;  u = 0;
 
@@ -261,10 +261,10 @@ int FcstObsSet::has_fcst(int k) const
    int j;
 
    for(j=0; j<n_fcst; j++) {
-      if( fcst_number[j] == k ) return ( 1 );
+      if( fcst_number[j] == k ) return 1;
    }
 
-   return(0);
+   return 0;
 }
 
 
@@ -275,13 +275,11 @@ int FcstObsSet::has_obs(int k) const
 
 {
 
-   int j;
-
-   for(j=0; j<n_obs; j++) {
-      if( obs_number[j] == k ) return ( 1 );
+   for(int j=0; j<n_obs; j++) {
+      if( obs_number[j] == k ) return 1;
    }
 
-   return(0);
+   return 0;
 
 }
 
@@ -382,11 +380,11 @@ SetCollection & SetCollection::operator=(const SetCollection & a)
 
 {
 
-if ( this == &a )  return ( * this );
+if ( this == &a )  return *this;
 
 assign(a);
 
-return ( * this );
+return *this;
 
 }
 
@@ -420,9 +418,7 @@ void SetCollection::clear()
 
 n_sets  = 0;
 
-int j;
-
-for (j=0; j<n_alloc; ++j)  set[j].clear();
+for (int j=0; j<n_alloc; ++j)  set[j].clear();
 
 // n_alloc = 0;
 
@@ -464,11 +460,9 @@ if ( ! (s.set) )  return;
 
 extend(s.n_alloc);
 
-int j;
-
 n_sets = s.n_sets;
 
-for (j=0; j<n_sets; ++j)  set[j] = s.set[j];
+for (int j=0; j<n_sets; ++j)  set[j] = s.set[j];
 
 
 return;
@@ -485,7 +479,7 @@ void SetCollection::extend(int N)
 
 if ( N <= n_alloc )  return;
 
-int j, k;
+int k;
 FcstObsSet * u = 0;
 
 k = N/fcst_obs_set_alloc_inc;
@@ -498,7 +492,7 @@ u = new FcstObsSet [k];
 
 if ( set )  {
 
-   for (j=0; j<n_alloc; ++j)  u[j] = set[j];
+   for (int j=0; j<n_alloc; ++j)  u[j] = set[j];
 
    delete [] set;  set = 0;
 
@@ -552,16 +546,15 @@ int SetCollection::merge()
 
 {
 
-   int j, k;
    int jm=0, km=0;
    int need_merge;
 
-   if( n_sets <= 1 ) return(0);
+   if( n_sets <= 1 ) return 0;
 
    need_merge = 0;
 
-   for(j=0; j<(n_sets - 1); j++) {
-      for(k=(j + 1); k<n_sets; k++) {
+   for(int j=0; j<(n_sets - 1); j++) {
+      for(int k=(j + 1); k<n_sets; k++) {
 
          if( !need_merge && fcst_obs_sets_overlap(set[j], set[k]) ) {
             need_merge = 1;
@@ -576,7 +569,7 @@ int SetCollection::merge()
       merge_two(jm, km);
    }
 
-   return(need_merge);
+   return need_merge;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -620,25 +613,23 @@ void SetCollection::merge_two(int index1, int index2)
 ///////////////////////////////////////////////////////////////////////////////
 
 int SetCollection::fcst_set_number(int fcst_number) const {
-   int j;
 
-   for(j=0; j<n_sets; j++) {
-      if( set[j].has_fcst(fcst_number) ) return(j);
+   for(int j=0; j<n_sets; j++) {
+      if( set[j].has_fcst(fcst_number) ) return j;
    }
 
-   return(-1);
+   return -1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int SetCollection::obs_set_number(int obs_number) const {
-   int j;
 
-   for(j=0; j<n_sets; j++) {
-      if( set[j].has_obs(obs_number) ) return(j);
+   for(int j=0; j<n_sets; j++) {
+      if( set[j].has_obs(obs_number) ) return j;
    }
 
-   return(-1);
+   return -1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -660,7 +651,7 @@ int SetCollection::is_fcst_matched(int fcst_number) const {
       if(set[j].n_obs > 0) matched = 1;
    }
 
-   return(matched);
+   return matched;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -682,7 +673,7 @@ int SetCollection::is_obs_matched(int obs_number) const {
       if(set[j].n_fcst > 0) matched = 1;
    }
 
-   return(matched);
+   return matched;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -730,21 +721,21 @@ int fcst_obs_sets_overlap(const FcstObsSet &a, const FcstObsSet &b) {
    //  check fcst's
    //
    for(j=0; j<(a.n_fcst); j++) {
-      if( b.has_fcst(a.fcst_number[j]) ) return(1);
+      if( b.has_fcst(a.fcst_number[j]) ) return 1;
    }
 
    //
    //  check obs's
    //
    for(j=0; j<(a.n_obs); j++) {
-      if( b.has_obs(a.obs_number[j]) ) return(1);
+      if( b.has_obs(a.obs_number[j]) ) return 1;
    }
 
    //
    //
    //
 
-   return(0);
+   return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -769,7 +760,7 @@ FcstObsSet union_fcst_obs_sets(const FcstObsSet &a, const FcstObsSet &b) {
       c.add_obs(b.obs_number[j]);
    }
 
-   return(c);
+   return c;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -815,20 +806,19 @@ ostream & operator<<(ostream &out, const FcstObsSet &set) {
    //
    //
 
-   return(out);
+   return out;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 ostream & operator<<(ostream &out, const SetCollection &c) {
-   int j;
 
-   for(j=0; j<(c.n_sets); j++) {
+   for(int j=0; j<(c.n_sets); j++) {
       out << j << "\n";
       out << (c.set[j]);
    }
 
-   return(out);
+   return out;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

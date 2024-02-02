@@ -11,8 +11,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -25,6 +23,8 @@ using namespace std;
 #include "vx_log.h"
 #include "copy_bytes.h"
 #include "do_blocking.h"
+
+using namespace std;
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ void write_pad(int fd, unsigned int value, PadSize padsize)
 int n_written, bytes;
 unsigned int I;
 unsigned long long L;
-unsigned char * b = (unsigned char *) 0;
+unsigned char * b = (unsigned char *) nullptr;
 
 
 switch ( padsize )  {
@@ -295,7 +295,7 @@ if ( lseek(fd, pos, SEEK_SET) < 0 )  {
    //  done
    //
 
-return ( rec_size );
+return rec_size;
 
 }
 

@@ -8,8 +8,6 @@
 // *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 ////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -26,6 +24,8 @@ using namespace std;
 
 #include "vx_util.h"
 #include "vx_log.h"
+
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -58,7 +58,7 @@ void close_tc_txt_file(ofstream *&out, const char *file_name) {
    // Close the output file
    out->close();
    delete out;
-   out = (ofstream *) 0;
+   out = (ofstream *) nullptr;
 
    return;
 }
@@ -67,18 +67,17 @@ void close_tc_txt_file(ofstream *&out, const char *file_name) {
 
 void write_tc_header_row(const char **cols, int n_cols, int hdr_flag,
                          AsciiTable &at, int r, int c) {
-   int i;
 
    // Write the header column names if requested
    if(hdr_flag) {
-      for(i=0; i<n_tc_header_cols; i++)
+      for(int i=0; i<n_tc_header_cols; i++)
          at.set_entry(r, i+c, tc_header_cols[i]);
 
       c += n_tc_header_cols;
    }
 
    // Write the columns names specific to this line type
-   for(i=0; i<n_cols; i++)
+   for(int i=0; i<n_cols; i++)
       at.set_entry(r, i+c, cols[i]);
 
    return;
@@ -88,17 +87,16 @@ void write_tc_header_row(const char **cols, int n_cols, int hdr_flag,
 
 void write_tc_mpr_header_row(int hdr_flag, AsciiTable &at,
                              int r, int c) {
-   int i;
    ConcatString s;
 
    // Write the header column names if requested
    if(hdr_flag) {
-      for(i=0; i<n_tc_header_cols; i++)
+      for(int i=0; i<n_tc_header_cols; i++)
          at.set_entry(r, c++, tc_header_cols[i]);
    }
 
    // Write the tc_mpr header columns
-   for(i=0; i<n_tc_mpr_cols; i++) {
+   for(int i=0; i<n_tc_mpr_cols; i++) {
       at.set_entry(r, c++, tc_mpr_cols[i]);
    }
 
@@ -225,7 +223,7 @@ void write_prob_rirw_pair_info(TcHdrColumns &hdr, const ProbRIRWPairInfo &p,
                                AsciiTable &at, int &i_row) {
 
    // PROBRIRW line type
-  hdr.set_line_type((string) TCStatLineType_ProbRIRW_Str);
+   hdr.set_line_type((string) TCStatLineType_ProbRIRW_Str);
 
    // Timing information
    hdr.set_init (p.prob_rirw().init());
@@ -284,7 +282,6 @@ void write_tc_header_cols(const TcHdrColumns &hdr,
 
 void write_tc_mpr_cols(const TrackPairInfo &p, int i,
                        AsciiTable &at, int r, int c) {
-   int j;
 
    // Write TCMPR columns
    at.set_entry(r, c++, p.n_points());
@@ -310,7 +307,7 @@ void write_tc_mpr_cols(const TrackPairInfo &p, int i,
    at.set_entry(r, c++, p.bdeck()[i].v_max());
 
    // Write the wind columns
-   for(j=0; j<NWinds; j++) {
+   for(int j=0; j<NWinds; j++) {
       at.set_entry(r, c++, p.adeck()[i][j].al_val());
       at.set_entry(r, c++, p.bdeck()[i][j].al_val());
       at.set_entry(r, c++, p.adeck()[i][j].ne_val());
@@ -354,7 +351,6 @@ void write_tc_mpr_cols(const TrackPairInfo &p, int i,
 
 void write_tc_diag_cols(const TrackPairInfo &p, int i,
                         AsciiTable &at, int r, int c) {
-   int j;
 
    // Write TCDIAG columns
    at.set_entry(r, c++, p.n_points());
@@ -373,7 +369,7 @@ void write_tc_diag_cols(const TrackPairInfo &p, int i,
       exit(1);
    }
 
-   for(j=0; j<p.adeck()[i].n_diag(); j++) {
+   for(int j=0; j<p.adeck()[i].n_diag(); j++) {
       at.set_entry(r, c++, p.adeck().diag_name(j));
       at.set_entry(r, c++, p.adeck()[i].diag_val(j));
    }
@@ -385,7 +381,6 @@ void write_tc_diag_cols(const TrackPairInfo &p, int i,
 
 void write_prob_rirw_cols(const ProbRIRWPairInfo &p, int i,
                           AsciiTable &at, int r, int c) {
-   int j;
    double v;
 
    // Write PROBRIRW columns
@@ -427,7 +422,7 @@ void write_prob_rirw_cols(const ProbRIRWPairInfo &p, int i,
    // Write all the probabilities (i == -1)
    if(i<0) {
       at.set_entry(r, c++, p.prob_rirw().n_prob());
-      for(j=0; j<p.prob_rirw().n_prob(); j++) {
+      for(int j=0; j<p.prob_rirw().n_prob(); j++) {
          at.set_entry(r, c++, p.prob_rirw().prob_item(j));
          at.set_entry(r, c++, p.prob_rirw().prob(j));
       }

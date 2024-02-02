@@ -10,21 +10,21 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-#include <netcdf>
-using namespace netCDF;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
 #include <cmath>
+
+#include <netcdf>
 
 #include "nc_utils.h"
 #include "nc_var_info.h"
 #include "vx_math.h"
 #include "vx_log.h"
 #include "vx_cal.h"
+
+using namespace std;
+using namespace netCDF;
 
 ////////////////////////////////////////////////////////////////////////
 
@@ -99,11 +99,11 @@ assign(i);
 
 NcVarInfo & NcVarInfo::operator=(const NcVarInfo & i) {
 
-if ( this == &i )  return ( * this );
+if ( this == &i )  return *this;
 
 assign(i);
 
-return ( * this );
+return *this;
 
 }
 
@@ -113,7 +113,7 @@ return ( * this );
 
 void NcVarInfo::init_from_scratch() {
 
-Dims = (NcDim **) 0;
+Dims = (NcDim **) nullptr;
 
 clear();
 
@@ -127,7 +127,7 @@ return;
 
 void NcVarInfo::clear() {
 
-var = (NcVar *) 0;   //  don't delete
+var = (NcVar *) nullptr;   //  don't delete
 
 name.clear();
 
@@ -207,11 +207,9 @@ out << prefix << "Ndims = " << Ndims;
 
 if ( Dims )  {
 
-   int j;
-
    out << "[ ";
 
-   for (j=0; j<Ndims; ++j)  out << Dims[j]->getSize() << ' ';
+   for (int j=0; j<Ndims; ++j)  out << Dims[j]->getSize() << ' ';
 
    out << "]\n";
 
@@ -244,7 +242,7 @@ return;
 
 int NcVarInfo::lead_time() const {
 
-return ( (int) (ValidTime - InitTime) );
+return (int)(ValidTime - InitTime);
 
 }
 
@@ -374,7 +372,7 @@ bool get_att_str(const NcVarInfo &info, const ConcatString att_name,
    //  done
    //
 
-   return ( found );
+   return found;
 
 }
 
@@ -407,7 +405,7 @@ bool get_att_int(const NcVarInfo &info, const ConcatString att_name,
    //  done
    //
    
-   return ( found );
+   return found;
 
 }
 
@@ -448,7 +446,7 @@ bool get_att_unixtime(const NcVar *var, const ConcatString att_name,
    //  done
    //
    
-   return ( found );
+   return found;
 
 }
 

@@ -9,18 +9,14 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
-////////////////////////////////////////////////////////////////////////
-
-
 #include <iostream>
 
 #include "vx_log.h"
 #include "concat_string.h"
 
 #include "python3_dict.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -147,7 +143,7 @@ int Python3_Dict::lookup_int(const char * key) const
 {
 
 int k;
-PyObject * a = 0;
+PyObject * a = nullptr;
 
 a = PyDict_GetItemString(Object, key);
 
@@ -179,7 +175,7 @@ if ( ! PyLong_Check(a) )  {
 
 k = (int) PyLong_AS_LONG(a);
 
-return ( k );
+return k;
 
 }
 
@@ -192,7 +188,7 @@ double Python3_Dict::lookup_double(const char * key) const
 {
 
 double t;
-PyObject * a = 0;
+PyObject * a = nullptr;
 
 a = PyDict_GetItemString(Object, key);
 
@@ -216,7 +212,7 @@ if ( ! PyFloat_Check(a) )  {
 
 t = PyFloat_AS_DOUBLE(a);
 
-return ( t );
+return t;
 
 }
 
@@ -229,7 +225,7 @@ ConcatString Python3_Dict::lookup_string(const char * key, bool error_out) const
 {
 
 ConcatString s;
-PyObject * a = 0;
+PyObject * a = nullptr;
 
 a = PyDict_GetItemString(Object, key);
 
@@ -262,7 +258,7 @@ else {
 
 }
 
-return ( s );
+return s;
 
 }
 
@@ -274,7 +270,7 @@ PyObject * Python3_Dict::lookup_item(const char * key) const
 
 {
 
-PyObject * a = 0;
+PyObject * a = nullptr;
 
 a = PyDict_GetItemString(Object, key);
 
@@ -287,7 +283,7 @@ if ( ! a )  {
 
 }
 
-return ( a );
+return a;
 
 }
 
@@ -299,7 +295,7 @@ PyObject * Python3_Dict::lookup_dict(const char * key) const
 
 {
 
-PyObject * a = 0;
+PyObject * a = nullptr;
 
 a = PyDict_GetItemString(Object, key);
 
@@ -322,7 +318,7 @@ if ( ! PyDict_Check(a) )  {
 }
 
 
-return ( a );
+return a;
 
 }
 
@@ -334,7 +330,7 @@ PyObject * Python3_Dict::lookup_list(const char * key) const
 
 {
 
-PyObject * a = 0;
+PyObject * a = nullptr;
 
 
 a = PyDict_GetItemString(Object, key);
@@ -360,7 +356,7 @@ if ( ! PyList_Check(a) )  {
 }
 
 
-return ( a );
+return a;
 
 }
 

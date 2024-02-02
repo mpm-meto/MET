@@ -1,9 +1,12 @@
-
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1992 - 2023
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Research Applications Lab (RAL)
+// ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 ////////////////////////////////////////////////////////////////////////
-
-
-using namespace std;
 
 
 #include <iostream>
@@ -19,6 +22,9 @@ using namespace std;
 #include "python3_script.h"
 
 #include "global_python.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -156,11 +162,11 @@ PyObject * Python3_Script::lookup(const char * name) const
 
 {
 
-PyObject * var = 0;
+PyObject * var = nullptr;
 
 var = PyDict_GetItemString (Dict, name);
 
-return ( var );
+return var;
 
 }
 
@@ -172,7 +178,7 @@ PyObject * Python3_Script::lookup_ascii(const char * name) const
 
 {
 
-PyObject * var = 0;
+PyObject * var = nullptr;
 
 var = PyDict_GetItemString (DictAscii, name);
 
@@ -195,7 +201,7 @@ if ( ! PyList_Check(var) )  {
 
 }
 
-return ( var );
+return var;
 
 }
 
@@ -334,7 +340,6 @@ void Python3_Script::reset_argv(const char * script_name, const StringArray & ar
 
 {
 
-int j;
 ConcatString cs, command;
 const int N = args.n();
 
@@ -361,7 +366,7 @@ command = "sys.argv = [ ";
 
 command << sq << script_name << sq << ", ";
 
-for (j=0; j<N; ++j)  {
+for (int j=0; j<N; ++j)  {
 
    command << sq << args[j] << sq;
 

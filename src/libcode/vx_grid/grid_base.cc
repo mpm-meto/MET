@@ -10,9 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -23,6 +20,9 @@ using namespace std;
 #include "vx_log.h"
 #include "grid_base.h"
 #include "find_grid_by_name.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -1413,17 +1413,17 @@ bool operator==(const GridInfo & i1, const GridInfo & i2)
 
 {
 
-     if ( i1.lc  && i2.lc  )  return ( is_eq(i1.lc,  i2.lc ) );
-else if ( i1.st  && i2.st  )  return ( is_eq(i1.st,  i2.st ) );
-else if ( i1.ll  && i2.ll  )  return ( is_eq(i1.ll,  i2.ll ) );
-else if ( i1.rll && i2.rll )  return ( is_eq(i1.rll, i2.rll) );
-else if ( i1.m   && i2.m   )  return ( is_eq(i1.m,   i2.m  ) );
-else if ( i1.g   && i2.g   )  return ( is_eq(i1.g,   i2.g  ) );
-else if ( i1.gi  && i2.gi  )  return ( is_eq(i1.gi,  i2.gi ) );
-else if ( i1.la  && i2.la  )  return ( is_eq(i1.la,  i2.la ) );
-else if ( i1.sl  && i2.sl  )  return ( is_eq(i1.sl,  i2.sl ) );
+     if ( i1.lc  && i2.lc  )  return is_eq(i1.lc,  i2.lc );
+else if ( i1.st  && i2.st  )  return is_eq(i1.st,  i2.st );
+else if ( i1.ll  && i2.ll  )  return is_eq(i1.ll,  i2.ll );
+else if ( i1.rll && i2.rll )  return is_eq(i1.rll, i2.rll);
+else if ( i1.m   && i2.m   )  return is_eq(i1.m,   i2.m  );
+else if ( i1.g   && i2.g   )  return is_eq(i1.g,   i2.g  );
+else if ( i1.gi  && i2.gi  )  return is_eq(i1.gi,  i2.gi );
+else if ( i1.la  && i2.la  )  return is_eq(i1.la,  i2.la );
+else if ( i1.sl  && i2.sl  )  return is_eq(i1.sl,  i2.sl );
 #ifdef WITH_UGRID
-else if ( i1.us  && i2.us  )  return ( is_eq(i1.us,  i2.us ) );
+else if ( i1.us  && i2.us  )  return is_eq(i1.us,  i2.us );
 #endif
 
 return false;

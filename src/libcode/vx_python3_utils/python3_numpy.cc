@@ -1,9 +1,12 @@
-
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1992 - 2023
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Research Applications Lab (RAL)
+// ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 ////////////////////////////////////////////////////////////////////////
-
-
-using namespace std;
 
 
 #include <iostream>
@@ -16,6 +19,8 @@ using namespace std;
 
 #include "python3_numpy.h"
 #include "python3_util.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -69,7 +74,7 @@ Object = 0;
 
 Name.clear();
 
-if ( Dim )  { delete [] Dim;  Dim = 0; }
+if ( Dim )  { delete [] Dim;  Dim = nullptr; }
 
 N_Dims = 0;
 
@@ -115,14 +120,12 @@ void Python3_Numpy::dump(ostream & out) const
 
 {
 
-int j;
-
 out << "name      = \"" << Name.contents() << "\"\n";
 out << "n dims    = " << n_dims() << '\n';
 
 out << "dims      = [";
 
-for (j=0; j<N_Dims; ++j)  out << ' ' << Dim[j];
+for (int j=0; j<N_Dims; ++j)  out << ' ' << Dim[j];
 
 out << " ]\n";
 
@@ -164,7 +167,7 @@ if ( (k < 0) || (k >= N_Dims) )  {
 }
 
 
-return ( Dim[k] );
+return Dim[k];
 
 }
 

@@ -10,8 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -19,6 +17,8 @@ using namespace std;
 #include <cmath>
 
 #include "find_grid_by_name.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ bool status = false;
 
 status = find_grid_by_name(name, i);
 
-if ( !status || !(i.ok()) )  return ( false );
+if ( !status || !(i.ok()) )  return false;
 
 status = false;
 
@@ -62,7 +62,7 @@ if ( i.m  )  { g.set( *(i.m)  );  status = true; }
 if ( i.g  )  { g.set( *(i.g)  );  status = true; }
 if ( i.la )  { g.set( *(i.la) );  status = true; }
 
-return ( status );
+return status;
 
 }
 
@@ -88,7 +88,7 @@ for (j=0; j<n_dtc_lambert_grids; ++j)  {
 
       i.set( dtc_lambert_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -104,7 +104,7 @@ for (j=0; j<n_ncep_latlon_grids; ++j)  {
 
       i.set( ncep_latlon_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -120,7 +120,7 @@ for (j=0; j<n_ncep_st_grids; ++j)  {
 
       i.set( ncep_st_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -136,7 +136,7 @@ for (j=0; j<n_misc_st_grids; ++j)  {
 
       i.set( misc_st_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -152,7 +152,7 @@ for (j=0; j<n_ncep_lambert_grids; ++j)  {
 
       i.set( ncep_lambert_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -168,7 +168,7 @@ for (j=0; j<n_ncep_mercator_grids; ++j)  {
 
       i.set( ncep_mercator_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -184,7 +184,7 @@ for (j=0; j<n_ncep_gaussian_grids; ++j)  {
 
       i.set( ncep_gaussian_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -200,7 +200,7 @@ for (j=0; j<n_misc_laea_grids; ++j)  {
 
       i.set( misc_laea_grids[j] );
 
-      return ( true );
+      return true;
 
    }
 
@@ -210,7 +210,7 @@ for (j=0; j<n_misc_laea_grids; ++j)  {
    //  nope
    //
 
-return ( false );
+return false;
 
 }
 
@@ -240,7 +240,7 @@ else                                                               status = fals
    //  done
    //
 
-return ( status );
+return status;
 
 }
 
@@ -252,7 +252,7 @@ bool parse_lambert_grid(const StringArray &grid_strings, Grid & g)
 
 {
 
-Grid * ToGrid = (Grid *) 0;
+Grid * ToGrid = (Grid *) nullptr;
 
 LambertData ldata;
 
@@ -355,14 +355,14 @@ ToGrid = new Grid ( ldata );
 
 g = *ToGrid;
 
-if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
+if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) nullptr; }
 
    //
    //  done
    //
 
 
-return ( true );
+return true;
 
 }
 
@@ -374,7 +374,7 @@ bool parse_stereographic_grid(const StringArray &grid_strings, Grid & g)
 
 {
 
-Grid * ToGrid = (Grid *) 0;
+Grid * ToGrid = (Grid *) nullptr;
 
 StereographicData sdata;
 
@@ -385,7 +385,7 @@ if ( N != 10 )  {
    mlog << Warning << "\nparse_stereographic_grid() -> "
         << "polar stereographic grid spec should have 10 entries\n\n";
 
-   return ( false );
+   return false;
 
 }
 
@@ -393,7 +393,7 @@ int j;
 int Nx, Ny;
 double lat_ll, lon_ll, lon_orient, D_km, R_km, lat_scale;
 char H;
-const char * c = (const char *) 0;
+const char * c = (const char *) nullptr;
 
 
 j = 1;
@@ -479,14 +479,14 @@ ToGrid = new Grid ( sdata );
 
 g = *ToGrid;
 
-if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
+if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) nullptr; }
 
    //
    //  done
    //
 
 
-return ( true );
+return true;
 
 }
 
@@ -498,7 +498,7 @@ bool parse_latlon_grid(const StringArray &grid_strings, Grid & g)
 
 {
 
-Grid * ToGrid = (Grid *) 0;
+Grid * ToGrid = (Grid *) nullptr;
 
 LatLonData ldata;
 
@@ -558,7 +558,7 @@ ToGrid = new Grid ( ldata );
 
 g = *ToGrid;
 
-if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
+if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) nullptr; }
 
 
    //
@@ -566,7 +566,7 @@ if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
    //
 
 
-return ( true );
+return true;
 
 }
 
@@ -578,7 +578,7 @@ bool parse_rotlatlon_grid(const StringArray &grid_strings, Grid & g)
 
 {
 
-Grid * ToGrid = (Grid *) 0;
+Grid * ToGrid = (Grid *) nullptr;
 
 RotatedLatLonData rdata;
 
@@ -649,7 +649,7 @@ ToGrid = new Grid ( rdata );
 
 g = *ToGrid;
 
-if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
+if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) nullptr; }
 
 
    //
@@ -657,7 +657,7 @@ if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
    //
 
 
-return ( true );
+return true;
 
 }
 
@@ -669,7 +669,7 @@ bool parse_mercator_grid(const StringArray &grid_strings, Grid & g)
 
 {
 
-Grid * ToGrid = (Grid *) 0;
+Grid * ToGrid = (Grid *) nullptr;
 
 MercatorData mdata;
 
@@ -731,14 +731,14 @@ ToGrid = new Grid ( mdata );
 
 g = *ToGrid;
 
-if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
+if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) nullptr; }
 
    //
    //  done
    //
 
 
-return ( true );
+return true;
 
 }
 
@@ -750,7 +750,7 @@ bool parse_gaussian_grid(const StringArray &grid_strings, Grid & g)
 
 {
 
-Grid * ToGrid = (Grid *) 0;
+Grid * ToGrid = (Grid *) nullptr;
 
 GaussianData gdata;
 
@@ -800,14 +800,14 @@ ToGrid = new Grid ( gdata );
 
 g = *ToGrid;
 
-if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) 0; }
+if ( ToGrid )  { delete ToGrid; ToGrid = (Grid *) nullptr; }
 
    //
    //  done
    //
 
 
-return ( true );
+return true;
 
 }
 

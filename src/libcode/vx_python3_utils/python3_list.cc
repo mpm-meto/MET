@@ -9,18 +9,14 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
-////////////////////////////////////////////////////////////////////////
-
-
 #include <iostream>
 
 #include "vx_log.h"
 #include "concat_string.h"
 
 #include "python3_list.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -167,7 +163,7 @@ PyObject * Python3_List::operator[](int n) const
 
 {
 
-PyObject * a = 0;
+PyObject * a = nullptr;
 
 if ( (n < 0) || (n >= Size) )  {
 
@@ -182,7 +178,7 @@ if ( (n < 0) || (n >= Size) )  {
 a = PyList_GetItem(Object, n);
 
 
-return ( a );
+return a;
 
 }
 

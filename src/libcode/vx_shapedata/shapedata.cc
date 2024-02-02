@@ -22,16 +22,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-static const bool use_new = true;
-
-static const int split_enlarge = 4;   //  used for ShapeData  shrink and expand
-
-static const bool do_split_fatten = true;
-
-
 ///////////////////////////////////////////////////////////////////////////////
-
-using namespace std;
 
 #include <ctime>
 #include <iostream>
@@ -52,11 +43,19 @@ using namespace std;
 
 #include "ihull.h"
 
+using namespace std;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
 
 #define  STANDARD_XY_YO_N(Nx, x, y) ((y)*(Nx) + (x))
+
+static const bool use_new = true;
+
+static const int split_enlarge = 4;   //  used for ShapeData  shrink and expand
+
+static const bool do_split_fatten = true;
 
 
 ///////////////////////////////////////////////////////////////////////////////

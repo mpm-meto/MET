@@ -1,9 +1,14 @@
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1992 - 2023
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Research Applications Lab (RAL)
+// ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 
 ////////////////////////////////////////////////////////////////////////
 
-
-using namespace std;
 
 #include <iostream>
 #include <unistd.h>
@@ -12,6 +17,8 @@ using namespace std;
 #include <cmath>
 
 #include "ihull.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -130,7 +137,7 @@ if ( n_hull > n_old )  --n_hull;
    //  done
    //
 
-if ( p )  { delete [] p;  p = 0; }
+if ( p )  { delete [] p;  p = nullptr; }
 
 return;
 
@@ -162,7 +169,7 @@ if ( a.y > b.y )  return (  1 );
    //  done
    //
 
-return ( 0 );
+return 0;
 
 }
 

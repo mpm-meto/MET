@@ -10,9 +10,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <cstdio>
 #include <iostream>
 #include <unistd.h>
@@ -24,6 +21,9 @@ using namespace std;
 #include "vx_util.h"
 #include "vx_log.h"
 #include "lc_grid.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -349,7 +349,7 @@ sum = uv_closedpolyline_area(u, v, 4);
 
 sum *= earth_radius_km*earth_radius_km;
 
-return ( sum );
+return sum;
 
 }
 
@@ -361,7 +361,7 @@ int LambertGrid::nx() const
 
 {
 
-return ( Nx );
+return Nx;
 
 }
 
@@ -373,7 +373,7 @@ int LambertGrid::ny() const
 
 {
 
-return ( Ny );
+return Ny;
 
 }
 
@@ -385,7 +385,7 @@ ConcatString LambertGrid::name() const
 
 {
 
-return ( Name );
+return Name;
 
 }
 
@@ -397,13 +397,13 @@ double LambertGrid::uv_closedpolyline_area(const double * u, const double * v, i
 
 {
 
-int j, k;
+int k;
 double sum;
 
 
 sum = 0.0;
 
-for (j=0; j<n; ++j)  {
+for (int j=0; j<n; ++j)  {
 
    k = (j + 1)%n;
 
@@ -413,7 +413,7 @@ for (j=0; j<n; ++j)  {
 
 sum = fabs(sum);
 
-return ( sum );
+return sum;
 
 }
 
@@ -425,10 +425,9 @@ double LambertGrid::xy_closedpolyline_area(const double * x, const double *y , i
 
 {
 
-int j;
 double sum;
-double *u = (double *) 0;
-double *v = (double *) 0;
+double *u = (double *) nullptr;
+double *v = (double *) nullptr;
 
 u = new double [n];
 v = new double [n];
@@ -442,7 +441,7 @@ if ( !u || !v )  {
 
 }
 
-for (j=0; j<n; ++j)  {
+for (int j=0; j<n; ++j)  {
 
    xy_to_uv(x[j], y[j], u[j], v[j]);
 
@@ -452,10 +451,10 @@ sum = uv_closedpolyline_area(u, v, n);
 
 sum *= earth_radius_km*earth_radius_km;
 
-delete [] u;  u = (double *) 0;
-delete [] v;  v = (double *) 0;
+delete [] u;  u = (double *) nullptr;
+delete [] v;  v = (double *) nullptr;
 
-return ( sum );
+return sum;
 
 }
 
@@ -575,7 +574,7 @@ snprintf(junk, sizeof(junk), "By: %.4f", By);   a << junk;
    //  done
    //
 
-return ( a );
+return a;
 
 }
 
@@ -591,7 +590,7 @@ GridInfo i;
 
 i.set(Data);
 
-return ( i );
+return i;
 
 }
 
@@ -626,7 +625,7 @@ hemi = 1.0;
 
 angle = diff*Cone*hemi;
 
-return ( angle );
+return angle;
 
 }
 
@@ -638,7 +637,7 @@ bool LambertGrid::wrap_lon() const
 
 {
 
-return ( false );
+return false;
 
 }
 
@@ -671,7 +670,7 @@ LambertGrid * p = new LambertGrid (Data);
 
 p->Name = Name;
 
-return ( p );
+return p;
 
 }
 
@@ -719,7 +718,7 @@ r = tand(45.0 - 0.5*H*lat);
 
 r = pow(r, Cone);
 
-return ( r );
+return r;
 
 }
 
@@ -738,7 +737,7 @@ lat = 90.0 - 2.0*atand(pow(r, 1.0/Cone));
 
 lat *= H;
 
-return ( lat );
+return lat;
 
 }
 
@@ -757,7 +756,7 @@ a = -(Cone/cosd(lat))*lc_func(lat, Cone, is_north);
 
 a *= H;
 
-return ( a );
+return a;
 
 }
 
@@ -783,7 +782,7 @@ double lambert_segment_area(double u0, double v0, double u1, double v1, double c
 
 {
 
-int i, j, k, n;
+int i, j, n;
 double rom, denom, h, delta_u, delta_v;
 double trap, t[15], left, right, sum;
 double test = 0.0;
@@ -818,7 +817,7 @@ do {
 
    left = trap;
 
-   for (k=1; k<=i; ++k)  {
+   for (int k=1; k<=i; ++k)  {
 
       denom = pow(4.0, (double) k) - 1.0;
 
@@ -849,7 +848,7 @@ rom = t[i];
 
 rom *= (2.0/c)*(u0*v1 - u1*v0);
 
-return ( rom );
+return rom;
 
 }
 
@@ -875,7 +874,7 @@ e_top = e_bot - 1.0;
 
 answer = pow(r2, e_top)/(1.0 + pow(r2, e_bot));
 
-return ( answer );
+return answer;
 
 }
 
@@ -938,7 +937,7 @@ if ( fabs(lat1 - lat2) < tol )  {
 
    cone = sind(H*lat1);
 
-   return ( cone );
+   return cone;
 
 }
 
@@ -955,7 +954,7 @@ b = tand(45.0 - 0.5*H*lat1)/tand(45.0 - 0.5*H*lat2);
 cone = log(t)/log(b);
 
 
-return ( cone );
+return cone;
 
 }
 
@@ -1025,7 +1024,7 @@ g_new.set(data);
    //  done
    //
 
-return ( g_new );
+return g_new;
 
 }
 
