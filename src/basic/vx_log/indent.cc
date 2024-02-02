@@ -11,14 +11,14 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
 #include <cmath>
 
 #include "indent.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -72,11 +72,11 @@ Indent & Indent::operator=(const Indent & i)
 
 {
 
-if ( this == &i )  return ( * this );
+if ( this == &i )  return *this;
 
 assign(i);
 
-return ( * this );
+return *this;
 
 }
 
@@ -170,13 +170,13 @@ ostream & operator<<(ostream & s, const Indent & i)
 
 {
 
-int j, jmax;
+int jmax;
 
 
 jmax = (i.delta)*(i.depth);
 
 
-for (j=0; j<jmax; ++j)  {
+for (int j=0; j<jmax; ++j)  {
 
    if ( (j%(i.delta)) == 0 )  s.put(i.on_char);
    else                       s.put(i.off_char);
@@ -185,7 +185,7 @@ for (j=0; j<jmax; ++j)  {
 
 
 
-return ( s );
+return s;
 
 }
 

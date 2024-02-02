@@ -11,9 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <regex.h>
 #include <unistd.h>
@@ -24,6 +21,8 @@ using namespace std;
 #include "string_array.h"
 #include "logger.h"
 #include "indent.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -108,17 +107,15 @@ bool StringArray::operator==(const StringArray & a) const
 
 {
 
-if ( n() != a.n() )  return ( false );
+if ( n() != a.n() )  return false;
 
-int j;
+for (int j=0; j<n(); ++j)  {
 
-for (j=0; j<n(); ++j)  {
-
-  if ( s[j] != a.s[j] )  return ( false );
+  if ( s[j] != a.s[j] )  return false;
 
 }
 
-return ( true );
+return true;
 
 }
 
@@ -191,9 +188,8 @@ Indent prefix2(depth + 1);
 out << prefix << "IgnoreCase = " << IgnoreCase << "\n";
 out << prefix << "Sorted     = " << (Sorted ? "true" : "false") << "\n";
 
-int j;
 
-for (j=0; j<n(); ++j)  {
+for (int j=0; j<n(); ++j)  {
 
    out << prefix2 << "Element # " << j << " = \"" << s[j] << "\"\n";
 
@@ -227,7 +223,7 @@ if ( (len < 0) || (len >= n()) )  {
 }
 
 
-return ( s[len] );
+return s[len];
 
 }
 
@@ -427,7 +423,7 @@ string StringArray::serialize(const char *sep) const
       if((it+1) != s.end()) all_s.append(sep);
    }
 
-   return(all_s);
+   return all_s;
 
 }
 
@@ -467,10 +463,10 @@ bool StringArray::has(const std::string text) const
    
    if (Sorted && !IgnoreCase) {
       found = binary_search(s.begin(), s.end(), text);
-}
-else {
-      return ( has(text, forward) );
-}
+   }
+   else {
+      return has(text, forward);
+   }
 
    return found;
 }
@@ -483,7 +479,7 @@ bool StringArray::has(const std::string text, bool forward) const
 
 {
    int index;
-   return ( has(text, index, forward) );
+   return has(text, index, forward);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -653,21 +649,19 @@ bool StringArray::has_option(int & index) const
 
 index = -1;
 
-int j;
-
-for (j=0; j<n(); ++j)  {
+for (int j=0; j<n(); ++j)  {
 
    if ( s[j][0] == '-' )  {
 
       index = j;
 
-      return ( true );
+      return true;
 
    }
 
 }
 
-return ( false );
+return false;
 
 }
 
@@ -680,13 +674,11 @@ bool StringArray::reg_exp_match(const char * text) const
 
 {
 
-if ( n() == 0 || !text )  return ( false );
+if ( n() == 0 || !text )  return false;
 
-int j;
+for (int j=0; j<n(); ++j)  {
 
- for (j=0; j<n(); ++j)  {
-
-   if ( check_reg_exp(s[j].c_str(), text) )  { return ( true ); }
+   if ( check_reg_exp(s[j].c_str(), text) )  { return true; }
 
 }
 
@@ -694,7 +686,7 @@ int j;
    //  nope
    //
 
-return ( false );
+return false;
 
 }
 
@@ -714,7 +706,7 @@ if ( (k < 0) || (k >= n()) )  {
 
 }
 
-return ( s[k].length() );
+return s[k].length();
 
 }
 
@@ -798,7 +790,7 @@ if( regexec(preg, test_str, 0, 0, 0) == 0 ) { valid = true; }
 // Free allocated memory.
 regfree( preg );
 
-return( valid );
+return valid;
 
 }
 
@@ -818,7 +810,7 @@ const char ** cb = (const char **) b;
 status = strcmp(*ca, *cb);
 
 
-return ( status );
+return status;
 
 }
 
