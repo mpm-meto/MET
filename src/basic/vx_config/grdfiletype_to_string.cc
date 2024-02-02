@@ -24,12 +24,11 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <string.h>
 
 #include "grdfiletype_to_string.h"
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -39,7 +38,7 @@ ConcatString grdfiletype_to_string(const GrdFileType t)
 
 {
 
-const char * s = (const char *) 0;
+const char * s = (const char *) nullptr;
 
 switch ( t )  {
 
@@ -66,7 +65,7 @@ switch ( t )  {
 }   //  switch
 
 
-return ( ConcatString (s) );
+return ConcatString(s);
 
 }
 
@@ -97,7 +96,7 @@ else if ( strcmp(text, "FileType_UGrid"         ) == 0 )   { t = FileType_UGrid;
    //  nope
    //
 
-return ( false );
+return false;
 
 }
 
