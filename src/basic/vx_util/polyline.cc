@@ -19,8 +19,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
@@ -33,6 +31,8 @@ using namespace std;
 #include "vx_math.h"
 #include "vx_util.h"
 
+using namespace std;
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Code for class Polyline
@@ -40,7 +40,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 
 Polyline::Polyline() {
-   u = v = (double *) 0;
+   u = v = (double *) nullptr;
 
    clear();
 }
@@ -75,8 +75,8 @@ Polyline & Polyline::operator=(const Polyline &c) {
 
 void Polyline::clear() {
 
-   if(u)    { delete [] u;    u = (double *) 0; }
-   if(v)    { delete [] v;    v = (double *) 0; }
+   if(u)    { delete [] u;    u = (double *) nullptr; }
+   if(v)    { delete [] v;    v = (double *) nullptr; }
 
    n_points = n_alloc = 0;
 
@@ -86,7 +86,6 @@ void Polyline::clear() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Polyline::assign(const Polyline &c) {
-   int i;
 
    clear();
 
@@ -98,7 +97,7 @@ void Polyline::assign(const Polyline &c) {
 
    n_alloc = n_points = c.n_points;
 
-   for(i=0; i<n_points; i++) {
+   for(int i=0; i<n_points; i++) {
 
       u[i] = c.u[i];
       v[i] = c.v[i];
@@ -114,14 +113,13 @@ void Polyline::dump(ostream & out, int depth) const
 
 {
 
-int j;
 Indent prefix(depth);
 Indent p2(depth + 1);
 
 out << prefix << "n_points = " << n_points << "\n";
 out << prefix << "n_alloc  = " << n_alloc  << "\n";
 
-for (j=0; j<n_points; ++j)  {
+for (int j=0; j<n_points; ++j)  {
 
    out << p2 << "point # " << j << " ... ("
        << u[j] << ", " << v[j] << ")\n";
@@ -222,13 +220,13 @@ void Polyline::extend_points(int n) {
       vv[i] = v[i];
    }
 
-   delete [] u; u = (double *) 0;
-   delete [] v; v = (double *) 0;
+   delete [] u; u = (double *) nullptr;
+   delete [] v; v = (double *) nullptr;
 
    u = uu;
    v = vv;
 
-   uu = vv = (double *) 0;
+   uu = vv = (double *) nullptr;
 
    return;
 }
@@ -258,7 +256,7 @@ int Polyline::is_closed() const {
       else            closed = 0;
    }
 
-   return(closed);
+   return closed;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -284,10 +282,9 @@ void Polyline::centroid(double &ubar, double &vbar) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Polyline::translate(double du, double dv) {
-   int i;
 
    // Translate each point of the current polyline
-   for(i=0; i<n_points; i++) {
+   for(int i=0; i<n_points; i++) {
 
       u[i] += du;
       v[i] += dv;
@@ -322,7 +319,7 @@ double Polyline::angle() const {
 
    a = 0.5*deg_per_rad*atan2(2.0*Ixy, Ixx - Iyy);
 
-   return(a);
+   return a;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -348,7 +345,6 @@ void Polyline::rotate(double deg) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Polyline::rotate(double deg, double ubar, double vbar) {
-   int i;
    double c, s;
    double x_old, y_old, x_new, y_new;
 
@@ -356,7 +352,7 @@ void Polyline::rotate(double deg, double ubar, double vbar) {
    c = cos(deg*rad_per_deg);
 
    // Rotate points of the current Polyline
-   for(i=0; i<n_points; i++) {
+   for(int i=0; i<n_points; i++) {
 
       x_old = u[i] - ubar;
       y_old = v[i] - vbar;
@@ -374,17 +370,18 @@ void Polyline::rotate(double deg, double ubar, double vbar) {
 ///////////////////////////////////////////////////////////////////////////////
 
 double Polyline::uv_signed_area() const {
-   int i, j;
-   double sum, x_0, y_0, x_1, y_1;
+   double sum;
 
    sum = 0.0;
 
    if(n_points > 0) {
+      int j;
+      double x_0, y_0, x_1, y_1;
 
       x_0 = u[0];
       y_0 = v[0];
 
-      for(i=0; i<n_points; i++) {
+      for(int i=0; i<n_points; i++) {
 
          j = (i+1)%n_points;
 
@@ -400,7 +397,7 @@ double Polyline::uv_signed_area() const {
       sum *= 0.5;
    }
 
-   return(sum);
+   return sum;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -414,7 +411,7 @@ int Polyline::is_inside(double u_test, double v_test) const
 
 {
 
-   int i, j;
+   int j;
    double Angle, Angle0, a, b, c, d;
 
    if(n_points == 0) {
@@ -427,7 +424,7 @@ int Polyline::is_inside(double u_test, double v_test) const
 
    Angle = Angle0 = atan2(b, a)/pi;
 
-   for(i=0; i<n_points; i++) {
+   for(int i=0; i<n_points; i++) {
 
       j = (i+1)%n_points;
 
@@ -440,36 +437,35 @@ int Polyline::is_inside(double u_test, double v_test) const
       b = d;
    }
 
-   return(nint( (Angle - Angle0)/2 ));
+   return nint( (Angle - Angle0)/2 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int Polyline::is_polyline_point(double u_test, double v_test) const {
-   int i, poly_point;
+   int poly_point;
 
    poly_point = 0;
 
    // Check if it's one of the current Polyline's points
-   for(i=0; i<n_points; i++) {
+   for(int i=0; i<n_points; i++) {
 
       if(is_eq(u_test, u[i]) && is_eq(v_test, v[i])) poly_point = 1;
    }
 
-   return(poly_point);
+   return poly_point;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void Polyline::bounding_box(Box &bb) const {
-   int i;
    double L, R, B, T;
 
    L = R = u[0];
    B = T = v[0];
 
    // Find min and max of current Polyline's points
-   for(i=1; i<n_points; i++) {   //  i starts at one, here
+   for(int i=1; i<n_points; i++) {   //  i starts at one, here
 
       if(u[i] > R) R = u[i];
       if(u[i] < L) L = u[i];
@@ -487,15 +483,15 @@ void Polyline::bounding_box(Box &bb) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void Polyline::sum_first_moments(double &sum_x, double &sum_y) const {
-   int i, j;
-   double x_0, y_0, x_1, y_1;
 
    if(n_points > 0) {
+      int j;
+      double x_0, y_0, x_1, y_1;
 
       x_0 = u[0];
       y_0 = v[0];
 
-      for(i=0; i<n_points; i++) {
+      for(int i=0; i<n_points; i++) {
 
          j = (i+1)%n_points;
 
@@ -518,15 +514,14 @@ void Polyline::sum_first_moments(double &sum_x, double &sum_y) const {
 
 void Polyline::sum_second_moments(double x_bar, double y_bar,
                                   double &Ixx, double &Ixy, double &Iyy) const {
-   int i, j;
-   double x_0, y_0, x_1, y_1;
-
    if(n_points > 0) {
+      int j;
+      double x_0, y_0, x_1, y_1;
 
       x_0 = u[0] - x_bar;
       y_0 = v[0] - y_bar;
 
-      for(i=0; i<n_points; i++) {
+      for(int i=0; i<n_points; i++) {
 
          j = (i+1)%n_points;
 
@@ -563,7 +558,7 @@ double point_dist(double x1, double y1, double x2, double y2) {
    dx = x1 - x2;
    dy = y1 - y2;
 
-   return( sqrt( dx*dx + dy*dy ) );
+   return sqrt( dx*dx + dy*dy );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -580,12 +575,12 @@ double polyline_dist(const Polyline & a, const Polyline & b) {
 
    for (j=0; j<(a.n_points); ++j)  {
 
-      if ( b.is_inside(a.u[j], a.v[j]) )  return ( 0.0 );
+      if ( b.is_inside(a.u[j], a.v[j]) )  return 0.0;
    }
 
    for (j=0; j<(b.n_points); ++j)  {
 
-      if ( a.is_inside(b.u[j], b.v[j]) )  return ( 0.0 );
+      if ( a.is_inside(b.u[j], b.v[j]) )  return 0.0;
    }
 
    //
@@ -603,7 +598,7 @@ double polyline_dist(const Polyline & a, const Polyline & b) {
          if ( intersect_linesegment( a.u[j], a.v[j], a.u[j2], a.v[j2],
                                      b.u[k], b.v[k], b.u[k2], b.v[k2] ) ) {
 
-            return ( 0.0 );
+            return 0.0;
 
          }
       }
@@ -655,7 +650,7 @@ double polyline_dist(const Polyline & a, const Polyline & b) {
    //  done
    //
 
-   return ( min_dist );
+   return min_dist;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -669,19 +664,19 @@ double polyline_dist(const Polyline & a, const Polyline & b) {
 
 double polyline_pw_ls_mean_dist(const Polyline &a, const Polyline &b) {
    double d, min_d, d_sum, d_avg;
-   int i, j;
+   int j;
 
    d_sum = 0;
 
-   for(i=0; i<a.n_points; i++) {
+   for(int i=0; i<a.n_points; i++) {
 
       min_d = 1.0e10;
 
       for(j=0; j<b.n_points; j++) {
 
-	 d = min_dist_linesegment(b.u[j], b.v[j],
-	                          b.u[(j+1)%b.n_points], b.v[(j+1)%b.n_points],
-				  a.u[i], a.v[i]);
+     d = min_dist_linesegment(b.u[j], b.v[j],
+                              b.u[(j+1)%b.n_points], b.v[(j+1)%b.n_points],
+                              a.u[i], a.v[i]);
 
          if(d < min_d) min_d = d;
       }
@@ -692,7 +687,7 @@ double polyline_pw_ls_mean_dist(const Polyline &a, const Polyline &b) {
    if(a.n_points == 0) d_avg = 0;
    else                d_avg = d_sum/a.n_points;
 
-   return(d_avg);
+   return d_avg;
 }
 
 
@@ -708,11 +703,11 @@ double polyline_pw_ls_mean_dist(const Polyline &a, const Polyline &b) {
 
 double polyline_pw_mean_sq_dist(const Polyline &a, const Polyline &b) {
    double sqd, min_sqd, sqd_sum, sqd_avg;
-   int i, j;
+   int j;
 
    sqd_sum = 0;
 
-   for(i=0; i<a.n_points; i++) {
+   for(int i=0; i<a.n_points; i++) {
 
       min_sqd = 1.0e10;
 
@@ -730,7 +725,7 @@ double polyline_pw_mean_sq_dist(const Polyline &a, const Polyline &b) {
    if(a.n_points == 0) sqd_avg = 0;
    else                sqd_avg = sqd_sum/a.n_points;
 
-   return(sqd_avg);
+   return sqd_avg;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -765,13 +760,13 @@ int intersect_linesegment(double x1, double y1, double x2, double y2,
             ||
            ( fabs ( x2 - x3 ) <= dx && fabs ( x2 - x4 ) <= dx &&
              fabs ( y2 - y3 ) <= dy && fabs ( y2 - y4 ) <= dy )
-         )  return ( 1 );
+         )  return 1;
    }
 
    //
    //  Check for parallel lines which are not coincident
    //
-   else if ( is_eq(denom, 0.0) )  return ( 0 );
+   else if ( is_eq(denom, 0.0) )  return 0;
 
    else {
 
@@ -786,10 +781,10 @@ int intersect_linesegment(double x1, double y1, double x2, double y2,
       //  range of 0 to 1 then the intersection point is within both
       //  line segments.
       //
-      if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 )  return ( 1 );
+      if ( 0 <= ua && ua <= 1 && 0 <= ub && ub <= 1 )  return 1;
    }
 
-   return ( 0 );
+   return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -846,7 +841,7 @@ double min_dist_linesegment(double px, double py, double qx, double qy,
    vx = rmpx - t0*cx;
    vy = rmpy - t0*cy;
 
-   return ( sqrt( vx*vx + vy*vy ) );
+   return sqrt( vx*vx + vy*vy );
 
 }
 
@@ -1027,6 +1022,5 @@ void parse_xy_poly_file(const char *poly_file, Polyline &poly) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
 
 

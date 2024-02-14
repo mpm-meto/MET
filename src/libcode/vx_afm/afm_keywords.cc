@@ -11,9 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -23,6 +20,9 @@ using namespace std;
 #include "afm_keywords.h"
 
 
+using namespace std;
+
+
 ////////////////////////////////////////////////////////////////////////
 
 
@@ -30,24 +30,22 @@ int is_afm_keyword(ConcatString text, AfmKeyword & a)
 
 {
 
-int j;
-
 a = no_afm_keyword;
 
-for (j=0; j<n_kw_infos; ++j)  {
+for (int j=0; j<n_kw_infos; ++j)  {
 
   if ( text == kw_info[j].text )  {
 
       a = kw_info[j].key;
 
-      return ( 1 );
+      return 1;
 
    }
 
 }
 
 
-return ( 0 );
+return 0;
 
 }
 

@@ -24,12 +24,12 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <string.h>
 
 #include "afmtokentype_to_string.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ switch ( t )  {
 }   //  switch
 
 
-return ( ConcatString (s) );
+return ConcatString(s);
 
 }
 

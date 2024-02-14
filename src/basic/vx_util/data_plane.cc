@@ -20,8 +20,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
-
 #include <algorithm>
 #include <map>
 
@@ -31,6 +29,8 @@ using namespace std;
 #include "vx_math.h"
 #include "vx_cal.h"
 #include "math_constants.h"
+
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -64,11 +64,11 @@ DataPlane::DataPlane(const DataPlane &d) {
 
 DataPlane & DataPlane::operator=(const DataPlane &d) {
 
-   if(this == &d) return(*this);
+   if(this == &d) return *this;
 
    assign(d);
 
-   return(*this);
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ DataPlane & DataPlane::operator+=(const DataPlane &d) {
       Data[i] = v;
    }
 
-   return(*this);
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -113,7 +113,7 @@ DataPlane & DataPlane::operator/=(const double v) {
       if(!is_bad_data(Data[i])) Data[i] /= v;
    }
 
-   return(*this);
+   return *this;
 }
 
 bool DataPlane::operator==(const DataPlane &d) const {
@@ -421,14 +421,13 @@ void DataPlane::set_all(float *data, int nx, int ny) {
 ///////////////////////////////////////////////////////////////////////////////
 
 bool DataPlane::is_all_bad_data() const {
-   int j;
    bool status = true;
 
    //
    // Check for no valid data
    //
 
-   for(j=0; j<Nxy; ++j) {
+   for(int j=0; j<Nxy; ++j) {
       if( !is_bad_data(Data[j]) ) {
          status = false;
          break;
@@ -441,13 +440,13 @@ bool DataPlane::is_all_bad_data() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 int DataPlane::n_good_data() const {
-   int j, n;
+   int n;
 
    //
    // Count number of good data values
    //
 
-   for(j=0,n=0; j<Nxy; ++j) {
+   for(int j=0,n=0; j<Nxy; ++j) {
       if(!is_bad_data(Data[j])) n++;
    }
 
@@ -467,7 +466,6 @@ double DataPlane::get(int x, int y) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 void DataPlane::threshold(const SingleThresh &st) {
-   int j;
 
    //
    // Loop through the data and apply the threshold to all valid values
@@ -475,7 +473,7 @@ void DataPlane::threshold(const SingleThresh &st) {
    //   0.0 if it does not
    //
 
-   for(j=0; j<Nxy; ++j) {
+   for(int j=0; j<Nxy; ++j) {
 
       if( is_bad_data(Data[j]) )  continue;
       if( st.check(Data[j]) )     Data[j] = 1.0;
@@ -505,7 +503,7 @@ void DataPlane::convert(const UserFunc_1Arg &convert_fx) {
 
 void DataPlane::censor(const ThreshArray &censor_thresh,
                        const NumArray &censor_val) {
-   int i, j, count;
+   int count;
    ThreshArray ta = censor_thresh;
 
    // Check for no work to do
@@ -515,7 +513,7 @@ void DataPlane::censor(const ThreshArray &censor_thresh,
    if(ta.need_perc()) {
       NumArray d;
       d.extend(Nxy);
-      for(i=0; i<Nxy; i++) {
+      for(int i=0; i<Nxy; i++) {
          if(!is_bad_data(Data[i])) d.add(Data[i]);
       }
       ta.set_perc(&d, &d, &d);
@@ -527,9 +525,9 @@ void DataPlane::censor(const ThreshArray &censor_thresh,
         << "\".\n";
 
    // Loop through the points and apply all the censor thresholds.
-   for(i=0,count=0; i<Nxy; i++) {
+   for(int i=0,count=0; i<Nxy; i++) {
 
-      for(j=0; j<ta.n_elements(); j++) {
+      for(int j=0; j<ta.n_elements(); j++) {
 
          // Break out after the first match.
          if(ta[j].check(Data[i])) {
@@ -680,27 +678,26 @@ bool DataPlane::f_is_on(int x, int y) const {
    // Return true if any corner of that box is non-zero.
    //
 
-   if( s_is_on(x, y) )                                return(true);
+   if( s_is_on(x, y) )                                return true;
 
-   if( (x > 0) && s_is_on(x - 1, y) )                 return(true);
+   if( (x > 0) && s_is_on(x - 1, y) )                 return true;
 
-   if( (x > 0) && (y > 0) && s_is_on(x - 1, y - 1) )  return(true);
+   if( (x > 0) && (y > 0) && s_is_on(x - 1, y - 1) )  return true;
 
-   if( (y > 0) && s_is_on(x, y - 1) )                 return(true);
+   if( (y > 0) && s_is_on(x, y - 1) )                 return true;
 
-   return(false);
+   return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void DataPlane::data_range(double & data_min, double & data_max) const {
-   int j;
    double value;
    bool first_set = true;
 
    data_min = data_max = bad_data_double;
 
-   for(j=0; j<Nxy; ++j) {
+   for(int j=0; j<Nxy; ++j) {
 
       value = Data[j];
 
@@ -771,15 +768,15 @@ if ( N == 0 )  return;   //  no shift, so do nothing
    //  ok, get to work
    //
 
-int x, y, x_new;
+int x_new;
 int index_old, index_new;
 vector<double> new_data(Nxy);
 
-for (x=0; x<Nx; ++x)  {
+for (int x=0; x<Nx; ++x)  {
 
    x_new = (x + N)%Nx;
 
-   for (y=0; y<Ny; ++y)  {
+   for (int y=0; y<Ny; ++y)  {
 
       index_old = two_to_one(x,     y);
       index_new = two_to_one(x_new, y);
@@ -821,7 +818,7 @@ void DataPlane::destagger(bool x_stag, bool y_stag)
     int ny_new = Ny;
     int nxy_new;
     int weight = 0;
-    int x, y, index_new;
+    int index_new;
     double total;
     vector<double> new_data;
 
@@ -848,8 +845,8 @@ void DataPlane::destagger(bool x_stag, bool y_stag)
     nxy_new = nx_new * ny_new;
     new_data.resize(nxy_new);
 
-    for (y=0; y < ny_new; y++)  {
-        for (x=0; x < nx_new; x++)  {
+    for (int y=0; y < ny_new; y++)  {
+        for (int x=0; x < nx_new; x++)  {
 
             index_new = y*nx_new + x;
 
@@ -922,10 +919,10 @@ bool DataPlane::fitwav_1d_old(const int start_wave, const int end_wave)
 {
 
 int i, j, k;
-double * a = 0;
-double * b = 0;
-double * xa = 0;
-double * xb = 0;
+double * a = nullptr;
+double * b = nullptr;
+double * xa = nullptr;
+double * xb = nullptr;
 double xa0, value, angle;
 const unsigned int mnw = (Nx + 1)/2;
 
@@ -934,7 +931,7 @@ const unsigned int mnw = (Nx + 1)/2;
    //
 
 for (j=0; j<Nxy; ++j)  {
-   if (is_bad_data(Data[j])) return ( false );
+   if (is_bad_data(Data[j])) return false;
 }
 
    //
@@ -1024,13 +1021,13 @@ for (j=0; j<Ny; ++j)  {
    //  done
    //
 
-if ( a )  { delete [] a;  a = 0; }
-if ( b )  { delete [] b;  b = 0; }
+if ( a )  { delete [] a;  a = nullptr; }
+if ( b )  { delete [] b;  b = nullptr; }
 
-if ( xa )  { delete [] xa;  xa = 0; }
-if ( xb )  { delete [] xb;  xb = 0; }
+if ( xa )  { delete [] xa;  xa = nullptr; }
+if ( xb )  { delete [] xb;  xb = nullptr; }
 
-return(true);
+return true;
 
 }
 
@@ -1043,12 +1040,12 @@ bool DataPlane::fitwav_1d(const int start_wave, const int end_wave)
 {
 
 int i, m, x, y;
-double *  a = 0;
-double *  b = 0;
-double * xa = 0;
-double * xb = 0;
-double *  C = 0;
-double *  S = 0;
+double *  a = nullptr;
+double *  b = nullptr;
+double * xa = nullptr;
+double * xb = nullptr;
+double *  C = nullptr;
+double *  S = nullptr;
 double xa0, value, angle;
 const int unsigned mnw = (Nx + 1)/2;
 // const int mnw = Nx - 1;
@@ -1060,7 +1057,7 @@ const int unsigned mnw = (Nx + 1)/2;
    //
 
 for (i=0; i<Nxy; ++i)  {
-   if (is_bad_data(Data[i])) return ( false );
+   if (is_bad_data(Data[i])) return false;
 }
 
    //
@@ -1174,20 +1171,20 @@ for (y=0; y<Ny; ++y)  {
    //  done
    //
 
-if ( a )  { delete [] a;  a = 0; }
-if ( b )  { delete [] b;  b = 0; }
+if ( a )  { delete [] a;  a = nullptr; }
+if ( b )  { delete [] b;  b = nullptr; }
 
-if ( xa )  { delete [] xa;  xa = 0; }
-if ( xb )  { delete [] xb;  xb = 0; }
+if ( xa )  { delete [] xa;  xa = nullptr; }
+if ( xb )  { delete [] xb;  xb = nullptr; }
 
-if ( C )  { delete [] C;  C = 0; }
-if ( S )  { delete [] S;  S = 0; }
+if ( C )  { delete [] C;  C = nullptr; }
+if ( S )  { delete [] S;  S = nullptr; }
 
    //
    //  done
    //
 
-return(true);
+return true;
 
 }
 
@@ -1247,11 +1244,11 @@ DataPlaneArray & DataPlaneArray::operator=(const DataPlaneArray & a)
 
 {
 
-if ( this == &a )  return ( * this );
+if ( this == &a )  return *this;
 
 assign(a);
 
-return ( * this );
+return *this;
 
 }
 
@@ -1284,7 +1281,7 @@ DataPlaneArray & DataPlaneArray::operator+=(const DataPlaneArray &d) {
       *Plane[i] += *d.Plane[i];
    }
 
-   return(*this);
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1293,7 +1290,7 @@ DataPlaneArray & DataPlaneArray::operator/=(const double v) {
 
    for(int i=0; i<Nplanes; i++) *Plane[i] /= v;
 
-   return(*this);
+   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1303,10 +1300,10 @@ void DataPlaneArray::init_from_scratch()
 
 {
 
-Lower = (double *) 0;
-Upper = (double *) 0;
+Lower = (double *) nullptr;
+Upper = (double *) nullptr;
 
-Plane = (DataPlane **) 0;
+Plane = (DataPlane **) nullptr;
 
 Nplanes = 0;
 
@@ -1367,9 +1364,7 @@ extend(a.Nplanes);
 
 AllocInc = a.AllocInc;
 
-int j;
-
-for (j=0; j<a.Nplanes; ++j)  {
+for (int j=0; j<a.Nplanes; ++j)  {
 
    add( *(a.Plane[j]), a.Lower[j], a.Upper[j] );
 
@@ -1394,9 +1389,9 @@ void DataPlaneArray::extend(int n, bool exact)
 if ( Nalloc >= n )  return;
 
 int j, k;
-DataPlane ** p = (DataPlane **) 0;
-double * b = (double *) 0;
-double * t = (double *) 0;
+DataPlane ** p = (DataPlane **) nullptr;
+double * b = (double *) nullptr;
+double * t = (double *) nullptr;
 
 if ( ! exact )  {
 
@@ -1429,9 +1424,9 @@ if ( Plane )  {
 
    }   //  for j;
 
-   delete [] Plane;  Plane = (DataPlane **) 0;
-   delete [] Lower;  Lower = (double *)     0;
-   delete [] Upper;  Upper = (double *)     0;
+   delete [] Plane;  Plane = (DataPlane **) nullptr;
+   delete [] Lower;  Lower = (double *)     nullptr;
+   delete [] Upper;  Upper = (double *)     nullptr;
 }
 
 Plane = p;
@@ -1440,9 +1435,9 @@ Lower = b;
 
 Upper = t;
 
-p = (DataPlane **) 0;
-b = (double *)     0;
-t = (double *)     0;
+p = (DataPlane **) nullptr;
+b = (double *)     nullptr;
+t = (double *)     nullptr;
 
    //
    //  done
@@ -1522,7 +1517,7 @@ if ( (p < 0) || (p >= Nplanes) )  {
 
 double value = Plane[p]->get(x, y);
 
-return ( value );
+return value;
 
 }
 
@@ -1632,11 +1627,9 @@ void DataPlaneArray::level_range(double & _low, double & _up) const
 
 {
 
-int j;
-
 _low = _up = bad_data_int;
 
-for (j=0; j<Nplanes; ++j)  {
+for (int j=0; j<Nplanes; ++j)  {
 
    if ( is_bad_data(_low) || Lower[j] <= _low ) _low = Lower[j];
    if ( is_bad_data(_up)  || Upper[j] >= _up  ) _up  = Upper[j];
@@ -1663,7 +1656,7 @@ if ( Nplanes == 0 )  {
 
 }
 
-return ( Plane[0]->nx() );
+return Plane[0]->nx();
 
 }
 
@@ -1683,7 +1676,7 @@ if ( Nplanes == 0 )  {
 
 }
 
-return ( Plane[0]->ny() );
+return Plane[0]->ny();
 
 }
 
@@ -1703,9 +1696,7 @@ out << prefix << "AllocInc = " << AllocInc   << '\n';
 out << prefix << "Nx       = " << ((Nplanes > 0) ? nx() : 0) << '\n';
 out << prefix << "Ny       = " << ((Nplanes > 0) ? ny() : 0) << '\n';
 
-int j;
-
-for (j=0; j<Nplanes; ++j)  {
+for (int j=0; j<Nplanes; ++j)  {
 
    out << prefix << "Level " << j << "  = "
        << '[' << Lower[j] << ", " << Upper[j] << ']'
@@ -1741,7 +1732,7 @@ if ( (n < 0) || (n >= Nplanes) )  {
 
 }
 
-return ( Lower[n] );
+return Lower[n];
 
 }
 
@@ -1761,7 +1752,7 @@ if ( (n < 0) || (n >= Nplanes) )  {
 
 }
 
-return ( Upper[n] );
+return Upper[n];
 
 }
 
@@ -1781,7 +1772,7 @@ if ( (n < 0) || (n >= Nplanes) )  {
 
 }
 
-return ( *(Plane[n]) );
+return *(Plane[n]);
 
 }
 
@@ -1793,9 +1784,7 @@ void DataPlaneArray::replace_bad_data(const double value)
 
 {
 
-int j;
-
-for (j=0; j<Nplanes; ++j)  {
+for (int j=0; j<Nplanes; ++j)  {
 
    Plane[j]->replace_bad_data(value);
 

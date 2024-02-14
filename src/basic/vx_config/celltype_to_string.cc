@@ -28,6 +28,7 @@
 
 #include "celltype_to_string.h"
 
+
 using namespace std;
 
 
@@ -38,7 +39,7 @@ ConcatString celltype_to_string(const CellType t)
 
 {
 
-const char * s = (const char *) nullptr;
+const char * s = (const char *) 0;
 
 switch ( t )  {
 

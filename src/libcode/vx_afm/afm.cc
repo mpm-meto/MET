@@ -11,9 +11,6 @@
 ////////////////////////////////////////////////////////////////////////
 
 
-using namespace std;
-
-
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
@@ -26,6 +23,9 @@ using namespace std;
 #include "afm_token.h"
 
 #include "vx_log.h"
+
+
+using namespace std;
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -99,11 +99,11 @@ AfmBBox & AfmBBox::operator=(const AfmBBox & b)
 
 {
 
-if ( this == &b )  return ( * this );
+if ( this == &b )  return *this;
 
 assign(b);
 
-return ( * this );
+return *this;
 
 }
 
@@ -237,11 +237,11 @@ LigatureInfo & LigatureInfo::operator=(const LigatureInfo & i)
 
 {
 
-if ( this == &i )  return ( * this );
+if ( this == &i )  return *this;
 
 assign(i);
 
-return ( * this );
+return *this;
 
 }
 
@@ -253,9 +253,9 @@ void LigatureInfo::init_from_scratch()
 
 {
 
-successor_name = (char *) 0;
+successor_name = (char *) nullptr;
 
-ligature_name = (char *) 0;
+ligature_name = (char *) nullptr;
 
 clear();
 
@@ -273,9 +273,9 @@ void LigatureInfo::clear()
 
 {
 
-if ( successor_name )  { delete [] successor_name;  successor_name = (char *) 0; }
+if ( successor_name )  { delete [] successor_name;  successor_name = (char *) nullptr; }
 
-if ( ligature_name )  { delete [] ligature_name;  ligature_name = (char *) 0; }
+if ( ligature_name )  { delete [] ligature_name;  ligature_name = (char *) nullptr; }
 
 successor_index = ligature_index = -1;
 
@@ -408,11 +408,11 @@ AfmCharMetrics & AfmCharMetrics::operator=(const AfmCharMetrics & m)
 
 {
 
-if ( this == &m )  return ( * this );
+if ( this == &m )  return *this;
 
 assign(m);
 
-return ( * this );
+return *this;
 
 }
 
@@ -424,9 +424,9 @@ void AfmCharMetrics::init_from_scratch()
 
 {
 
-name = (char *) 0;
+name = (char *) nullptr;
 
-linfo = (LigatureInfo *) 0;
+linfo = (LigatureInfo *) nullptr;
 
 clear();
 
@@ -443,9 +443,9 @@ void AfmCharMetrics::clear()
 
 {
 
-if ( name )  { delete [] name;  name = (char *) 0; }
+if ( name )  { delete [] name;  name = (char *) nullptr; }
 
-if ( linfo )  { delete [] linfo;  linfo = (LigatureInfo *) 0; }
+if ( linfo )  { delete [] linfo;  linfo = (LigatureInfo *) nullptr; }
 
 
 ascii_code = -1;
@@ -487,9 +487,7 @@ if ( m.linfo )  {
 
    linfo = new LigatureInfo [m.n_ligatures];
 
-   int j;
-
-   for (j=0; j<(m.n_ligatures); ++j)  {
+   for (int j=0; j<(m.n_ligatures); ++j)  {
 
       linfo[j] = m.linfo[j];
 
@@ -606,11 +604,11 @@ PCC & PCC::operator=(const PCC & p)
 
 {
 
-if ( this == &p )  return ( * this );
+if ( this == &p )  return *this;
 
 assign(p);
 
-return ( * this );
+return *this;
 
 }
 
@@ -622,7 +620,7 @@ void PCC::init_from_scratch()
 
 {
 
-name = (char *) 0;
+name = (char *) nullptr;
 
 clear();
 
@@ -638,7 +636,7 @@ void PCC::clear()
 
 {
 
-if ( name )  { delete [] name;  name = (char *) 0; }
+if ( name )  { delete [] name;  name = (char *) nullptr; }
 
 delta_x = 0;
 
@@ -746,11 +744,11 @@ AfmCompositeInfo & AfmCompositeInfo::operator=(const AfmCompositeInfo & i)
 
 {
 
-if ( this == &i )  return ( * this );
+if ( this == &i )  return *this;
 
 assign(i);
 
-return ( * this );
+return *this;
 
 }
 
@@ -762,9 +760,9 @@ void AfmCompositeInfo::init_from_scratch()
 
 {
 
-name = (char *) 0;
+name = (char *) nullptr;
 
-pcc = (PCC *) 0;
+pcc = (PCC *) nullptr;
 
 clear();
 
@@ -780,9 +778,9 @@ void AfmCompositeInfo::clear()
 
 {
 
-if ( name )  { delete [] name;  name = (char *) 0; }
+if ( name )  { delete [] name;  name = (char *) nullptr; }
 
-if ( pcc )   { delete [] pcc;   pcc  = (PCC *) 0;  }
+if ( pcc )   { delete [] pcc;   pcc  = (PCC *) nullptr;  }
 
 n_parts = 0;
 
@@ -798,8 +796,6 @@ void AfmCompositeInfo::assign(const AfmCompositeInfo & i)
 
 {
 
-int j;
-
 clear();
 
 set_string(name, i.name);
@@ -808,7 +804,7 @@ n_parts = i.n_parts;
 
 pcc = new PCC [n_parts];
 
-for (j=0; j<n_parts; ++j)  {
+for (int j=0; j<n_parts; ++j)  {
 
    pcc[j] = i.pcc[j];
 
@@ -834,9 +830,7 @@ Indent prefix(depth);
 out << prefix << "name    = \"" << name << "\"\n";
 out << prefix << "n_parts = " << n_parts << "\n";
 
-int j;
-
-for (j=0; j<n_parts; ++j)  {
+for (int j=0; j<n_parts; ++j)  {
 
    out << prefix << "Part " << j << " ...\n";
 
@@ -910,11 +904,11 @@ KPX & KPX::operator=(const KPX & p)
 
 {
 
-if ( this == &p )  return ( * this );
+if ( this == &p )  return *this;
 
 assign(p);
 
-return ( * this );
+return *this;
 
 }
 
@@ -926,9 +920,9 @@ void KPX::init_from_scratch()
 
 {
 
-name1 = (char *) 0;
+name1 = (char *) nullptr;
 
-name2 = (char *) 0;
+name2 = (char *) nullptr;
 
 
 clear();
@@ -946,8 +940,8 @@ void KPX::clear()
 
 {
 
-if ( name1 )  { delete [] name1;  name1 = (char *) 0; }
-if ( name2 )  { delete [] name2;  name2 = (char *) 0; }
+if ( name1 )  { delete [] name1;  name1 = (char *) nullptr; }
+if ( name2 )  { delete [] name2;  name2 = (char *) nullptr; }
 
 dx = 0.0;
 
@@ -1053,11 +1047,11 @@ Afm & Afm::operator=(const Afm & a)
 
 {
 
-if ( this == &a )  return ( * this );
+if ( this == &a )  return *this;
 
 assign(a);
 
-return ( * this );
+return *this;
 
 }
 
@@ -1069,22 +1063,22 @@ void Afm::init_from_scratch()
 
 {
 
-in = (ifstream *) 0;
+in = (ifstream *) nullptr;
 
-cm = (AfmCharMetrics *) 0;
-
-
-FontName       = (char *) 0;
-FullName       = (char *) 0;
-FamilyName     = (char *) 0;
-Weight         = (char *) 0;
-Version        = (char *) 0;
-EncodingScheme = (char *) 0;
+cm = (AfmCharMetrics *) nullptr;
 
 
-compinfo = (AfmCompositeInfo *) 0;
+FontName       = (char *) nullptr;
+FullName       = (char *) nullptr;
+FamilyName     = (char *) nullptr;
+Weight         = (char *) nullptr;
+Version        = (char *) nullptr;
+EncodingScheme = (char *) nullptr;
 
-kpx = (KPX *) 0;
+
+compinfo = (AfmCompositeInfo *) nullptr;
+
+kpx = (KPX *) nullptr;
 
 
 
@@ -1104,28 +1098,28 @@ void Afm::clear()
 
 {
 
-if ( in )  { delete in;  in = (ifstream *) 0; }
+if ( in )  { delete in;  in = (ifstream *) nullptr; }
 
 line_number = 0;
 
 
-if ( FontName       )  { delete [] FontName;        FontName       = (char *) 0; }
-if ( FullName       )  { delete [] FullName;        FullName       = (char *) 0; }
-if ( FamilyName     )  { delete [] FamilyName;      FamilyName     = (char *) 0; }
-if ( Weight         )  { delete [] Weight;          Weight         = (char *) 0; }
-if ( Version        )  { delete [] Version;         Version        = (char *) 0; }
-if ( EncodingScheme )  { delete [] EncodingScheme;  EncodingScheme = (char *) 0; }
+if ( FontName       )  { delete [] FontName;        FontName       = (char *) nullptr; }
+if ( FullName       )  { delete [] FullName;        FullName       = (char *) nullptr; }
+if ( FamilyName     )  { delete [] FamilyName;      FamilyName     = (char *) nullptr; }
+if ( Weight         )  { delete [] Weight;          Weight         = (char *) nullptr; }
+if ( Version        )  { delete [] Version;         Version        = (char *) nullptr; }
+if ( EncodingScheme )  { delete [] EncodingScheme;  EncodingScheme = (char *) nullptr; }
 
 
-if ( cm )  { delete [] cm;  cm = (AfmCharMetrics *) 0; }
+if ( cm )  { delete [] cm;  cm = (AfmCharMetrics *) nullptr; }
 
 n_cms = 0;
 
-if ( compinfo )  { delete [] compinfo;  compinfo = (AfmCompositeInfo *) 0; }
+if ( compinfo )  { delete [] compinfo;  compinfo = (AfmCompositeInfo *) nullptr; }
 
 n_composites = 0;
 
-if ( kpx )  { delete [] kpx;  kpx = (KPX *) 0; }
+if ( kpx )  { delete [] kpx;  kpx = (KPX *) nullptr; }
 
 n_kern_pairs = 0;
 
@@ -1443,12 +1437,12 @@ for (j=0; j<n_cms; ++j)  {
 
 in->close();
 
-delete in;  in = (ifstream *) 0;
+delete in;  in = (ifstream *) nullptr;
 
 line_number = 0;
 
 
-return ( 1 );
+return 1;
 
 }
 
@@ -1886,7 +1880,6 @@ void Afm::do_c(AfmLine & line, const int n)
 
 {
 
-int j;
 AfmToken tok;
 int ascii_code;
 AfmCharMetrics & c = cm[n];
@@ -1977,7 +1970,7 @@ if ( n_liginfos > 0 )  {
 
    c.linfo = new LigatureInfo [n_liginfos];
 
-   for (j=0; j<n_liginfos; ++j)  {
+   for (int j=0; j<n_liginfos; ++j)  {
 
       c.linfo[j] = liginfo[j];
 
@@ -2081,12 +2074,11 @@ void Afm::patch_ligatures(LigatureInfo & i)
 
 {
 
-int j;
 int successor_found = 0;
 int ligature_found = 0;
 
 
-for (j=0; j<n_cms; ++j)  {
+for (int j=0; j<n_cms; ++j)  {
 
 
    if ( !successor_found && strcmp(i.successor_name, cm[j].name) == 0 )  {
@@ -2128,18 +2120,15 @@ int Afm::lookup_cm(int ascii_code) const
 if ( ascii_code < 0 )  ascii_code += 256;   //  in case we're passed a signed char
                                             //    that was promoted to an int
 
-int j;
+for (int j=0; j<n_cms; ++j)  {
 
-
-for (j=0; j<n_cms; ++j)  {
-
-   if ( cm[j].ascii_code == ascii_code )  return ( j );
+   if ( cm[j].ascii_code == ascii_code )  return j;
 
 }
 
 
 
-return ( -1 );
+return -1;
 
 }
 
@@ -2151,18 +2140,16 @@ int Afm::lookup_cm(const char * name) const
 
 {
 
-int j;
 
+for (int j=0; j<n_cms; ++j)  {
 
-for (j=0; j<n_cms; ++j)  {
-
-   if ( strcmp(cm[j].name, name) == 0 )  return ( j );
+   if ( strcmp(cm[j].name, name) == 0 )  return j;
 
 }
 
 
 
-return ( -1 );
+return -1;
 
 }
 
@@ -2183,16 +2170,16 @@ int cm_index;
 
 cm_index = lookup_cm(ascii_code_1);
 
-if ( cm_index < 0 )  return ( 0 );
+if ( cm_index < 0 )  return 0;
 
 AfmCharMetrics & m = cm[cm_index];
 
-if ( m.n_ligatures == 0 )  return ( 0 );
+if ( m.n_ligatures == 0 )  return 0;
 
-int j, k;
+int k;
 
 
-for (j=0; j<(m.n_ligatures); ++j)  {
+for (int j=0; j<(m.n_ligatures); ++j)  {
 
    k = m.linfo[j].successor_index;
 
@@ -2200,7 +2187,7 @@ for (j=0; j<(m.n_ligatures); ++j)  {
 
       lig = m.linfo[j];
 
-      return ( 1 );
+      return 1;
 
    }
 
@@ -2210,7 +2197,7 @@ for (j=0; j<(m.n_ligatures); ++j)  {
    //  nope
    //
 
-return ( 0 );
+return 0;
 
 }
 
@@ -2224,32 +2211,31 @@ int Afm::has_kern_pair(int ascii_code_1, int ascii_code_2, KPX & kp) const
 
 kp.clear();
 
-if ( n_kern_pairs == 0 )  return ( 0 );
+if ( n_kern_pairs == 0 )  return 0;
 
 if ( ascii_code_1 < 0 )  ascii_code_1 += 256;
 if ( ascii_code_2 < 0 )  ascii_code_2 += 256;
 
-int j;
 int cm_index_1, cm_index_2;
-const char * n1 = (const char *) 0;
-const char * n2 = (const char *) 0;
+const char * n1 = (const char *) nullptr;
+const char * n2 = (const char *) nullptr;
 
 cm_index_1 = lookup_cm(ascii_code_1);
 cm_index_2 = lookup_cm(ascii_code_2);
 
-if ( (cm_index_1 < 0) || (cm_index_2 < 0) )  return ( 0 );
+if ( (cm_index_1 < 0) || (cm_index_2 < 0) )  return 0;
 
 n1 = cm[cm_index_1].name;
 n2 = cm[cm_index_2].name;
 
 
-for (j=0; j<n_kern_pairs; ++j)  {
+for (int j=0; j<n_kern_pairs; ++j)  {
 
    if ( (strcmp(kpx[j].name1, n1) == 0) && (strcmp(kpx[j].name2, n2) == 0) )  {
 
       kp = kpx[j];
 
-      return ( 1 );
+      return 1;
 
    }
 
@@ -2259,7 +2245,7 @@ for (j=0; j<n_kern_pairs; ++j)  {
    //  nope
    //
 
-return ( 0 );
+return 0;
 
 }
 
@@ -2279,7 +2265,7 @@ void set_string(char * & s, const char * text)
 
 {
 
-if ( s )  { delete [] s;  s = (char *) 0; }
+if ( s )  { delete [] s;  s = (char *) nullptr; }
 
 if ( !text )  return;
 
@@ -2300,10 +2286,8 @@ void clear_liginfos()
 
 {
 
-int j;
 
-
-for (j=0; j<max_liginfos; ++j)  {
+for (int j=0; j<max_liginfos; ++j)  {
 
    liginfo[j].clear();
 
