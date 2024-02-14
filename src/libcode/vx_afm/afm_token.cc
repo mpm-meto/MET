@@ -80,11 +80,11 @@ AfmToken & AfmToken::operator=(const AfmToken & t)
 
 {
 
-if ( this == &t )  return return in;
+if ( this == &t )  return *this;
 
 assign(t);
 
-return return in;
+return *this;
 
 }
 
