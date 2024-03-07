@@ -1,4 +1,10 @@
-
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+// ** Copyright UCAR (c) 1992 - 2024
+// ** University Corporation for Atmospheric Research (UCAR)
+// ** National Center for Atmospheric Research (NCAR)
+// ** Research Applications Lab (RAL)
+// ** P.O.Box 3000, Boulder, Colorado, 80307-3000, USA
+// *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -168,7 +174,7 @@ int next_token()
 
 {
 
-int c, c2;
+int c;
 
    //
    //  skip whitespace
@@ -213,7 +219,7 @@ switch ( c )  {
 
 if ( c == '/' )  {
 
-   c2 = nextchar();
+   int c2 = nextchar();
 
    if ( c2 == EOF )  return EOF;
 
@@ -260,9 +266,9 @@ if ( count == 0 )  return skip;
 if ( strncmp((char *) lexeme, "enum",  max_lexeme_size) == 0 )  { do_enum();   return token(ENUM) ; }
 if ( strncmp((char *) lexeme, "class", max_lexeme_size) == 0 )  { do_class();  return token(CLASS); }
 
-if ( is_int() )  { if ( do_int() )  return token(INTEGER); }
+if ( is_int() && do_int() )  return token(INTEGER);
 
-if ( is_id() )  { if ( do_id() )  return token(ID); }
+if ( is_id() && do_id() )  return token(ID);
 
 
 
@@ -279,14 +285,12 @@ void init()
 
 {
 
-int j;
+for (int j=0; j<256; ++j)     char_class[j] = char_class_other;
 
-for (j=0; j<256; ++j)     char_class[j] = char_class_other;
+for (int j='0'; j<='9'; ++j)  char_class[j] = char_class_digit;
 
-for (j='0'; j<='9'; ++j)  char_class[j] = char_class_digit;
-
-for (j='A'; j<='Z'; ++j)  char_class[j] = char_class_alpha;
-for (j='a'; j<='z'; ++j)  char_class[j] = char_class_alpha;
+for (int j='A'; j<='Z'; ++j)  char_class[j] = char_class_alpha;
+for (int j='a'; j<='z'; ++j)  char_class[j] = char_class_alpha;
 
 char_class['_']  = char_class_alpha;
 
@@ -343,15 +347,13 @@ bool is_int()
 
 {
 
-int j, k;
 int j_start = 0;
 int digit_count = 0;
-
-k = char_class[lexeme[0]];
+int k = char_class[lexeme[0]];
 
 if ( k == char_class_sign )  j_start = 1;
 
-for (j=j_start; j<max_lexeme_size; ++j)  {
+for (int j=j_start; j<max_lexeme_size; ++j)  {
 
    if ( lexeme[j] == 0 )  break;
 
@@ -379,13 +381,11 @@ bool is_id()
 
 if ( char_class[lexeme[0]] != char_class_alpha )  return false;
 
-int k;
-
 for (int j=0; j<max_lexeme_size; ++j)  {
 
    if ( lexeme[j] == 0 )  break;
 
-   k = char_class[lexeme[j]];
+   int k = char_class[lexeme[j]];
 
    if ( (k != char_class_digit) && (k != char_class_alpha) )  return false;
 
@@ -593,11 +593,8 @@ void do_c_comment()
 
 {
 
-int c1, c2;
-
-
-c1 = nextchar();
-c2 = nextchar();
+int c1 = nextchar();
+int c2 = nextchar();
 
 
 while ( 1 )  {

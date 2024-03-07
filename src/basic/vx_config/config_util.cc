@@ -322,9 +322,6 @@ ConcatString parse_conf_string(Dictionary *dict, const char *conf_key,
 ///////////////////////////////////////////////////////////////////////////////
 
 StringArray parse_conf_string_array(Dictionary *dict, const char *conf_key, const char *caller) {
-   StringArray sa;
-   StringArray cur;
-   StringArray sid_sa;
    if(!dict) {
       mlog << Error << "\n" << caller << "empty dictionary!\n\n";
       exit(1);

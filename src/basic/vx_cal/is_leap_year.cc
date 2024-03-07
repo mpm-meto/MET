@@ -204,7 +204,7 @@ unixtime add_to_unixtime(unixtime base_unixtime, int sec_per_unit,
       day_offset = time_fraction * DAYS_PER_MONTH;
       time_value_ut = (int)day_offset;
       day += time_value_ut;
-      if (day_offset - time_value_ut > 0.5) day++;
+      if (day_offset - (double)time_value_ut > 0.5) day++;
       if (day > DAYS_PER_MONTH) {
          day -= DAYS_PER_MONTH;
          increase_one_month(year, month);
