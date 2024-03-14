@@ -241,7 +241,8 @@ int STATLine::read_line(LineDataFile * ldf)
 
 {
 
-int status, offset;
+int status;
+int offset;
 
 clear();
 
@@ -339,7 +340,6 @@ int STATLine::get_offset(const char *col_str) const
 
 {
 
-int offset = bad_data_int;
 int dim = bad_data_int;
 
    //
@@ -354,7 +354,7 @@ if ( HdrLine->is_var_length() ) {
    // Search for matching header column
    //
 
-offset = HdrLine->col_offset(col_str, dim);
+int offset = HdrLine->col_offset(col_str, dim);
 
    //
    // If not found, check extra header columns
@@ -419,7 +419,6 @@ const char * STATLine::get_item(const char *col_str, bool check_na) const
 
 {
 
-int offset = bad_data_int;
 int dim = bad_data_int;
 
    //
@@ -434,7 +433,7 @@ if ( HdrLine->is_var_length() ) {
    // Search for matching header column
    //
 
-offset = HdrLine->col_offset(col_str, dim);
+int offset = HdrLine->col_offset(col_str, dim);
 
    //
    // If not found, check extra header columns

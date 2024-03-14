@@ -252,7 +252,7 @@ AfmToken AfmLine::rest_as_string()
 
 AfmToken tok;
 
- if(item_index < LineItems.n()) {
+if(item_index < LineItems.n()) {
    tok.set_string(LineItems[item_index]);
 }
 
@@ -269,10 +269,7 @@ int AfmLine::is_ok() const
 
 {
 
-int j;
-
-
-for (j=0; j<LineLength; ++j)  {
+for (int j=0; j<LineLength; ++j)  {
    if ( is_keeper(Line[j]) )  return 1;
 
 }

@@ -487,9 +487,7 @@ if ( m.linfo )  {
 
    linfo = new LigatureInfo [m.n_ligatures];
 
-   int j;
-
-   for (j=0; j<(m.n_ligatures); ++j)  {
+   for (int j=0; j<(m.n_ligatures); ++j)  {
 
       linfo[j] = m.linfo[j];
 
@@ -531,9 +529,7 @@ out << prefix << "bbox ...\n";
 
 bbox.dump(out, depth + 1);
 
-int j;
-
-for (j=0; j<n_ligatures; ++j)  {
+for (int j=0; j<n_ligatures; ++j)  {
 
    out << prefix << "LigatureInfo # " << j << " ... \n";
 
@@ -798,8 +794,6 @@ void AfmCompositeInfo::assign(const AfmCompositeInfo & i)
 
 {
 
-int j;
-
 clear();
 
 set_string(name, i.name);
@@ -808,7 +802,7 @@ n_parts = i.n_parts;
 
 pcc = new PCC [n_parts];
 
-for (j=0; j<n_parts; ++j)  {
+for (int j=0; j<n_parts; ++j)  {
 
    pcc[j] = i.pcc[j];
 
@@ -834,9 +828,7 @@ Indent prefix(depth);
 out << prefix << "name    = \"" << name << "\"\n";
 out << prefix << "n_parts = " << n_parts << "\n";
 
-int j;
-
-for (j=0; j<n_parts; ++j)  {
+for (int j=0; j<n_parts; ++j)  {
 
    out << prefix << "Part " << j << " ...\n";
 
@@ -1156,9 +1148,6 @@ void Afm::assign(const Afm & a)
 
 {
 
-int j;
-
-
 clear();
 
 set_string(FontName,       a.FontName      );
@@ -1194,7 +1183,7 @@ if ( n_cms > 0 )  {
 
    cm = new AfmCharMetrics [n_cms];
 
-   for (j=0; j<n_cms; ++j)  {
+   for (int j=0; j<n_cms; ++j)  {
 
       cm[j] = a.cm[j];
 
@@ -1210,7 +1199,7 @@ if ( n_composites > 0 )  {
 
    compinfo = new AfmCompositeInfo [n_composites];
 
-   for (j=0; j<n_composites; ++j)  {
+   for (int j=0; j<n_composites; ++j)  {
 
       compinfo[j] = a.compinfo[j];
 
@@ -1226,7 +1215,7 @@ if ( n_kern_pairs > 0 )  {
 
    kpx = new KPX [n_kern_pairs];
 
-   for (j=0; j<n_kern_pairs; ++j)  {
+   for (int j=0; j<n_kern_pairs; ++j)  {
 
       kpx[j] = a.kpx[j];
 
@@ -1248,7 +1237,6 @@ void Afm::dump(ostream & out, int depth) const
 
 {
 
-int j;
 Indent prefix(depth);
 Indent prefix2(depth + 1);
 
@@ -1285,7 +1273,7 @@ out << prefix << "n_kern_pairs       = " << n_kern_pairs       << "\n";
 
 out << prefix << "CharMetrics ... \n";
 
-for (j=0; j<n_cms; ++j)  {
+for (int j=0; j<n_cms; ++j)  {
 
    out << prefix2 << "CharMetric " << j << " of " << n_cms << " ... \n";
 
@@ -1298,7 +1286,7 @@ if ( n_composites > 0 )  {
 
    out << prefix << "Composites ... \n";
 
-   for (j=0; j<n_composites; ++j)  {
+   for (int j=0; j<n_composites; ++j)  {
 
       out << prefix2 << "Composite " << j << " of " << n_composites << " ... \n";
 
@@ -1313,7 +1301,7 @@ if ( n_kern_pairs > 0 )  {
 
    out << prefix << "Kern Pairs ... \n";
 
-   for (j=0; j<n_kern_pairs; ++j)  {
+   for (int j=0; j<n_kern_pairs; ++j)  {
 
       out << prefix2 << "Kern Pair " << j << " of " << n_kern_pairs << " ... \n";
 
@@ -1348,7 +1336,7 @@ int Afm::read(const ConcatString& filename)
 
 {
 
-int j, k;
+int k;
 AfmLine line;
 AfmToken tok;
 
@@ -1423,11 +1411,11 @@ while ( (*in) >> line )  {
    //  patch ligatures
    //
 
-for (j=0; j<n_cms; ++j)  {
+for (int j=0; j<n_cms; ++j)  {
 
    if ( cm[j].n_ligatures == 0 )  continue;
 
-   for (k=0; k<(cm[j].n_ligatures); ++k)  {
+   for (int k=0; k<(cm[j].n_ligatures); ++k)  {
 
       patch_ligatures(cm[j].linfo[k]);
 
@@ -1886,7 +1874,6 @@ void Afm::do_c(AfmLine & line, const int n)
 
 {
 
-int j;
 AfmToken tok;
 int ascii_code;
 AfmCharMetrics & c = cm[n];
@@ -1977,7 +1964,7 @@ if ( n_liginfos > 0 )  {
 
    c.linfo = new LigatureInfo [n_liginfos];
 
-   for (j=0; j<n_liginfos; ++j)  {
+   for (int j=0; j<n_liginfos; ++j)  {
 
       c.linfo[j] = liginfo[j];
 
@@ -2081,12 +2068,11 @@ void Afm::patch_ligatures(LigatureInfo & i)
 
 {
 
-int j;
 int successor_found = 0;
 int ligature_found = 0;
 
 
-for (j=0; j<n_cms; ++j)  {
+for (int j=0; j<n_cms; ++j)  {
 
 
    if ( !successor_found && strcmp(i.successor_name, cm[j].name) == 0 )  {
@@ -2128,10 +2114,8 @@ int Afm::lookup_cm(int ascii_code) const
 if ( ascii_code < 0 )  ascii_code += 256;   //  in case we're passed a signed char
                                             //    that was promoted to an int
 
-int j;
 
-
-for (j=0; j<n_cms; ++j)  {
+for (int j=0; j<n_cms; ++j)  {
 
    if ( cm[j].ascii_code == ascii_code )  return j;
 
@@ -2151,10 +2135,7 @@ int Afm::lookup_cm(const char * name) const
 
 {
 
-int j;
-
-
-for (j=0; j<n_cms; ++j)  {
+for (int j=0; j<n_cms; ++j)  {
 
    if ( strcmp(cm[j].name, name) == 0 )  return j;
 
@@ -2189,10 +2170,10 @@ AfmCharMetrics & m = cm[cm_index];
 
 if ( m.n_ligatures == 0 )  return 0;
 
-int j, k;
+int k;
 
 
-for (j=0; j<(m.n_ligatures); ++j)  {
+for (int j=0; j<(m.n_ligatures); ++j)  {
 
    k = m.linfo[j].successor_index;
 
@@ -2229,13 +2210,11 @@ if ( n_kern_pairs == 0 )  return 0;
 if ( ascii_code_1 < 0 )  ascii_code_1 += 256;
 if ( ascii_code_2 < 0 )  ascii_code_2 += 256;
 
-int j;
-int cm_index_1, cm_index_2;
 const char * n1 = (const char *) nullptr;
 const char * n2 = (const char *) nullptr;
 
-cm_index_1 = lookup_cm(ascii_code_1);
-cm_index_2 = lookup_cm(ascii_code_2);
+int cm_index_1 = lookup_cm(ascii_code_1);
+int cm_index_2 = lookup_cm(ascii_code_2);
 
 if ( (cm_index_1 < 0) || (cm_index_2 < 0) )  return 0;
 
@@ -2243,7 +2222,7 @@ n1 = cm[cm_index_1].name;
 n2 = cm[cm_index_2].name;
 
 
-for (j=0; j<n_kern_pairs; ++j)  {
+for (int j=0; j<n_kern_pairs; ++j)  {
 
    if ( (strcmp(kpx[j].name1, n1) == 0) && (strcmp(kpx[j].name2, n2) == 0) )  {
 
@@ -2300,10 +2279,7 @@ void clear_liginfos()
 
 {
 
-int j;
-
-
-for (j=0; j<max_liginfos; ++j)  {
+for (int j=0; j<max_liginfos; ++j)  {
 
    liginfo[j].clear();
 

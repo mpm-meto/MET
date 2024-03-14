@@ -1073,7 +1073,7 @@ void STATAnalysisJob::parse_job_command(const char *jobstring) {
    ConcatString col_name;
    StringArray col_value;
    ConcatString thresh_cs;
-   int i, n;
+   int n;
    const char *method_name = "STATAnalysisJob::parse_job_command()";
 
    // If jobstring is null, simply return;
@@ -1109,7 +1109,7 @@ void STATAnalysisJob::parse_job_command(const char *jobstring) {
    // If command line switches are present, clear out the values
    // already specified in the job for that option.
    //
-   for(i=0; i<jc_array.n(); i++) {
+   for(int i=0; i<jc_array.n(); i++) {
 
       if(     jc_array[i] == "-model"          )
          model.clear();
@@ -1201,7 +1201,7 @@ void STATAnalysisJob::parse_job_command(const char *jobstring) {
    //
    // Parse the command line and set the options
    //
-   for(i=0; i<jc_array.n(); i++) {
+   for(int i=0; i<jc_array.n(); i++) {
 
       //
       // Parse the job command line switches
@@ -1951,7 +1951,8 @@ void STATAnalysisJob::open_stat_file() {
 void STATAnalysisJob::setup_stat_file(int n_row, int n) {
    STATLineType cur_lt, out_lt;
    StringArray out_sa;
-   int i, c, n_col;
+   int c;
+   int n_col;
 
    //
    // Nothing to do if no output STAT file stream is defined
@@ -1970,7 +1971,8 @@ void STATAnalysisJob::setup_stat_file(int n_row, int n) {
    // Loop through the output line types and determine the number of
    // output columns
    //
-   for(i=0, c=0, n_col=0; i<out_sa.n(); i++) {
+   c = n_col = 0;
+   for(int i=0; i<out_sa.n(); i++) {
       cur_lt = string_to_statlinetype(out_sa[i].c_str());
       switch(cur_lt) {
          case stat_sl1l2:  c = n_sl1l2_columns;        break;
@@ -2146,7 +2148,6 @@ void STATAnalysisJob::close_stat_file() {
 
 void STATAnalysisJob::dump_stat_line(const STATLine &line,
                                      bool do_set_hdr) {
-   int i;
 
    //
    // Nothing to do with no dump file
@@ -2282,7 +2283,7 @@ void STATAnalysisJob::dump_stat_line(const STATLine &line,
    //
    // Store the data line
    //
-   for(i=0; i<line.n_items(); i++) {
+   for(int i=0; i<line.n_items(); i++) {
      dump_at.set_entry(n_dump%dump_at.nrows(), i,
                        (string) line.get_item(i));
    }
@@ -2291,7 +2292,7 @@ void STATAnalysisJob::dump_stat_line(const STATLine &line,
    // Apply -set_hdr options, if requested
    //
    if(do_set_hdr) {
-      for(i=0; i<hdr_name.n(); i++) {
+      for(int i=0; i<hdr_name.n(); i++) {
          dump_at.set_entry(n_dump%dump_at.nrows(),
                            line.get_offset(hdr_name[i].c_str()),
                            (string) hdr_value[i]);
@@ -2317,13 +2318,13 @@ void STATAnalysisJob::dump_stat_line(const STATLine &line,
 ////////////////////////////////////////////////////////////////////////
 
 ConcatString STATAnalysisJob::get_case_info(const STATLine & L) const {
-   int i;
-   ConcatString key, cs;
+   ConcatString key;
+   ConcatString cs;
 
    //
    // Retrieve value for each by_column option
    //
-   for(i=0; i<by_column.n(); i++) {
+   for(int i=0; i<by_column.n(); i++) {
       cs = L.get(by_column[i].c_str(), false);
       if(by_column[i] == "FCST_THRESH" ||
          by_column[i] == "OBS_THRESH"  || 
@@ -2339,7 +2340,6 @@ ConcatString STATAnalysisJob::get_case_info(const STATLine & L) const {
 ////////////////////////////////////////////////////////////////////////
 
 ConcatString STATAnalysisJob::get_jobstring() const {
-   int i;
    STATLineType type;
    ConcatString js;
 
@@ -2353,26 +2353,26 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // model
    if(model.n() > 0) {
-      for(i=0; i<model.n(); i++)
+      for(int i=0; i<model.n(); i++)
          js << "-model " << model[i] << " ";
    }
 
    // desc
    if(desc.n() > 0) {
-      for(i=0; i<desc.n(); i++)
+      for(int i=0; i<desc.n(); i++)
          js << "-desc " << desc[i] << " ";
    }
 
    // fcst_lead
    if(fcst_lead.n() > 0) {
-      for(i=0; i<fcst_lead.n(); i++) {
+      for(int i=0; i<fcst_lead.n(); i++) {
          js << "-fcst_lead " << sec_to_hhmmss(nint(fcst_lead[i])) << " ";
       }
    }
 
    // obs_lead
    if(obs_lead.n() > 0) {
-      for(i=0; i<obs_lead.n(); i++) {
+      for(int i=0; i<obs_lead.n(); i++) {
          js << "-obs_lead " << sec_to_hhmmss(nint(obs_lead[i])) << " ";
       }
    }
@@ -2387,19 +2387,19 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // fcst_valid_inc and fcst_valid_exc
    if(fcst_valid_inc.n() > 0) {
-      for(i=0; i<fcst_valid_inc.n(); i++) {
+      for(int i=0; i<fcst_valid_inc.n(); i++) {
          js << "-fcst_valid_inc " << unix_to_yyyymmdd_hhmmss(fcst_valid_inc[i]) << " ";
       }
    }
    if(fcst_valid_exc.n() > 0) {
-      for(i=0; i<fcst_valid_exc.n(); i++) {
+      for(int i=0; i<fcst_valid_exc.n(); i++) {
          js << "-fcst_valid_exc " << unix_to_yyyymmdd_hhmmss(fcst_valid_exc[i]) << " ";
       }
    }
 
    // fcst_valid_hour
    if(fcst_valid_hour.n() > 0) {
-      for(i=0; i<fcst_valid_hour.n(); i++) {
+      for(int i=0; i<fcst_valid_hour.n(); i++) {
          js << "-fcst_valid_hour " << sec_to_hhmmss(nint(fcst_valid_hour[i])) << " ";
       }
    }
@@ -2414,19 +2414,19 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // obs_valid_inc and obs_valid_exc
    if(obs_valid_inc.n() > 0) {
-      for(i=0; i<obs_valid_inc.n(); i++) {
+      for(int i=0; i<obs_valid_inc.n(); i++) {
          js << "-obs_valid_inc " << unix_to_yyyymmdd_hhmmss(obs_valid_inc[i]) << " ";
       }
    }
    if(obs_valid_exc.n() > 0) {
-      for(i=0; i<obs_valid_exc.n(); i++) {
+      for(int i=0; i<obs_valid_exc.n(); i++) {
          js << "-obs_valid_exc " << unix_to_yyyymmdd_hhmmss(obs_valid_exc[i]) << " ";
       }
    }
 
    // obs_valid_hour
    if(obs_valid_hour.n() > 0) {
-      for(i=0; i<obs_valid_hour.n(); i++) {
+      for(int i=0; i<obs_valid_hour.n(); i++) {
          js << "-obs_valid_hour " << sec_to_hhmmss(nint(obs_valid_hour[i])) << " ";
       }
    }
@@ -2441,19 +2441,19 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // fcst_init_inc and fcst_init_exc
    if(fcst_init_inc.n() > 0) {
-      for(i=0; i<fcst_init_inc.n(); i++) {
+      for(int i=0; i<fcst_init_inc.n(); i++) {
          js << "-fcst_init_inc " << unix_to_yyyymmdd_hhmmss(fcst_init_inc[i]) << " ";
       }
    }
    if(fcst_init_exc.n() > 0) {
-      for(i=0; i<fcst_init_exc.n(); i++) {
+      for(int i=0; i<fcst_init_exc.n(); i++) {
          js << "-fcst_init_exc " << unix_to_yyyymmdd_hhmmss(fcst_init_exc[i]) << " ";
       }
    }
 
    // fcst_init_hour
    if(fcst_init_hour.n() > 0) {
-      for(i=0; i<fcst_init_hour.n(); i++) {
+      for(int i=0; i<fcst_init_hour.n(); i++) {
          js << "-fcst_init_hour " << sec_to_hhmmss(nint(fcst_init_hour[i])) << " ";
       }
    }
@@ -2468,100 +2468,100 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // obs_init_inc and obs_init_exc
    if(obs_init_inc.n() > 0) {
-      for(i=0; i<obs_init_inc.n(); i++) {
+      for(int i=0; i<obs_init_inc.n(); i++) {
          js << "-obs_init_inc " << unix_to_yyyymmdd_hhmmss(obs_init_inc[i]) << " ";
       }
    }
    if(obs_init_exc.n() > 0) {
-      for(i=0; i<obs_init_exc.n(); i++) {
+      for(int i=0; i<obs_init_exc.n(); i++) {
          js << "-obs_init_exc " << unix_to_yyyymmdd_hhmmss(obs_init_exc[i]) << " ";
       }
    }
 
    // obs_init_hour
    if(obs_init_hour.n() > 0) {
-      for(i=0; i<obs_init_hour.n(); i++) {
+      for(int i=0; i<obs_init_hour.n(); i++) {
          js << "-obs_init_hour " << sec_to_hhmmss(nint(obs_init_hour[i])) << " ";
       }
    }
 
    // fcst_var
    if(fcst_var.n() > 0) {
-      for(i=0; i<fcst_var.n(); i++)
+      for(int i=0; i<fcst_var.n(); i++)
          js << "-fcst_var " << fcst_var[i] << " ";
    }
 
    // obs_var
    if(obs_var.n() > 0) {
-      for(i=0; i<obs_var.n(); i++)
+      for(int i=0; i<obs_var.n(); i++)
          js << "-obs_var " << obs_var[i] << " ";
    }
 
    // fcst_units
    if(fcst_units.n() > 0) {
-      for(i=0; i<fcst_units.n(); i++)
+      for(int i=0; i<fcst_units.n(); i++)
          js << "-fcst_units " << fcst_units[i] << " ";
    }
 
    // obs_units
    if(obs_units.n() > 0) {
-      for(i=0; i<obs_units.n(); i++)
+      for(int i=0; i<obs_units.n(); i++)
          js << "-obs_units " << obs_units[i] << " ";
    }
 
    // fcst_lev
    if(fcst_lev.n() > 0) {
-      for(i=0; i<fcst_lev.n(); i++)
+      for(int i=0; i<fcst_lev.n(); i++)
          js << "-fcst_lev " << fcst_lev[i] << " ";
    }
 
    // obs_lev
    if(obs_lev.n() > 0) {
-      for(i=0; i<obs_lev.n(); i++)
+      for(int i=0; i<obs_lev.n(); i++)
          js << "-obs_lev " << obs_lev[i] << " ";
    }
 
    // obtype
    if(obtype.n() > 0) {
-      for(i=0; i<obtype.n(); i++)
+      for(int i=0; i<obtype.n(); i++)
          js << "-obtype " << obtype[i] << " ";
    }
 
    // vx_mask
    if(vx_mask.n() > 0) {
-      for(i=0; i<vx_mask.n(); i++)
+      for(int i=0; i<vx_mask.n(); i++)
          js << "-vx_mask " << vx_mask[i] << " ";
    }
 
    // interp_mthd
    if(interp_mthd.n() > 0) {
-      for(i=0; i<interp_mthd.n(); i++)
+      for(int i=0; i<interp_mthd.n(); i++)
          js << "-interp_mthd " << interp_mthd[i] << " ";
    }
 
    // interp_pnts
    if(interp_pnts.n() > 0) {
-      for(i=0; i<interp_pnts.n(); i++)
+      for(int i=0; i<interp_pnts.n(); i++)
          js << "-interp_pnts " << nint(interp_pnts[i]) << " ";
    }
 
    // fcst_thresh
    if(fcst_thresh.n() > 0) {
-      for(i=0; i<fcst_thresh.n(); i++) {
+      for(int i=0; i<fcst_thresh.n(); i++) {
          js << "-fcst_thresh " << fcst_thresh[i].get_str() << " ";
       }
    }
 
    // obs_thresh
    if(obs_thresh.n() > 0) {
-      for(i=0; i<obs_thresh.n(); i++) {
+      for(int i=0; i<obs_thresh.n(); i++) {
          js << "-obs_thresh " << obs_thresh[i].get_str() << " ";
       }
    }
 
    // cov_thresh
    if(cov_thresh.n() > 0) {
-      for(i=0; i<cov_thresh.n(); i++) {
+      for(int i=0; i<cov_thresh.n(); i++) {
          js << "-cov_thresh " << cov_thresh[i].get_str() << " ";
       }
    }
@@ -2573,13 +2573,13 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // alpha
    if(alpha.n() > 0) {
-      for(i=0; i<alpha.n(); i++)
+      for(int i=0; i<alpha.n(); i++)
          js << "-alpha " << alpha[i] << " ";
    }
 
    // line_type
    if(line_type.n() > 0) {
-      for(i=0; i<line_type.n(); i++) {
+      for(int i=0; i<line_type.n(); i++) {
          type = string_to_statlinetype(line_type[i].c_str());
          js << "-line_type " << statlinetype_to_string(type) << " ";
       }
@@ -2587,7 +2587,7 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // column
    if(column.n() > 0) {
-      for(i=0; i<column.n(); i++) {
+      for(int i=0; i<column.n(); i++) {
          js << "-column " << column[i] << " ";
       }
    }
@@ -2599,7 +2599,7 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // weight
    if(weight.n() > 0) {
-      for(i=0; i<weight.n(); i++) {
+      for(int i=0; i<weight.n(); i++) {
          js << "-weight " << weight[i] << " ";
       }
    }
@@ -2613,7 +2613,7 @@ ConcatString STATAnalysisJob::get_jobstring() const {
    for(map<ConcatString,ThreshArray>::const_iterator thr_it = column_thresh_map.begin();
        thr_it != column_thresh_map.end(); thr_it++) {
 
-      for(i=0; i<thr_it->second.n(); i++) {
+      for(int i=0; i<thr_it->second.n(); i++) {
          js << "-column_thresh " << thr_it->first << " " << thr_it->second[i].get_str() << " ";
       }
    }
@@ -2622,7 +2622,7 @@ ConcatString STATAnalysisJob::get_jobstring() const {
    for(map<ConcatString,StringArray>::const_iterator str_it = column_str_inc_map.begin();
        str_it != column_str_inc_map.end(); str_it++) {
 
-      for(i=0; i<str_it->second.n(); i++) {
+      for(int i=0; i<str_it->second.n(); i++) {
          js << "-column_str " << str_it->first << " " << str_it->second[i] << " ";
       }
    }
@@ -2631,20 +2631,20 @@ ConcatString STATAnalysisJob::get_jobstring() const {
    for(map<ConcatString,StringArray>::const_iterator str_it = column_str_exc_map.begin();
        str_it != column_str_exc_map.end(); str_it++) {
 
-      for(i=0; i<str_it->second.n(); i++) {
+      for(int i=0; i<str_it->second.n(); i++) {
          js << "-column_str_exc " << str_it->first << " " << str_it->second[i] << " ";
       }
    }
 
    // by_column
    if(by_column.n() > 0) {
-      for(i=0; i<by_column.n(); i++)
+      for(int i=0; i<by_column.n(); i++)
          js << "-by " << by_column[i] << " ";
    }
 
    // set_hdr
    if(hdr_name.n() > 0) {
-      for(i=0; i<hdr_name.n(); i++)
+      for(int i=0; i<hdr_name.n(); i++)
          js << "-set_hdr " << hdr_name[i]
             << " " << hdr_value[i] << " ";
    }
@@ -2666,25 +2666,25 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 
    // out_line_type
    if(out_line_type.n() > 0) {
-      for(i=0; i<out_line_type.n(); i++)
+      for(int i=0; i<out_line_type.n(); i++)
          js << "-out_line_type " << out_line_type[i] << " ";
    }
 
    // out_fcst_thresh == out_obs_thresh
    if(out_fcst_thresh == out_obs_thresh) {
-      for(i=0; i<out_fcst_thresh.n(); i++) {
+      for(int i=0; i<out_fcst_thresh.n(); i++) {
          js << "-out_thresh " << out_fcst_thresh[i].get_str() << " ";
       }
    }
    else {
 
       // out_fcst_thresh
-      for(i=0; i<out_fcst_thresh.n(); i++) {
+      for(int i=0; i<out_fcst_thresh.n(); i++) {
          js << "-out_fcst_thresh " << out_fcst_thresh[i].get_str() << " ";
       }
 
       // out_obs_thresh
-      for(i=0; i<out_obs_thresh.n(); i++) {
+      for(int i=0; i<out_obs_thresh.n(); i++) {
          js << "-out_obs_thresh " << out_obs_thresh[i].get_str() << " ";
       }
    }
@@ -2877,7 +2877,8 @@ ConcatString STATAnalysisJob::get_jobstring() const {
 ////////////////////////////////////////////////////////////////////////
 
 int STATAnalysisJob::is_in_mask_grid(double lat, double lon) const {
-   double grid_x, grid_y;
+   double grid_x;
+   double grid_y;
 
    //
    // Only check if a masking grid has been specified

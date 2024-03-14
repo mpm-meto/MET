@@ -30,11 +30,9 @@ int is_afm_keyword(ConcatString text, AfmKeyword & a)
 
 {
 
-int j;
-
 a = no_afm_keyword;
 
-for (j=0; j<n_kw_infos; ++j)  {
+for (int j=0; j<n_kw_infos; ++j)  {
 
   if ( text == kw_info[j].text )  {
 
