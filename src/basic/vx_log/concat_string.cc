@@ -443,7 +443,6 @@ ConcatString ConcatString::dirname() const
    c.chomp("/");
 
    // Find last forward slash in the string
-   size_t start = 0;
    size_t end   = c.s->find_last_of("/");
 
    // No forward slashes found
@@ -452,6 +451,7 @@ ConcatString ConcatString::dirname() const
    }
    // Copy up to the last forward slash
    else  {
+      size_t start = 0;
       c = c.s->substr(start, end-start);
    }
 
@@ -1215,9 +1215,12 @@ if (!env_name_list.has(env_name)) {
 
 int count_replaced = 0;
 string nested_value;
-size_t pos, pos_end, pos_env, pos_env_end;
+size_t pos;
+size_t pos_env_end;
 pos = pos_env_end = 0;
 while ((pos = str.find('$', pos)) != string::npos) {
+   size_t pos_end;
+   size_t pos_env;
    string nested_name;
    pos_env = pos + 1;
    if ('{' == str.at(pos_env)) {
