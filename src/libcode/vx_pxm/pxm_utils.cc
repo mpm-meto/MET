@@ -37,7 +37,7 @@ skip_whitespace(in);
 
 j = 0;
 
-while ( isdigit(c = in.get()) )  j = 10*j + (c - '0');
+while ( isdigit( (c = in.get()) ) )  j = 10*j + (c - '0');
 
 return j;
 

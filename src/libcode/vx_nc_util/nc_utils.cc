@@ -1758,7 +1758,8 @@ bool get_nc_data(NcVar *var, uchar *data) {
    if (NC_UBYTE == data_type) return_status = get_nc_data_t(var, data);
    else if (NC_BYTE == data_type && has_unsigned_attribute(var)) {
       ncbyte *signed_data = new ncbyte[cell_count];
-      if (return_status = get_nc_data_t(var, signed_data)) {
+      return_status = get_nc_data_t(var, signed_data);
+      if (return_status) {
          for (int idx=0; idx<cell_count; idx++) {
             data[idx] = (uchar)signed_data[idx];
          }
@@ -1796,7 +1797,8 @@ bool get_nc_data(NcVar *var, unsigned short *data) {
       if (has_fill_value) fill_value = get_att_value_int(att_fill_value);
 
       short *short_data = new short[cell_count];
-      if (return_status = get_nc_data_t(var, short_data)) {
+      return_status = get_nc_data_t(var, short_data);
+      if (return_status) {
          for (int idx=0; idx<cell_count; idx++) {
             if (has_fill_value && fill_value == short_data[idx])
                data[idx] = (unsigned short)bad_data_int;

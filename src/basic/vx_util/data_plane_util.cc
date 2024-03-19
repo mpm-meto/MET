@@ -288,11 +288,12 @@ void fractional_coverage(const DataPlane &dp, DataPlane &frac_dp,
               for(gp  = gt->getFirstInGrid(x, y, dp.nx(), dp.ny());
                   gp != nullptr;
                   gp  = gt->getNextInGrid()) {
-                 if(is_bad_data(v = dp.get(gp->x, gp->y))) continue;
+                 v = dp.get(gp->x, gp->y);
+                 if(is_bad_data(v)) continue;
                  n_vld++;
                  if(t.check(v,
-                    (use_climo ? cmn->get(gp->x, gp->y) : bad),
-                    (use_climo ? csd->get(gp->x, gp->y) : bad))) n_thr++;
+                            (use_climo ? cmn->get(gp->x, gp->y) : bad),
+                            (use_climo ? csd->get(gp->x, gp->y) : bad))) n_thr++;
               }
            }
            // Subtract off the bottom edge, shift up, and add the top.
@@ -302,7 +303,8 @@ void fractional_coverage(const DataPlane &dp, DataPlane &frac_dp,
               for(gp  = gt->getFirstInBotEdge();
                   gp != nullptr;
                   gp  = gt->getNextInBotEdge()) {
-                 if(is_bad_data(v = dp.get(gp->x, gp->y))) continue;
+                 v = dp.get(gp->x, gp->y);
+                 if(is_bad_data(v)) continue;
                  n_vld--;
                  if(t.check(v,
                     (use_climo ? cmn->get(gp->x, gp->y) : bad),
@@ -316,7 +318,8 @@ void fractional_coverage(const DataPlane &dp, DataPlane &frac_dp,
               for(gp  = gt->getFirstInTopEdge();
                   gp != nullptr;
                   gp  = gt->getNextInTopEdge()) {
-                 if(is_bad_data(v = dp.get(gp->x, gp->y))) continue;
+                 v = dp.get(gp->x, gp->y);
+                 if(is_bad_data(v)) continue;
                  n_vld++;
                  if(t.check(v,
                     (use_climo ? cmn->get(gp->x, gp->y) : bad),

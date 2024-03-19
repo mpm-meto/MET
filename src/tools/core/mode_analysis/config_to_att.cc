@@ -144,246 +144,324 @@ atts.obs_rad.add( config.lookup_int_array(conf_key_obs_rad, error_out) );
    //  int maxmin members
    //
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_area_min, error_out)) )
+v_int = config.lookup_int(conf_key_area_min, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_area_min(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_area_max, error_out)) )
+v_int = config.lookup_int(conf_key_area_max, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_area_max(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_area_thresh_min, error_out)) )
+v_int = config.lookup_int(conf_key_area_thresh_min, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_area_thresh_min(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_area_thresh_max, error_out)) )
+v_int = config.lookup_int(conf_key_area_thresh_max, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_area_thresh_max(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_intersection_area_min, error_out)) )
+v_int = config.lookup_int(conf_key_intersection_area_min, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_intersection_area_min(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_intersection_area_max, error_out)) )
+v_int = config.lookup_int(conf_key_intersection_area_max, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_intersection_area_max(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_union_area_min, error_out)) )
+v_int = config.lookup_int(conf_key_union_area_min, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_union_area_min(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_union_area_max, error_out)) )
+v_int = config.lookup_int(conf_key_union_area_min, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_union_area_max(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_symmetric_diff_min, error_out)) )
+v_int = config.lookup_int(conf_key_symmetric_diff_min, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_symmetric_diff_min(v_int);
 
-if ( !is_bad_data(v_int = config.lookup_int(conf_key_symmetric_diff_max, error_out)) )
+v_int = config.lookup_int(conf_key_symmetric_diff_max, error_out);
+if ( !is_bad_data(v_int) )
    atts.set_symmetric_diff_max(v_int);
 
    //
    //  unixtime maxmin members
    //
 
-if ( (v_ut = config.lookup_unixtime(conf_key_fcst_valid_min, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_fcst_valid_min, error_out);
+if ( v_ut > 0 )
    atts.set_fcst_valid_min(v_ut);
 
-if ( (v_ut = config.lookup_unixtime(conf_key_fcst_valid_max, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_fcst_valid_max, error_out);
+if ( v_ut > 0 )
    atts.set_fcst_valid_max(v_ut);
 
-if ( (v_ut = config.lookup_unixtime(conf_key_obs_valid_min, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_obs_valid_min, error_out);
+if ( v_ut > 0 )
    atts.set_obs_valid_min(v_ut);
 
-if ( (v_ut = config.lookup_unixtime(conf_key_obs_valid_max, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_obs_valid_max, error_out);
+if ( v_ut > 0 )
    atts.set_obs_valid_max(v_ut);
 
-if ( (v_ut = config.lookup_unixtime(conf_key_fcst_init_min, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_fcst_init_min, error_out);
+if ( v_ut > 0 )
    atts.set_fcst_init_min(v_ut);
 
-if ( (v_ut = config.lookup_unixtime(conf_key_fcst_init_max, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_fcst_init_max, error_out);
+if ( v_ut > 0 )
    atts.set_fcst_init_max(v_ut);
 
-if ( (v_ut = config.lookup_unixtime(conf_key_obs_init_min, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_obs_init_min, error_out);
+if ( v_ut > 0 )
    atts.set_obs_init_min(v_ut);
 
-if ( (v_ut = config.lookup_unixtime(conf_key_obs_init_max, error_out)) > 0 )
+v_ut = config.lookup_unixtime(conf_key_obs_init_max, error_out);
+if ( v_ut > 0 )
    atts.set_obs_init_max(v_ut);
 
    //
    //  double maxmin members
    //
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_x_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_x_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_x_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_x_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_x_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_x_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_y_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_y_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_y_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_y_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_y_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_y_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_lat_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_lat_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_lat_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_lat_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_lat_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_lat_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_lon_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_lon_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_lon_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_lon_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_lon_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_lon_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_axis_ang_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_axis_ang_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_axis_ang_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_axis_ang_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_axis_ang_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_axis_ang_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_length_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_length_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_length_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_length_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_length_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_length_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_width_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_width_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_width_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_width_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_width_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_width_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_aspect_ratio_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_aspect_ratio_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_aspect_ratio_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_aspect_ratio_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_aspect_ratio_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_aspect_ratio_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_x_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_x_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_x_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_x_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_x_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_x_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_y_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_y_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_y_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_y_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_y_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_y_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_complexity_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_complexity_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_complexity_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_complexity_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_complexity_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_complexity_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_10_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_10_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_10_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_10_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_10_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_10_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_25_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_25_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_25_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_25_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_25_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_25_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_50_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_50_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_50_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_50_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_50_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_50_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_75_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_75_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_75_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_75_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_75_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_75_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_90_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_90_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_90_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_90_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_90_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_90_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_user_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_user_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_user_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_user_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_user_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_user_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_sum_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_sum_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_sum_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intensity_sum_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intensity_sum_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intensity_sum_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_dist_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_dist_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_dist_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_centroid_dist_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_centroid_dist_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_centroid_dist_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_boundary_dist_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_boundary_dist_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_boundary_dist_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_boundary_dist_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_boundary_dist_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_boundary_dist_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_convex_hull_dist_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_convex_hull_dist_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_convex_hull_dist_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_convex_hull_dist_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_convex_hull_dist_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_convex_hull_dist_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_angle_diff_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_angle_diff_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_angle_diff_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_angle_diff_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_angle_diff_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_angle_diff_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_aspect_diff_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_aspect_diff_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_aspect_diff_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_aspect_diff_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_aspect_diff_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_aspect_diff_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_area_ratio_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_area_ratio_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_area_ratio_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_area_ratio_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_area_ratio_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_area_ratio_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intersection_over_area_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_intersection_over_area_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intersection_over_area_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_intersection_over_area_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_intersection_over_area_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_intersection_over_area_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_ratio_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_ratio_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_ratio_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_curvature_ratio_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_curvature_ratio_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_curvature_ratio_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_complexity_ratio_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_complexity_ratio_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_complexity_ratio_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_complexity_ratio_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_complexity_ratio_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_complexity_ratio_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_percentile_intensity_ratio_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_percentile_intensity_ratio_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_percentile_intensity_ratio_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_percentile_intensity_ratio_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_percentile_intensity_ratio_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_percentile_intensity_ratio_max(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_interest_min, error_out)) )
+v_dbl = config.lookup_double(conf_key_interest_min, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_interest_min(v_dbl);
 
-if ( !is_bad_data(v_dbl = config.lookup_double(conf_key_interest_max, error_out)) )
+v_dbl = config.lookup_double(conf_key_interest_max, error_out);
+if ( !is_bad_data(v_dbl) )
    atts.set_interest_max(v_dbl);
 
    //

@@ -4517,7 +4517,8 @@ ConcatString build_map_key(const char *prefix, const TCStatLine &l,
       // summary job output is sorted nicely.
       bool need_cur = true;
       if(strcasecmp(case_cols[i].c_str(), "LEAD") == 0 && cur != na_str) {
-         if(abs(lead = timestring_to_sec(cur.c_str())) < 100*sec_per_hour) {
+         lead = timestring_to_sec(cur.c_str());
+         if(abs(lead) < 100*sec_per_hour) {
 
             // Handle positive and negative lead times
             key << (lead < 0 ? ":-0" : ":0")

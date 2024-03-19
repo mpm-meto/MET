@@ -230,7 +230,8 @@ for (xf=0; xf<(from_grid.nx()); ++xf)  {
 
       } else {
 
-         if ( is_bad_data(value = from_data(xf, yf)) )  continue;
+         value = from_data(xf, yf);
+         if ( is_bad_data(value) )  continue;
          weight = from_grid.calc_area(xf, yf);
 
          to_data.set(to_data(xt, yt) + value*weight, xt, yt);

@@ -345,7 +345,8 @@ ConcatString SeepsClimo::get_seeps_climo_filename() {
    if(use_env) seeps_filename = replace_path(seeps_filename);
    else seeps_filename = replace_path(def_seeps_filename);
 
-   if (seeps_ready = file_exists(seeps_filename.c_str())) {
+   seeps_ready = file_exists(seeps_filename.c_str());
+   if (seeps_ready) {
       mlog << Debug(7) << method_name << "SEEPS point climo name=\""
            << seeps_filename.c_str() << "\"\n";
    }
@@ -792,7 +793,8 @@ ConcatString SeepsClimoGrid::get_seeps_climo_filename() {
    }
    else seeps_filename = replace_path(def_seeps_grid_filename);
 
-   if (seeps_ready = file_exists(seeps_filename.c_str())) {
+   seeps_ready = file_exists(seeps_filename.c_str());
+   if (seeps_ready) {
       mlog << Debug(7) << method_name << "SEEPS grid climo name=\""
            << seeps_filename.c_str() << "\"\n";
    }
